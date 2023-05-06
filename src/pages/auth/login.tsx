@@ -1,14 +1,17 @@
 import { useState } from "react";
 import type { NextPage } from "next";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Button, Input } from "@/components";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 
 const emailValidator = z.string().email();
 
 const Login: NextPage = () => {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
+  const session = useSession();
+
+
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(() => {
@@ -27,11 +30,7 @@ const Login: NextPage = () => {
     if (!parsedEmail.success) return setIsEmailValid(false);
 
     setIsEmailValid(true);
-    
-    return await signIn("email", {
-      email,
-      callbackUrl: "http://localhost:3000/auth/signup",
-    });
+    await signIn("email", { email });
   };
 
   return (
