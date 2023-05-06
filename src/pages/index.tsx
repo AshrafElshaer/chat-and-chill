@@ -4,9 +4,12 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
+import { Button } from "@/components";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+
+  const session = useSession();
 
   return (
     <>
@@ -17,6 +20,16 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center text-white ">
         <h1>Home Page</h1>
+        {JSON.stringify(session, null, 2)}
+        <Button
+          onClick={() =>
+            void signOut({
+              redirect: false,
+            })
+          }
+        >
+          sign out
+        </Button>
       </main>
     </>
   );

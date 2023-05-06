@@ -47,16 +47,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  secret: env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "jwt",
-    maxAge: 1 * 24 * 60 * 60, // 1 Day
-  },
-  jwt: {
-    secret: env.JWT_SECRET,
-    maxAge: 1 * 24 * 60 * 60, // 1 Day
-  },
-  
+  secret: env.NEXTAUTH_SECRET,  
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
