@@ -1,5 +1,5 @@
 import { type ButtonHTMLAttributes } from "react";
-import { type IconName, createIcon } from "./Icon";
+import Icon, { type IconName } from "./Icon";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
@@ -12,7 +12,7 @@ const Button = ({ children, icon, ...restProps }: Props) => {
       className="my-4 flex h-10 w-full items-center  justify-center gap-4 rounded-lg bg-lightBg p-4 text-sm text-white outline-none hover:bg-lightGray/30"
       {...restProps}
     >
-      {icon ? createIcon(icon) : null}
+      {icon ? <Icon iconName={icon} /> : null}
       <span>{children}</span>
     </button>
   );
