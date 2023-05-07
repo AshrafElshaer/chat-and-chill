@@ -34,7 +34,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <div className=" container flex min-h-screen flex-col items-center justify-center">
+    <section className=" container flex min-h-screen flex-col items-center justify-center">
       <div className="w-72 text-center">
         <form
           className="flex flex-col items-center justify-center gap-4"
@@ -67,7 +67,7 @@ const Login: NextPage = () => {
           SignIn With Github
         </Button>
       </div>
-    </div>
+    </section>
   );
 };
 

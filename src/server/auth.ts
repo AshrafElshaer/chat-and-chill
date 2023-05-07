@@ -27,7 +27,7 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 
-  interface User {
+  export interface User {
     id: string;
     username?: string;
     // ...other properties
