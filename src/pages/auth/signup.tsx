@@ -6,16 +6,16 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getSession(context);
-  console.log(session);
 
-  //   if (!session) {
-  //     return {
-  //       redirect: {
-  //         destination: "/auth/login",
-  //         permanent: false,
-  //       },
-  //     };
-  //   }
+
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/auth/login",
+          permanent: false,
+        },
+      };
+    }
   //   if (session && session.user) {
   //     return {
   //       redirect: {

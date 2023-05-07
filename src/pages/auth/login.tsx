@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { NextPage } from "next";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Button, Input } from "@/components";
 import { z } from "zod";
 
@@ -9,7 +9,7 @@ const emailValidator = z.string().email();
 const Login: NextPage = () => {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
-  const session = useSession();
+
 
 
 

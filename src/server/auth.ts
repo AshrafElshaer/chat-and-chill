@@ -21,15 +21,18 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      username?: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+    username?: string;
+    // ...other properties
+    // role: UserRole;
+  }
 }
 
 /**
@@ -43,11 +46,12 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: {
         ...session.user,
+        username: user.username,
         id: user.id,
       },
     }),
   },
-  secret: env.NEXTAUTH_SECRET,  
+  secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
