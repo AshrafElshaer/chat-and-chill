@@ -38,7 +38,7 @@ export default function Signup() {
       email: "ashrafelshaer98@gmail.com",
       image:
         "https://lh3.googleusercontent.com/a/AGNmyxY4eMnn942EjbWwaoBBGN-yEsG1CjtsALTTkqC1=s96-c",
-      username: null,
+      username: "",
       id: "2",
     },
     expires: "2023-06-06T05:56:56.599Z",
@@ -48,8 +48,29 @@ export default function Signup() {
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    console.log(name, value);
-    setUserInfo({ ...userInfo, [name]: value });
+
+    if (name === "name") {
+      return setUserInfo({
+        ...userInfo,
+        username: suggestUsername(value),
+        [name]: value,
+      });
+    }
+    return setUserInfo({
+      ...userInfo,
+      [name]: value,
+    });
+  }
+
+  function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+
+    // setUserInfo({
+    //   ...userInfo,
+    //   image: URL.createObjectURL(file) ,
+    // });
+    // reader.readAsDataURL(file);
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -60,17 +81,23 @@ export default function Signup() {
   return (
     <section className="container  flex min-h-screen items-center  justify-center text-darkGrey">
       <div className="w-72 ">
-        <Image
+        {/* <Image
           src={userInfo.image}
           alt="Profile Image"
           width={100}
           height={100}
           className="mx-auto mb-8 rounded-full"
-        />
+        /> */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col justify-center gap-4"
+          className="flex flex-col justify-center gap-2"
         >
+          <Input
+            type="file"
+            name="image"
+            onChange={handleFileUpload}
+            accept="image/*"
+          />
           <label htmlFor="name" className="pl-2">
             Full Name
           </label>
@@ -99,7 +126,6 @@ export default function Signup() {
             value={userInfo.username || ""}
             onChange={handleInputChange}
           />
-
           <Button type="submit">Save</Button>
         </form>
       </div>
@@ -107,4 +133,11 @@ export default function Signup() {
   );
 }
 
-// { "user": { "name": "Ashraf Elshaer", "email": "ashrafelshaer98@gmail.com", "image": "https://lh3.googleusercontent.com/a/AGNmyxY4eMnn942EjbWwaoBBGN-yEsG1CjtsALTTkqC1=s96-c", "username": null, "id": 2 }, "expires": "2023-06-06T05:56:56.599Z" }
+function suggestUsername(value: string): string {
+  const fullName: string[] = value.split(" ");
+  const [firstName, lastName] = fullName;
+  if (!firstName) return "";
+  return [firstName[0], lastName].join("").toLowerCase();
+}
+
+

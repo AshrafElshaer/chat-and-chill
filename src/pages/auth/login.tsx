@@ -30,7 +30,7 @@ const Login: NextPage = () => {
     if (!parsedEmail.success) return setIsEmailValid(false);
 
     setIsEmailValid(true);
-    await signIn("email", { email });
+    await signIn("email", { email , redirect: false});
   };
 
   return (

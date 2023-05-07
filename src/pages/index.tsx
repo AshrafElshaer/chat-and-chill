@@ -25,6 +25,7 @@ const Home: NextPage = () => {
           onClick={() =>
             void signOut({
               callbackUrl: "/auth/login",
+              redirect: false,
 
             })
           }
