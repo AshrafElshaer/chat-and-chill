@@ -41,16 +41,6 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        username: user.username,
-        id: user.id,
-      },
-    }),
-  },
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -81,6 +71,20 @@ export const authOptions: NextAuthOptions = {
       from: env.EMAIL_FROM,
     }),
   ],
+
+  callbacks: {
+    session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        username: user.username,
+        id: user.id,
+      },
+    }),
+    redirect: () => {
+      return "/auth/signup";
+    },
+  },
 };
 
 /**

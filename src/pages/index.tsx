@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+// import Link from "next/link";
+import {  signOut, useSession } from "next-auth/react";
 
-import { api } from "@/utils/api";
+// import { api } from "@/utils/api";
 import { Button } from "@/components";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   const session = useSession();
 
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           onClick={() =>
             void signOut({
               callbackUrl: "/auth/login",
-              
+
             })
           }
         >

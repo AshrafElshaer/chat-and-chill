@@ -1,6 +1,6 @@
 import { getSession, useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
-import { copyFileSync } from "fs";
+
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -16,14 +16,14 @@ export const getServerSideProps = async (
         },
       };
     }
-  //   if (session && session.user) {
-  //     return {
-  //       redirect: {
-  //         destination: "/",
-  //         permanent: false,
-  //       },
-  //     };
-  //   }
+    if (session && session.user.username) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
   return {
     props: { session },
