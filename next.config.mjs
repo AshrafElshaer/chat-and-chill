@@ -20,11 +20,8 @@ const config = {
   },
 
   images: {
+    domains: ["nrsstdptogyfvsluloir.supabase.co", "lh3.googleusercontent.com"],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
       {
         hostname: "",
       },
