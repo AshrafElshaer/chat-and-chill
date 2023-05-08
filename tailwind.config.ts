@@ -13,14 +13,14 @@ export default {
     },
     extend: {
       colors: {
-        greenBg: "#61C554",
+        success: "#61C554",
         lightBg :"#131313",
         darkBg: "#000000",
         warning : "#CC3169",
         primary: "#FFFFFF",
         lightGray: "#B8B8B8",
         darkGrey: "#969696",
-        success: "#85E2FF",
+        // success: "#85E2FF",
 
       },
       fontFamily: {

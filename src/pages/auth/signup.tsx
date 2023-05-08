@@ -1,10 +1,22 @@
 import Image from "next/image";
 import { getSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
+import type { User, Session } from "next-auth";
+import { api } from "@/utils/api";
+import { uploadImage } from "@/utils/supabase";
+import { z } from "zod";
+
 import { Button, Input } from "@/components";
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { uploadImage } from "@/utils/supabase";
-import type { User, Session } from "next-auth";
+
+const userValidationSchema = z.object({
+  bio: z.string().optional(),
+  email: z.string().email(),
+  id: z.number(),
+  image: z.string().url(),
+  name: z.string(),
+  username: z.string().min(3).max(20),
+});
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -19,14 +31,14 @@ export const getServerSideProps = async (
       },
     };
   }
-  if (session && session.user.username) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+  // if (session && session.user.username) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const userSession = session;
 
@@ -44,7 +56,11 @@ export default function Signup({ userSession }: Props) {
     ...userSession.user,
     username: suggestUsername(userSession.user.name || ""),
   });
+
+  const validateUsername = api.user.validateUsername.useMutation();
+
   const [isChangeAvatar, setIsChangeAvatar] = useState(false);
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -56,6 +72,9 @@ export default function Signup({ userSession }: Props) {
         [name]: value,
       });
     }
+    if (name === "username" && !isUsernameAvailable)
+      setIsUsernameAvailable(true);
+
     return setUserInfo({
       ...userInfo,
       [name]: value,
@@ -64,6 +83,7 @@ export default function Signup({ userSession }: Props) {
 
   async function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
+
     const image = e.target.files[0] as File;
 
     const resualt = await uploadImage(image, userInfo.id);
@@ -73,10 +93,22 @@ export default function Signup({ userSession }: Props) {
     });
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log(userInfo);
+    const inputValidation = userValidationSchema.safeParse(userInfo);
+
+    if (!inputValidation.success) {
+      return console.log(inputValidation.error);
+    }
+
+    const usernameValidation = await validateUsername.mutateAsync({
+      username: inputValidation.data.username,
+    });
+
+    if (!usernameValidation.isAvailable) return setIsUsernameAvailable(false);
+
+    console.log("mutation", usernameValidation.isAvailable);
   }
 
   return (
@@ -90,7 +122,7 @@ export default function Signup({ userSession }: Props) {
           className="mx-auto mb-8 rounded-full"
         />
         <form
-          onSubmit={handleSubmit}
+          onSubmit={(e) => void handleSubmit(e)}
           className="flex flex-col justify-center gap-4"
         >
           {isChangeAvatar ? (
@@ -135,8 +167,7 @@ export default function Signup({ userSession }: Props) {
             name="email"
             value={userInfo.email}
             disabled={true}
-            className="cursor-not-allowed w-72"
-
+            className="w-72 cursor-not-allowed"
           />
 
           <Input
@@ -146,9 +177,14 @@ export default function Signup({ userSession }: Props) {
             name="username"
             value={userInfo.username || ""}
             onChange={handleInputChange}
-            className="w-72"
+            className={`w-72 ${
+              isUsernameAvailable ? "" : "border border-red-500"
+            }`}
           />
-          <Button type="submit">Save</Button>
+          {isUsernameAvailable ? null : (
+            <span className="text-red-500">Username is not available.</span>
+          )}
+          <Button type="submit" disabled={!isUsernameAvailable}>Save</Button>
         </form>
       </div>
     </section>
