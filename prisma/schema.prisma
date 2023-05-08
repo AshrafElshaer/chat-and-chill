@@ -46,7 +46,7 @@ model User {
     email         String    @unique
     username      String?   @unique
     emailVerified DateTime?
-    image         String? @default("https://nrsstdptogyfvsluloir.supabase.co/storage/v1/object/public/images/images/user-icon.png")
+    image         String @default("https://nrsstdptogyfvsluloir.supabase.co/storage/v1/object/public/images/images/user-icon.png")
     
     accounts      Account[]
     sessions      Session[]

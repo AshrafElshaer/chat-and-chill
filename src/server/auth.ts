@@ -21,15 +21,20 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      email: string;
       username?: string;
+      image: string;
+
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  export interface User {
+  interface User {
     id: string;
+    email: string;
     username?: string;
+    image: string;
     // ...other properties
     // role: UserRole;
   }
