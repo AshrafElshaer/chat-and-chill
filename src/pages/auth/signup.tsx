@@ -81,7 +81,7 @@ export default function Signup({ userSession }: Props) {
 
   return (
     <section className="container  flex min-h-screen items-center  justify-center text-darkGrey">
-      <div className="w-72 ">
+      <div className="w-96 ">
         <Image
           src={userInfo.image}
           alt="Profile Image"
@@ -91,7 +91,7 @@ export default function Signup({ userSession }: Props) {
         />
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col justify-center gap-2"
+          className="flex flex-col justify-center gap-4"
         >
           {isChangeAvatar ? (
             <Input
@@ -108,42 +108,45 @@ export default function Signup({ userSession }: Props) {
             </Button>
           )}
 
-          <label htmlFor="name" className="pl-2">
-            Full Name
-          </label>
           <Input
+            id="name"
+            label="Name"
             type="text"
             value={userInfo.name || ""}
             name="name"
             onChange={handleInputChange}
+            className="w-72"
           />
-          <label htmlFor="name" className="pl-2">
-            Bio
-          </label>
+
           <Input
+            id="bio"
+            label="Bio"
             type="text"
             value={userInfo.bio || ""}
             name="bio"
             onChange={handleInputChange}
+            className="w-72"
           />
-          <label htmlFor="email" className="pl-2">
-            Email
-          </label>
+
           <Input
+            id="email"
+            label="Email"
             type="text"
             name="email"
             value={userInfo.email}
             disabled={true}
-            className="cursor-not-allowed"
+            className="cursor-not-allowed w-72"
+
           />
-          <label htmlFor="username" className="pl-2">
-            Username
-          </label>
+
           <Input
+            id="username"
+            label="Username"
             type="text"
             name="username"
             value={userInfo.username || ""}
             onChange={handleInputChange}
+            className="w-72"
           />
           <Button type="submit">Save</Button>
         </form>
