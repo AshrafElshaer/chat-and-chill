@@ -39,7 +39,6 @@ type Props = {
   userSession: Session;
 };
 
-
 export default function Signup({ userSession }: Props) {
   const [userInfo, setUserInfo] = useState<User>({
     ...userSession.user,
@@ -116,6 +115,15 @@ export default function Signup({ userSession }: Props) {
             type="text"
             value={userInfo.name || ""}
             name="name"
+            onChange={handleInputChange}
+          />
+          <label htmlFor="name" className="pl-2">
+            Bio
+          </label>
+          <Input
+            type="text"
+            value={userInfo.bio || ""}
+            name="bio"
             onChange={handleInputChange}
           />
           <label htmlFor="email" className="pl-2">

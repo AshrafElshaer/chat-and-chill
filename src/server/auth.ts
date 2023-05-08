@@ -24,6 +24,7 @@ declare module "next-auth" {
       email: string;
       username?: string;
       image: string;
+      bio?: string;
 
       // ...other properties
       // role: UserRole;
@@ -35,6 +36,7 @@ declare module "next-auth" {
     email: string;
     username?: string;
     image: string;
+    bio?: string;
     // ...other properties
     // role: UserRole;
   }
@@ -82,8 +84,9 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: {
         ...session.user,
-        username: user.username,
         id: user.id,
+        username: user.username,
+        bio: user.bio,
       },
     }),
     redirect: () => {
