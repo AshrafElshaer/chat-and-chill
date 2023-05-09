@@ -2,13 +2,16 @@
 
 import { type ChangeEvent, useState } from "react";
 import Input from "./Input";
-import Icon from "./Icon";
 type Props = {
   children: React.ReactNode;
 };
 const Sidebar = ({ children }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
+    setSearchTerm(e.target.value);
+  }
 
   return (
     <>
@@ -18,7 +21,7 @@ const Sidebar = ({ children }: Props) => {
         aria-controls="default-sidebar"
         type="button"
         onClick={() => setIsSidebarOpen(true)}
-        className="ml-3 mt-2 inline-flex h-10  rounded-lg p-2 text-sm text-gray-500 focus:outline-none dark:text-gray-400 sm:hidden"
+        className="ml-3 mt-2 inline-flex h-10  rounded-lg p-2 text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -40,12 +43,12 @@ const Sidebar = ({ children }: Props) => {
         id="default-sidebar"
         className={`fixed left-0 top-0 z-40 h-screen w-64 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }  transition-transform sm:translate-x-0`}
+        }  transition-transform md:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="h-full overflow-y-auto  bg-lightBg px-3 py-4">
           <ul className="space-y-2 font-medium">
-            <li className="flex justify-end px-2 text-gray-400 sm:hidden">
+            <li className="flex justify-end px-2 text-gray-400 md:hidden">
               <button
                 onClick={() => setIsSidebarOpen(false)}
                 aria-label="Close Sidebar"
@@ -53,23 +56,14 @@ const Sidebar = ({ children }: Props) => {
                 X
               </button>
             </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
-                <span className="ml-3">Dashboard</span>
-              </a>
+            <li className="">
+              <Input
+                placeholder="Search or start new chat"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                inputSearch
+                className="pl-12"
+              />
             </li>
             <li>
               <a
@@ -200,7 +194,7 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <div className={`p-4  sm:ml-64`}>{children}</div>
+      <div className={`p-4  md:ml-64`}>{children}</div>
     </>
   );
 };

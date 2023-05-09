@@ -14,7 +14,7 @@ export default function Icon({ iconName, className }: Props) {
     case "github":
       return <AiFillGithub size="1.5rem" />;
     case "search":
-      return <AiOutlineSearch size="1.5rem" className={className} />;
+      return <AiOutlineSearch size="1.5rem" color="#6b7280" className={className} />;
     default:
       return null;
   }

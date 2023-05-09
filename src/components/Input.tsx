@@ -1,5 +1,5 @@
 import React, { type InputHTMLAttributes } from "react";
-
+import Icon from "./Icon";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -15,6 +15,8 @@ const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
       {label && label !== "" ? (
         <label htmlFor={restProps.id}>{label}</label>
       ) : null}
+
+      <Icon iconName="search" className="absolute left-3 top-2 " />
       <input
         className={`${className ? className : ""}
         ${inputSearch ? inputSearchStyles : "rounded-lg bg-lightBg"}
