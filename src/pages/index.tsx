@@ -33,10 +33,7 @@ type Props = {
 };
 
 const Home = ({ userSession }: Props) => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-
-
+  
   return (
     <>
       <Head>

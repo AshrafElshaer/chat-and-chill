@@ -102,8 +102,7 @@ export default function Signup({ userSession }: Props) {
 
     if (!usernameValidation.isAvailable) return setIsUsernameAvailable(false);
 
-    // TODO: Update user info in database and redirect to home page  !
-
+  
     const updateUserInfo = await updateUserInfoMutation.mutateAsync({
       username: inputValidation.data.username,
       bio: inputValidation.data.bio || "",
