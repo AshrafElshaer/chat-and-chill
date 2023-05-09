@@ -105,7 +105,7 @@ export default function Signup({ userSession }: Props) {
 
     const updateUserInfo = await updateUserInfoMutation.mutateAsync({
       username: inputValidation.data.username,
-      bio: inputValidation.data.bio || "",
+      bio: inputValidation.data.bio || null,
       image: inputValidation.data.image,
     });
 
