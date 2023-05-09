@@ -27,7 +27,9 @@ const Login: NextPage = () => {
     if (!parsedEmail.success) return setIsEmailValid(false);
 
     setIsEmailValid(true);
-    await signIn("email", { email, redirect: false });
+    await signIn("email", {
+      email,
+    });
   };
 
   return (

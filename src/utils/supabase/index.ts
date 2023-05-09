@@ -9,7 +9,7 @@ export const supabase = createClient(
 export async function uploadImage(file: File, userId: number) {
   const { data, error } = await supabase.storage
     .from("images")
-    .upload(`images/${userId}`, file, {
+    .upload(`avatars/${userId}`, file, {
       upsert: true,
     });
 
@@ -18,7 +18,7 @@ export async function uploadImage(file: File, userId: number) {
   }
 
   const {
-    data: { publicUrl },
+    data: { publicUrl }
   } = supabase.storage.from("images").getPublicUrl(data.path);
 
   if (error) {

@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 // import Link from "next/link";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 
 // import { api } from "@/utils/api";
 import { Button } from "@/components";

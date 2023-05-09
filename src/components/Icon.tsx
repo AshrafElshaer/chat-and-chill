@@ -1,4 +1,4 @@
-import { type } from "os";
+
 import { AiOutlineGoogle, AiFillGithub } from "react-icons/ai";
 
 export type IconName = "google" | "github";
