@@ -93,6 +93,7 @@ export default function Signup({ userSession }: Props) {
 
     const inputValidation = userValidationSchema.safeParse(userInfo);
 
+    console.log(userInfo);
     if (!inputValidation.success) return console.log(inputValidation.error);
 
     const usernameValidation = await validateUsernameMutation.mutateAsync({
@@ -105,7 +106,7 @@ export default function Signup({ userSession }: Props) {
 
     const updateUserInfo = await updateUserInfoMutation.mutateAsync({
       username: inputValidation.data.username,
-      bio: inputValidation.data.bio || null,
+      bio: inputValidation.data.bio || "",
       image: inputValidation.data.image,
     });
 
@@ -204,7 +205,7 @@ function suggestUsername(value: string): string {
 }
 
 const userValidationSchema = z.object({
-  bio: z.string().optional(),
+  bio: z.string().optional().nullable(),
   email: z.string().email(),
   id: z.number(),
   image: z.string().url(),

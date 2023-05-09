@@ -12,7 +12,7 @@ export const userRouter = createTRPCRouter({
       z.object({
         username: z.string(),
 
-        bio: z.string().max(160).nullable(),
+        bio: z.string().max(160),
         image: z.string().url(),
       })
     )
