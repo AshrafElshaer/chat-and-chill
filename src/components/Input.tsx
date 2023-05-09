@@ -15,8 +15,10 @@ const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
       {label && label !== "" ? (
         <label htmlFor={restProps.id}>{label}</label>
       ) : null}
+      {inputSearch ? (
+        <Icon iconName="search" className="absolute left-3 top-2 " />
+      ) : null}
 
-      <Icon iconName="search" className="absolute left-3 top-2 " />
       <input
         className={`${className ? className : ""}
         ${inputSearch ? inputSearchStyles : "rounded-lg bg-lightBg"}

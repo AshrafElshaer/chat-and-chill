@@ -41,7 +41,7 @@ const Sidebar = ({ children }: Props) => {
 
       <aside
         id="default-sidebar"
-        className={`fixed left-0 top-0 z-40 h-screen w-64 ${
+        className={`fixed left-0 top-0 z-40 h-screen w-80 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }  transition-transform md:translate-x-0`}
         aria-label="Sidebar"
@@ -194,7 +194,7 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <div className={`p-4  md:ml-64`}>{children}</div>
+      <div className={`p-4  md:ml-80`}>{children}</div>
     </>
   );
 };
