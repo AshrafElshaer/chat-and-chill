@@ -20,7 +20,7 @@ import EmailProvider from "next-auth/providers/email";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string;
+      id: number;
       email: string;
       username?: string;
       image: string;
@@ -32,7 +32,7 @@ declare module "next-auth" {
   }
 
   interface User {
-    id: string;
+    id: number;
     email: string;
     username?: string;
     image: string;

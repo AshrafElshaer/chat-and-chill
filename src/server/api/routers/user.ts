@@ -7,13 +7,26 @@ import {
 } from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(() =>
-    // { ctx }
-    {
-      return "empty";
-      // return ctx.prisma.example.findMany();
-    }
-  ),
+  updateUserInfo: protectedProcedure
+    .input(
+      z.object({
+        username: z.string(),
+
+        bio: z.string().max(160),
+        image: z.string().url(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { username, bio, image } = input;
+      const { id } = ctx.session.user;
+
+      const updatedUser = await ctx.prisma.user.update({
+        where: { id },
+        data: { username, bio, image },
+      });
+      return updatedUser ? { sucsses: true } : { sucsses: false };
+    }),
+    
   validateUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .mutation(async ({ input, ctx }) => {

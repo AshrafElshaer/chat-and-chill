@@ -6,7 +6,7 @@ export const supabase = createClient(
   env.NEXT_PUBLIC_SUPABASE_API_KEY
 );
 
-export async function uploadImage(file: File, userId: string) {
+export async function uploadImage(file: File, userId: number) {
   const { data, error } = await supabase.storage
     .from("images")
     .upload(`images/${userId}`, file, {

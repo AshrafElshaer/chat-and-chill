@@ -8,15 +8,7 @@ import { z } from "zod";
 
 import { Button, Input } from "@/components";
 import { type ChangeEvent, type FormEvent, useState } from "react";
-
-const userValidationSchema = z.object({
-  bio: z.string().optional(),
-  email: z.string().email(),
-  id: z.number(),
-  image: z.string().url(),
-  name: z.string(),
-  username: z.string().min(3).max(20),
-});
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -31,14 +23,14 @@ export const getServerSideProps = async (
       },
     };
   }
-  // if (session && session.user.username) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (session && session.user.username) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   const userSession = session;
 
@@ -57,21 +49,24 @@ export default function Signup({ userSession }: Props) {
     username: suggestUsername(userSession.user.name || ""),
   });
 
-  const validateUsername = api.user.validateUsername.useMutation();
+  const validateUsernameMutation = api.user.validateUsername.useMutation();
+  const updateUserInfoMutation = api.user.updateUserInfo.useMutation();
 
   const [isChangeAvatar, setIsChangeAvatar] = useState(false);
-  const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+
+  const router = useRouter();
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
-    if (name === "name") {
+    if (name === "name")
       return setUserInfo({
         ...userInfo,
         username: suggestUsername(value),
         [name]: value,
       });
-    }
+
     if (name === "username" && !isUsernameAvailable)
       setIsUsernameAvailable(true);
 
@@ -87,7 +82,7 @@ export default function Signup({ userSession }: Props) {
     const image = e.target.files[0] as File;
 
     const resualt = await uploadImage(image, userInfo.id);
-    setUserInfo({
+    return setUserInfo({
       ...userInfo,
       image: resualt,
     });
@@ -98,17 +93,25 @@ export default function Signup({ userSession }: Props) {
 
     const inputValidation = userValidationSchema.safeParse(userInfo);
 
-    if (!inputValidation.success) {
-      return console.log(inputValidation.error);
-    }
+    if (!inputValidation.success) return console.log(inputValidation.error);
 
-    const usernameValidation = await validateUsername.mutateAsync({
+    const usernameValidation = await validateUsernameMutation.mutateAsync({
       username: inputValidation.data.username,
     });
 
     if (!usernameValidation.isAvailable) return setIsUsernameAvailable(false);
 
-    console.log("mutation", usernameValidation.isAvailable);
+    // TODO: Update user info in database and redirect to home page  !
+
+    const updateUserInfo = await updateUserInfoMutation.mutateAsync({
+      username: inputValidation.data.username,
+      bio: inputValidation.data.bio || "",
+      image: inputValidation.data.image,
+    });
+
+    if (!updateUserInfo.sucsses) return alert(updateUserInfo);
+
+    return router.push("/");
   }
 
   return (
@@ -184,7 +187,9 @@ export default function Signup({ userSession }: Props) {
           {isUsernameAvailable ? null : (
             <span className="text-red-500">Username is not available.</span>
           )}
-          <Button type="submit" disabled={!isUsernameAvailable}>Save</Button>
+          <Button type="submit" disabled={!isUsernameAvailable}>
+            Save
+          </Button>
         </form>
       </div>
     </section>
@@ -197,3 +202,12 @@ function suggestUsername(value: string): string {
   if (!firstName) return "";
   return [firstName[0], lastName].join("").toLowerCase();
 }
+
+const userValidationSchema = z.object({
+  bio: z.string().optional(),
+  email: z.string().email(),
+  id: z.number(),
+  image: z.string().url(),
+  name: z.string(),
+  username: z.string().min(3).max(20),
+});

@@ -10,9 +10,6 @@ const Login: NextPage = () => {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
 
-
-
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(() => {
       if (e.target.value.length === 0) {
@@ -30,7 +27,7 @@ const Login: NextPage = () => {
     if (!parsedEmail.success) return setIsEmailValid(false);
 
     setIsEmailValid(true);
-    await signIn("email", { email , redirect: false});
+    await signIn("email", { email, redirect: false });
   };
 
   return (
@@ -48,7 +45,7 @@ const Login: NextPage = () => {
             Email address is not valid
           </span>
           <Input
-            className={isEmailValid ? "" : "border border-red-500"}
+            className={`w-full ${isEmailValid ? "" : "border-red-500"}`}
             type="text"
             name="email"
             id="email"
