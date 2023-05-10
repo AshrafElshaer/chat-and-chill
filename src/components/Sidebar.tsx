@@ -2,6 +2,7 @@
 
 import { type ChangeEvent, useState } from "react";
 import Input from "./Input";
+import ChatroomPreview from "./ChatroomPreview";
 type Props = {
   children: React.ReactNode;
 };
@@ -46,9 +47,9 @@ const Sidebar = ({ children }: Props) => {
         }  transition-transform md:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full overflow-y-auto  bg-lightBg px-3 py-4">
-          <ul className="space-y-4 font-medium">
-            <li className=" px-2  text-xl text-gray-400 md:hidden">
+        <div className="h-full overflow-y-auto  bg-lightBg  py-4">
+          <ul className="flex flex-col space-y-4 px-2 ">
+            <li className="  text-xl text-gray-400 md:hidden">
               <button
                 className="flex w-full justify-end focus:outline-none"
                 aria-label="Close Sidebar"
@@ -57,7 +58,7 @@ const Sidebar = ({ children }: Props) => {
                 X
               </button>
             </li>
-            <li >
+            <li>
               <Input
                 placeholder="Search or start new chat"
                 value={searchTerm}
@@ -66,25 +67,11 @@ const Sidebar = ({ children }: Props) => {
                 className="pl-12"
               />
             </li>
+          </ul>
+
+          <ul className="space-y-4 font-medium mt-4">
             <li>
-              <a
-                href="#"
-                className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                </svg>
-                <span className="ml-3 flex-1 whitespace-nowrap">Kanban</span>
-                <span className="ml-3 inline-flex items-center justify-center rounded-full bg-gray-200 px-2 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                  Pro
-                </span>
-              </a>
+              <ChatroomPreview />
             </li>
             <li>
               <a
@@ -195,7 +182,7 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <div className={`p-4  md:ml-80`}>{children}</div>
+      <main className={`px-4  md:ml-80`}>{children}</main>
     </>
   );
 };

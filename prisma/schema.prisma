@@ -75,7 +75,7 @@ model Message {
     content    String
     user       User     @relation(fields: [userId], references: [id])
     userId     Int
-    chatRooms  ChatRoom @relation(fields: [chatRoomId], references: [id])
+    chatRoom  ChatRoom @relation(fields: [chatRoomId], references: [id])
     chatRoomId Int
     createdAt  DateTime @default(now())
     @@index([userId])

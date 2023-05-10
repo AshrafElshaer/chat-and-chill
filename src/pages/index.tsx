@@ -33,10 +33,6 @@ type Props = {
 };
 
 const Home = ({ userSession }: Props) => {
-
-  
-
-  
   return (
     <>
       <Head>
@@ -44,7 +40,7 @@ const Home = ({ userSession }: Props) => {
         <meta name="description" content="Chat , Video & Voice call" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center text-white  ">
+      <section className="flex h-[92vh] md:min-h-screen  flex-col items-center justify-center text-white  ">
         <h1>Home Page</h1>
         {JSON.stringify(userSession, null, 2)}
         <Button
@@ -57,7 +53,7 @@ const Home = ({ userSession }: Props) => {
         >
           sign out
         </Button>
-      </main>
+      </section>
     </>
   );
 };
