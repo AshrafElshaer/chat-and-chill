@@ -3,7 +3,6 @@
 import { type ChangeEvent, useState } from "react";
 import Input from "./Input";
 import ChatroomPreview from "./ChatroomPreview";
-import { chatroom } from "@/sample-data/chatRoom";
 import Link from "next/link";
 import Button from "./Button";
 import { signOut } from "next-auth/react";
@@ -76,52 +75,52 @@ const Sidebar = ({ children }: Props) => {
           <ul className="scrollbar-hide mt-4 h-[75vh] overflow-y-scroll font-medium">
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
             <li>
               <Link href="/chatroom">
-                <ChatroomPreview chatroom={chatroom} />
+                <ChatroomPreview  />
               </Link>
             </li>
           </ul>
