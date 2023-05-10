@@ -32,8 +32,8 @@ const Sidebar = ({ children }: Props) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            clip-rule="evenodd"
-            fill-rule="evenodd"
+            clipRule="evenodd"
+            fillRule="evenodd"
             d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
           ></path>
         </svg>
@@ -47,16 +47,17 @@ const Sidebar = ({ children }: Props) => {
         aria-label="Sidebar"
       >
         <div className="h-full overflow-y-auto  bg-lightBg px-3 py-4">
-          <ul className="space-y-2 font-medium">
-            <li className="flex justify-end px-2 text-gray-400 md:hidden">
+          <ul className="space-y-4 font-medium">
+            <li className=" px-2  text-xl text-gray-400 md:hidden">
               <button
-                onClick={() => setIsSidebarOpen(false)}
+                className="flex w-full justify-end focus:outline-none"
                 aria-label="Close Sidebar"
+                onClick={() => setIsSidebarOpen(false)}
               >
                 X
               </button>
             </li>
-            <li className="">
+            <li >
               <Input
                 placeholder="Search or start new chat"
                 value={searchTerm}
@@ -119,9 +120,9 @@ const Sidebar = ({ children }: Props) => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 <span className="ml-3 flex-1 whitespace-nowrap">Users</span>
@@ -140,9 +141,9 @@ const Sidebar = ({ children }: Props) => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 <span className="ml-3 flex-1 whitespace-nowrap">Products</span>
@@ -161,9 +162,9 @@ const Sidebar = ({ children }: Props) => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 <span className="ml-3 flex-1 whitespace-nowrap">Sign In</span>
@@ -182,9 +183,9 @@ const Sidebar = ({ children }: Props) => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 <span className="ml-3 flex-1 whitespace-nowrap">Sign Up</span>
