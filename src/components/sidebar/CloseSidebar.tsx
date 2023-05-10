@@ -8,7 +8,7 @@ type Props = {
 const CloseSidebar = ({setIsSidebarOpen}: Props) => {
   return (
     <button
-    className="flex w-full justify-end focus:outline-none mb-2 text-xl text-gray-400 md:hidden"
+    className="flex w-10 h-full justify-start items-center focus:outline-none text-xl  text-gray-400 md:hidden"
     aria-label="Close Sidebar"
     data-drawer-target="default-sidebar"
     data-drawer-toggle="default-sidebar"

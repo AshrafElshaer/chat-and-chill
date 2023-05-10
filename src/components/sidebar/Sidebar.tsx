@@ -5,64 +5,76 @@ import Input from "../Input";
 import ChatroomPreview from "../ChatroomPreview";
 import Link from "next/link";
 import Button from "../Button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import OpenSidebar from "./OpenSidebar";
 import CloseSidebar from "./CloseSidebar";
 import ChatroomList from "./ChatroomList";
+import Image from "next/image";
 type Props = {
   children: React.ReactNode;
 };
 const Sidebar = ({ children }: Props) => {
+  const { data: session } = useSession();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
+  console.log(session);
 
   return (
     <>
-      <OpenSidebar setIsSidebarOpen={setIsSidebarOpen} />
+      <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:justify-end">
+        {isSidebarOpen ? (
+          <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
+        ) : (
+          <OpenSidebar setIsSidebarOpen={setIsSidebarOpen} />
+        )}
+        {session ? (
+          <Image
+            src={session.user.image}
+            width={35}
+            height={35}
+            alt="Profile Image"
+            className="rounded-full"
+          />
+        ) : null}
+      </div>
 
       <aside
         id="default-sidebar"
-        className={`fixed left-0 top-0 z-40 h-screen w-80 ${
+        className={`fixed left-0 top-14 z-40 h-screen w-80 md:top-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }  h-full bg-lightBg transition-transform   md:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="  ">
-          <ul className="flex flex-col  px-2 py-4 ">
-            <li>
-              <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
-            </li>
-            <li>
-              <Input
-                placeholder="Search or start new chat"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                inputSearch
-                className="pl-12"
-              />
-            </li>
-          </ul>
-          <nav>
-            <ChatroomList />
-          </nav>
-          <div className="px-2">
-            <Button
-              buttonType="secondary"
-              icon="signout"
-              onClick={() =>
-                void signOut({
-                  callbackUrl: "/auth/login",
-                  redirect: true,
-                })
-              }
-            >
-              Sign Out
-            </Button>
-          </div>
+        <div className="my-4">
+          <Input
+            placeholder="Search or start new chat"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            inputSearch
+            className="pl-12 "
+          />
+        </div>
+
+        <nav>
+          <ChatroomList />
+        </nav>
+        <div className="px-2">
+          <Button
+            buttonType="secondary"
+            icon="signout"
+            onClick={() =>
+              void signOut({
+                callbackUrl: "/auth/login",
+                redirect: true,
+              })
+            }
+          >
+            Sign Out
+          </Button>
         </div>
       </aside>
 

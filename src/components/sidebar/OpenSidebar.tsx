@@ -12,7 +12,7 @@ const OpenSidebar = ({ setIsSidebarOpen }: Props) => {
       aria-controls="default-sidebar"
       type="button"
       onClick={() => setIsSidebarOpen(true)}
-      className="ml-3 mt-2 inline-flex h-10  rounded-lg p-2 text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
+      className=" mt-1 inline-flex h-10  rounded-lg items-center justify-center text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
     >
       <span className="sr-only">Open sidebar</span>
       <svg

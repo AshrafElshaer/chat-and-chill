@@ -23,7 +23,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
       ) : (
         <Component {...pageProps} />
       )}
-    
     </SessionProvider>
   );
 };
