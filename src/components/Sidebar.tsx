@@ -72,7 +72,7 @@ const Sidebar = ({ children }: Props) => {
             </li>
           </ul>
 
-          <ul className="scrollbar-hide mt-4 h-[75vh] overflow-y-scroll font-medium">
+          <ul className="scrollbar-hide mt-4 h-[65vh] md:h-[75vh] overflow-y-scroll font-medium">
             <li>
               <Link href="/chatroom">
                 <ChatroomPreview  />
