@@ -9,7 +9,7 @@ type Props = {
 const ChatroomPreview = ({ chatroom }: Props) => {
   if (!chatroom) return <div>no chatroom</div>;
 
-  const user = chatroom.users[0];
+  const user = chatroom.users[0]!;
   const lastMessage = chatroom.messages.at(-2)?.text || "No messages yet" ;
 
 
