@@ -40,19 +40,21 @@ const Home = ({ userSession }: Props) => {
         <meta name="description" content="Chat , Video & Voice call" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="flex h-[92vh] md:min-h-screen  flex-col items-center justify-center text-white  ">
+      <section className="flex h-[92vh] flex-col  items-center justify-center text-white md:min-h-screen  ">
         <h1>Home Page</h1>
-        {JSON.stringify(userSession, null, 2)}
-        <Button
-          onClick={() =>
-            void signOut({
-              callbackUrl: "/auth/login",
-              redirect: true,
-            })
-          }
-        >
-          sign out
-        </Button>
+        <div>
+          {JSON.stringify(userSession.user.username, null, 2)}
+          <Button
+            onClick={() =>
+              void signOut({
+                callbackUrl: "/auth/login",
+                redirect: true,
+              })
+            }
+          >
+            sign out
+          </Button>
+        </div>
       </section>
     </>
   );
