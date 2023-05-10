@@ -35,7 +35,6 @@ declare module "next-auth" {
     id: number;
     email: string;
     username?: string;
-    name:string;
     image: string;
     bio?: string;
     // ...other properties

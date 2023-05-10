@@ -102,7 +102,6 @@ export default function Signup({ userSession }: Props) {
 
     if (!usernameValidation.isAvailable) return setIsUsernameAvailable(false);
 
-  
     const updateUserInfo = await updateUserInfoMutation.mutateAsync({
       username: inputValidation.data.username,
       bio: inputValidation.data.bio || "",
