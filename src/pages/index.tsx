@@ -34,9 +34,7 @@ type Props = {
 };
 
 const Home =  ({ userSession }: Props) => {
-  const {data} = api.user.getUser.useQuery()
-  // const {data} =  api.user.createNewChat.useQuery()
-  console.log(data)
+ 
   return (
     <>
       <Head>

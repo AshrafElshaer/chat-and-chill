@@ -26,6 +26,7 @@ declare module "next-auth" {
       username?: string;
       image: string;
       bio?: string;
+      chatrooms?: Chatroom[];
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -37,6 +38,7 @@ declare module "next-auth" {
     username?: string;
     image: string;
     bio?: string;
+    chatrooms?: Chatroom[];
 
     // ...other properties
     // role: UserRole;
@@ -87,8 +89,9 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
         username: user.username,
-
+        image: user.image,
         bio: user.bio,
+        chatrooms: user.chatrooms,
       },
     }),
     redirect: () => {

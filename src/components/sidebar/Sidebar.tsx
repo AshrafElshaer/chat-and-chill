@@ -8,19 +8,22 @@ import OpenSidebar from "./OpenSidebar";
 import CloseSidebar from "./CloseSidebar";
 import ChatroomList from "./ChatroomList";
 import Image from "next/image";
+import { api } from "@/utils/api";
 type Props = {
   children: React.ReactNode;
 };
 const Sidebar = ({ children }: Props) => {
   const { data: session } = useSession();
+  const { data: chatroomsResponse, error: chatroomsError } =
+    api.user.getUserChatrooms.useQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
-  console.log(session);
-
+  if (chatroomsError) return console.log(chatroomsError);
+  if (!chatroomsResponse) return 
   return (
     <>
       <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:justify-end">
@@ -58,7 +61,7 @@ const Sidebar = ({ children }: Props) => {
         </div>
 
         <nav>
-          <ChatroomList />
+          <ChatroomList chatrooms={chatroomsResponse.chatrooms} />
         </nav>
         <div className="px-2">
           <Button

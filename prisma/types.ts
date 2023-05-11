@@ -1,29 +1,16 @@
-// import type { User } from "next-auth";
+import type { User } from "next-auth";
+import type { Chatroom } from "@prisma/client";
 
-interface User {
-    id: number;
-    // email: string;
-    // username?: string;
-    name:string;
-    image: string;
-    // bio?: string;
-    // ...other properties
-    // role: UserRole;
-    }
-export interface Chatroom {
-  id: number;
-  messages: Message[];
-  users: User[];
-}
+export type TChatroom = (Chatroom & { messages: Message[]; users: User[] })[];
 
 export interface Message {
   id: number;
   text: string;
-//   user: User;
+  user: User;
   userId: number;
   chatroomId: number;
-//   chatroom: Chatroom;
-  createdAt: string;
+  chatroom: Chatroom;
+  createdAt: Date;
 }
 
 export interface FriendRequest {
@@ -35,8 +22,3 @@ export interface FriendRequest {
   sender: User;
   receiver: User;
 }
-
-
-
-
-

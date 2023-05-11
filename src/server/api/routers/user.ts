@@ -7,12 +7,17 @@ import {
 } from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  getUser: protectedProcedure.query(async ({ ctx }) => {
+  getUserChatrooms: protectedProcedure.query(async ({ ctx }) => {
     const { id } = ctx.session.user;
     const user = await ctx.prisma.user.findUnique({
       where: { id },
-      include: {
-        chatrooms: true,
+      select: {
+        chatrooms: {
+          include: {
+            users: true,
+            messages: true,
+          },
+        },
       },
     });
     return user;

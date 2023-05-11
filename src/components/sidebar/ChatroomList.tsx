@@ -1,63 +1,22 @@
-import Link from 'next/link'
-import ChatroomPreview from '../ChatroomPreview'
+import Link from "next/link";
+import ChatroomPreview from "../ChatroomPreview";
+import type { Chatroom, Message, User } from "@prisma/client";
 
-// type Props = {}
+type Props = {
+  chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
+};
 
-const ChatroomList = () => {
+const ChatroomList = ({ chatrooms }: Props) => {
+  console.log(chatrooms);
   return (
-    <ul className="scrollbar-hide   h-[65vh] overflow-y-scroll font-medium md:h-[80vh]">
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-            <li>
-              <Link href="/chatroom">
-                <ChatroomPreview />
-              </Link>
-            </li>
-          </ul>
-  )
-}
+    <ul className="scrollbar-hide   min-h-[65vh] overflow-y-scroll font-medium md:h-[80vh]">
+      {chatrooms.map((chatroom) => (
+        <Link href={`/chatroom/${chatroom.id}`} key={chatroom.id}>
+          <ChatroomPreview room={chatroom} />
+        </Link>
+      ))}
+    </ul>
+  );
+};
 
-export default ChatroomList
+export default ChatroomList;
