@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
-  publicProcedure,
+  // publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
 

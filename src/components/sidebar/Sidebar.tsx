@@ -22,8 +22,8 @@ const Sidebar = ({ children }: Props) => {
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
-  if (chatroomsError) return console.log(chatroomsError);
-  if (!chatroomsResponse) return 
+  if (chatroomsError) return null;
+  if (!chatroomsResponse) return null;
   return (
     <>
       <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:justify-end">

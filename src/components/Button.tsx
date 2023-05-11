@@ -1,6 +1,5 @@
 import { type ButtonHTMLAttributes } from "react";
 import Icon, { type IconName } from "./Icon";
-import { type } from "os";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: string;
