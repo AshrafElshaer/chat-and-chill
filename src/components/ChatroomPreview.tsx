@@ -1,6 +1,7 @@
 import type { Chatroom, User, Message } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 type Props = {
@@ -9,11 +10,18 @@ type Props = {
 
 const ChatroomPreview = ({ room }: Props) => {
   const { data: session } = useSession();
+  // get router params
+  const router = useRouter();
+  const { id: paramId } = router.query;
   if (!session) return null;
   const geust = room.users.find((user) => user.id !== session.user.id);
   if (!geust) return null;
   return (
-    <div className="flex h-20 items-center px-4 hover:bg-black ">
+    <div
+      className={`flex h-20 items-center px-4 hover:bg-black ${
+        room.id === Number(paramId) ? "bg-black" : ""
+      }`}
+    >
       <Image
         src={geust.image}
         alt="user"

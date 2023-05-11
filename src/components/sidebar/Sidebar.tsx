@@ -79,7 +79,7 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <main className={`px-4  md:ml-80`}>{children}</main>
+      <main className={`px-4  md:ml-80 `}>{children}</main>
     </>
   );
 };
