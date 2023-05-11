@@ -106,6 +106,7 @@ export default function Signup({ userSession }: Props) {
       username: inputValidation.data.username,
       bio: inputValidation.data.bio || "",
       image: inputValidation.data.image,
+      name:inputValidation.data.name,
     });
 
     if (!updateUserInfo.sucsses) return alert(updateUserInfo);

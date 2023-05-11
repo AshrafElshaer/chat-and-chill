@@ -2,8 +2,6 @@
 
 import { type ChangeEvent, useState } from "react";
 import Input from "../Input";
-import ChatroomPreview from "../ChatroomPreview";
-import Link from "next/link";
 import Button from "../Button";
 import { signOut, useSession } from "next-auth/react";
 import OpenSidebar from "./OpenSidebar";
@@ -49,7 +47,7 @@ const Sidebar = ({ children }: Props) => {
         }  h-full bg-lightBg transition-transform   md:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="my-4">
+        <div className="my-4 px-2">
           <Input
             placeholder="Search or start new chat"
             value={searchTerm}

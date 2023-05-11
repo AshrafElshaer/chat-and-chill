@@ -33,8 +33,9 @@ CREATE TABLE "User" (
     "name" TEXT,
     "email" TEXT NOT NULL,
     "username" TEXT,
+    "bio" TEXT,
     "emailVerified" TIMESTAMP(3),
-    "image" TEXT,
+    "image" TEXT NOT NULL DEFAULT 'https://nrsstdptogyfvsluloir.supabase.co/storage/v1/object/public/images/images/user-icon.png',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -47,18 +48,18 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
-CREATE TABLE "ChatRoom" (
+CREATE TABLE "Chatroom" (
     "id" SERIAL NOT NULL,
 
-    CONSTRAINT "ChatRoom_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Chatroom_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Message" (
     "id" SERIAL NOT NULL,
-    "content" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
-    "chatRoomId" INTEGER NOT NULL,
+    "chatroomId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
@@ -76,7 +77,7 @@ CREATE TABLE "FriendRequest" (
 );
 
 -- CreateTable
-CREATE TABLE "_ChatRoomToUser" (
+CREATE TABLE "_ChatroomToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
@@ -109,7 +110,7 @@ CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationTok
 CREATE INDEX "Message_userId_idx" ON "Message"("userId");
 
 -- CreateIndex
-CREATE INDEX "Message_chatRoomId_idx" ON "Message"("chatRoomId");
+CREATE INDEX "Message_chatroomId_idx" ON "Message"("chatroomId");
 
 -- CreateIndex
 CREATE INDEX "FriendRequest_senderId_idx" ON "FriendRequest"("senderId");
@@ -118,10 +119,10 @@ CREATE INDEX "FriendRequest_senderId_idx" ON "FriendRequest"("senderId");
 CREATE INDEX "FriendRequest_receiverId_idx" ON "FriendRequest"("receiverId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_ChatRoomToUser_AB_unique" ON "_ChatRoomToUser"("A", "B");
+CREATE UNIQUE INDEX "_ChatroomToUser_AB_unique" ON "_ChatroomToUser"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_ChatRoomToUser_B_index" ON "_ChatRoomToUser"("B");
+CREATE INDEX "_ChatroomToUser_B_index" ON "_ChatroomToUser"("B");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -133,7 +134,7 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_chatRoomId_fkey" FOREIGN KEY ("chatRoomId") REFERENCES "ChatRoom"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_chatroomId_fkey" FOREIGN KEY ("chatroomId") REFERENCES "Chatroom"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "FriendRequest" ADD CONSTRAINT "FriendRequest_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -142,7 +143,7 @@ ALTER TABLE "FriendRequest" ADD CONSTRAINT "FriendRequest_senderId_fkey" FOREIGN
 ALTER TABLE "FriendRequest" ADD CONSTRAINT "FriendRequest_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_ChatRoomToUser" ADD CONSTRAINT "_ChatRoomToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "ChatRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_ChatroomToUser" ADD CONSTRAINT "_ChatroomToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Chatroom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_ChatRoomToUser" ADD CONSTRAINT "_ChatRoomToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_ChatroomToUser" ADD CONSTRAINT "_ChatroomToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

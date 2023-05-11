@@ -1,3 +1,4 @@
+import type { Chatroom, Message } from "@prisma/client";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -25,7 +26,6 @@ declare module "next-auth" {
       username?: string;
       image: string;
       bio?: string;
-
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -37,6 +37,7 @@ declare module "next-auth" {
     username?: string;
     image: string;
     bio?: string;
+
     // ...other properties
     // role: UserRole;
   }
@@ -86,6 +87,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
         username: user.username,
+
         bio: user.bio,
       },
     }),

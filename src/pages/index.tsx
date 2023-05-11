@@ -6,6 +6,7 @@ import { getSession, signOut } from "next-auth/react";
 // import { api } from "@/utils/api";
 import { Button } from "@/components";
 import { type Session } from "next-auth";
+import { api } from "@/utils/api";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -32,7 +33,10 @@ type Props = {
   userSession: Session;
 };
 
-const Home = ({ userSession }: Props) => {
+const Home =  ({ userSession }: Props) => {
+  const {data} = api.user.getUser.useQuery()
+  // const {data} =  api.user.createNewChat.useQuery()
+  console.log(data)
   return (
     <>
       <Head>
