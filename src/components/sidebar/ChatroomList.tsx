@@ -5,7 +5,7 @@ import ChatroomPreview from '../ChatroomPreview'
 
 const ChatroomList = () => {
   return (
-    <ul className="scrollbar-hide   h-[70vh] overflow-y-scroll font-medium md:h-[80vh]">
+    <ul className="scrollbar-hide   h-[60vh] overflow-y-scroll font-medium md:h-[80vh]">
             <li>
               <Link href="/chatroom">
                 <ChatroomPreview />
