@@ -11,7 +11,9 @@ type Props = {
 const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
 
   return (
-    <ul className="scrollbar-hide   h-[63vh] overflow-y-scroll font-medium md:h-[80vh]">
+    <ul className="scrollbar-hide  
+     h-[63vh]
+      overflow-y-scroll font-medium md:h-[80vh]">
       {chatrooms.map((chatroom) => (
         <Link
           href={`/chatroom/${chatroom.id}`}
