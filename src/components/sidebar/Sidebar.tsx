@@ -29,7 +29,7 @@ const Sidebar = ({ children }: Props) => {
   if (!chatroomsResponse) return <div>Loading...</div>;
   return (
     <>
-      <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:justify-start  md:hidden">
+      <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
         {isSidebarOpen ? (
           <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
         ) : (
@@ -53,8 +53,6 @@ const Sidebar = ({ children }: Props) => {
         }  h-full bg-lightBg transition-transform   md:translate-x-0`}
         aria-label="Sidebar"
       >
-    
-
         <div className="my-4 px-2">
           <Input
             placeholder="Search or start new chat"
@@ -87,7 +85,9 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <section className={`min-h-screen  px-4  md:ml-80`}>{children}</section>
+      <section className={`min-h-[90vh] md:ml-80 md:min-h-screen`}>
+        {children}
+      </section>
     </>
   );
 };
