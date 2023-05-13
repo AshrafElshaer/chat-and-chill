@@ -1,7 +1,8 @@
 import React from "react";
+import type { SetState } from "./Sidebar";
 
 type Props = {
-  setIsSidebarOpen(val: boolean): void;
+  setIsSidebarOpen: SetState<boolean>;
 };
 
 const OpenSidebar = ({ setIsSidebarOpen }: Props) => {
@@ -12,7 +13,7 @@ const OpenSidebar = ({ setIsSidebarOpen }: Props) => {
       aria-controls="default-sidebar"
       type="button"
       onClick={() => setIsSidebarOpen(true)}
-      className=" mt-1 inline-flex h-10  rounded-lg items-center justify-center text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
+      className=" mt-1 inline-flex h-10  items-center justify-center rounded-lg text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
     >
       <span className="sr-only">Open sidebar</span>
       <svg

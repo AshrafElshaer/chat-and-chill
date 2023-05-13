@@ -93,8 +93,8 @@ export default function Signup({ userSession }: Props) {
 
     const inputValidation = userValidationSchema.safeParse(userInfo);
 
-    console.log(userInfo);
-    if (!inputValidation.success) return console.log(inputValidation.error);
+
+    if (!inputValidation.success) return console.error(inputValidation.error);
 
     const usernameValidation = await validateUsernameMutation.mutateAsync({
       username: inputValidation.data.username,

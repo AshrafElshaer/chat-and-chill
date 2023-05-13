@@ -40,7 +40,7 @@ const Home =  ({ userSession }: Props) => {
         <meta name="description" content="Chat , Video & Voice call" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="flex h-[92vh] flex-col  items-center justify-center text-white md:min-h-screen  ">
+      <section className="flex h-screen pt-[3.75rem] flex-col  items-center justify-center text-white md:min-h-screen  ">
         <h1>Home Page</h1>
         <div>
           {JSON.stringify(userSession.user.username, null, 2)}

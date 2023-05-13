@@ -12,6 +12,9 @@ import { api } from "@/utils/api";
 type Props = {
   children: React.ReactNode;
 };
+
+export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
+
 const Sidebar = ({ children }: Props) => {
   const { data: session } = useSession();
   const { data: chatroomsResponse, error: chatroomsError } =
@@ -22,8 +25,8 @@ const Sidebar = ({ children }: Props) => {
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
-  if (chatroomsError) return null;
-  if (!chatroomsResponse) return null;
+  if (chatroomsError) return <div>{chatroomsError.message}</div>;
+  if (!chatroomsResponse) return <div>Loading...</div>;
   return (
     <>
       <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:justify-end">
@@ -61,7 +64,10 @@ const Sidebar = ({ children }: Props) => {
         </div>
 
         <nav>
-          <ChatroomList chatrooms={chatroomsResponse.chatrooms} />
+          <ChatroomList
+            chatrooms={chatroomsResponse.chatrooms}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
         </nav>
         <div className="px-2">
           <Button
@@ -79,7 +85,9 @@ const Sidebar = ({ children }: Props) => {
         </div>
       </aside>
 
-      <main className={`px-4  md:ml-80 `}>{children}</main>
+      <section className={`min-h-screen  px-4  md:ml-80`}>
+        {children}
+      </section>
     </>
   );
 };
