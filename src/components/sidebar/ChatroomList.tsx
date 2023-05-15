@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ChatroomPreview from "./ChatroomPreview";
 import type { Chatroom, Message, User } from "@prisma/client";
-import {type SetState } from "./Sidebar";
+import { type SetState } from "./Sidebar";
 
 type Props = {
   chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
@@ -9,11 +9,12 @@ type Props = {
 };
 
 const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
-
   return (
-    <ul className="scrollbar-hide  
-     h-[63vh]
-      overflow-y-scroll font-medium md:h-[80vh]">
+    <ul
+      className="scrollbar-hide  
+      h-auto max-h-[63vh] 
+      overflow-y-scroll font-medium  md:max-h-[80vh]"
+    >
       {chatrooms.map((chatroom) => (
         <Link
           href={`/chatroom/${chatroom.id}`}

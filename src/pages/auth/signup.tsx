@@ -150,7 +150,7 @@ export default function Signup({ userSession }: Props) {
             value={userInfo.name || ""}
             name="name"
             onChange={handleInputChange}
-            className="w-72"
+            className="w-72 rounded-lg"
           />
 
           <Input
@@ -160,7 +160,7 @@ export default function Signup({ userSession }: Props) {
             value={userInfo.bio || ""}
             name="bio"
             onChange={handleInputChange}
-            className="w-72"
+            className="w-72 rounded-lg"
           />
 
           <Input
@@ -170,7 +170,7 @@ export default function Signup({ userSession }: Props) {
             name="email"
             value={userInfo.email}
             disabled={true}
-            className="w-72 cursor-not-allowed"
+            className="w-72 rounded-lg cursor-not-allowed"
           />
 
           <Input
@@ -180,7 +180,7 @@ export default function Signup({ userSession }: Props) {
             name="username"
             value={userInfo.username || ""}
             onChange={handleInputChange}
-            className={`w-72 ${
+            className={`w-72 rounded-lg ${
               isUsernameAvailable ? "" : "border border-red-500"
             }`}
           />

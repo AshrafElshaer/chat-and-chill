@@ -20,9 +20,9 @@ const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
       ) : null}
 
       <input
-        className={`${className ? className : ""}
-        ${inputSearch ? inputSearchStyles : "rounded-lg bg-lightBg"}
-        h-10  p-4 text-white outline-none`}
+        className={`
+        ${inputSearch ? inputSearchStyles : " bg-lightBg"}
+        h-10  p-4 text-white outline-none ${className ? className : ""}`}
         {...restProps}
       />
     </div>

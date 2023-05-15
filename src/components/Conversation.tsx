@@ -13,7 +13,7 @@ const Conversation = ({ messages, userId }: Props) => {
     <div className="scrollbar-hide h-full overflow-y-scroll">
       {!messages.length ? (
         <div className="flex h-full items-center justify-center">
-          <span className="text-2xl text-primary">No messages yet</span>
+          <span className="text-2xl text-primary">No messages yet!</span>
         </div>
       ) : (
         messages.map((message) => {

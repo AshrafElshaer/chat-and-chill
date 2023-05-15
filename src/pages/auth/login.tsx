@@ -47,7 +47,7 @@ const Login: NextPage = () => {
             Email address is not valid
           </span>
           <Input
-            className={`w-full ${isEmailValid ? "" : "border-red-500"}`}
+            className={`w-full rounded-lg ${isEmailValid ? "" : "border-red-500"}`}
             type="text"
             name="email"
             id="email"

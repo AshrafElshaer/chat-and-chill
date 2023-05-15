@@ -4,7 +4,13 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { LoadingSpinner, Conversation, Input } from "@/components";
+import {
+  LoadingSpinner,
+  Conversation,
+  Input,
+  Button,
+  Icon,
+} from "@/components";
 import { type ChangeEvent, useState } from "react";
 
 const Chatroom = () => {
@@ -52,13 +58,22 @@ const Chatroom = () => {
         />
       </div>
       <div>
-        <form className="flex items-center justify-between gap-4 p-4" onSubmit={handleSubmit}>
+        <form
+          className=" relative flex items-center justify-between gap-4 p-4"
+          onSubmit={handleSubmit}
+        >
+          <button className="absolute  left-6 z-20">
+            <Icon iconName="emoji" />
+          </button>
           <Input
             placeholder="Type a message"
-            className="w-full"
+            className="w-full rounded-full pl-12 "
             value={newMessage}
             onChange={handleInputChange}
           />
+          <button className="absolute right-6 z-20 fill-current">
+            <Icon iconName="attachment" />
+          </button>
         </form>
       </div>
     </div>

@@ -29,7 +29,7 @@ const Sidebar = ({ children }: Props) => {
   if (!chatroomsResponse) return <div>Loading...</div>;
   return (
     <>
-      <div className="fixed top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
+      <div className="fixed top-0 left-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
         {isSidebarOpen ? (
           <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
         ) : (
@@ -50,7 +50,7 @@ const Sidebar = ({ children }: Props) => {
         id="default-sidebar"
         className={`fixed left-0 top-14 z-40 h-screen w-80 md:top-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }  h-full bg-lightBg transition-transform   md:translate-x-0`}
+        }  h-full bg-lightBg transition-transform   md:translate-x-0 `}
         aria-label="Sidebar"
       >
         <div className="my-4 px-2">
