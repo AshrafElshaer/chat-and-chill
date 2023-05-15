@@ -19,16 +19,30 @@ const Chatroom = () => {
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
 
-  const { data: chatroomData } = api.chatroom.getChatroomById.useQuery({
-    id: Number(roomId),
-  });
+  const { data: chatroomData, refetch } = api.chatroom.getChatroomById.useQuery(
+    {
+      id: Number(roomId),
+    }
+  );
+
+  const { mutateAsync: sendNewMessage } =
+    api.messages.sendNewMessage.useMutation();
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setNewMessage(e.target.value);
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const response = await sendNewMessage({
+      text: newMessage,
+      chatroomId: Number(roomId),
+    });
+
+    if (response.id) {
+      // TODO: remove refetch and use real time update
+      await refetch();
+    }
     // api.message.createMessage.mutate({ text: newMessage, roomId: Number(roomId) });
     setNewMessage("");
   }
@@ -60,7 +74,7 @@ const Chatroom = () => {
       <div>
         <form
           className=" relative flex items-center justify-between gap-4 p-4"
-          onSubmit={handleSubmit}
+          onSubmit={(e) => void handleSubmit(e)}
         >
           <button className="absolute  left-6 z-20">
             <Icon iconName="emoji" />

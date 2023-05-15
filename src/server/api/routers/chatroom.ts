@@ -29,7 +29,7 @@ const chatroomRouter = createTRPCRouter({
           users: true,
           messages: {
             orderBy: {
-              createdAt: "desc",
+              createdAt: "asc",
             },
             include: {user: true}
           },
@@ -37,6 +37,8 @@ const chatroomRouter = createTRPCRouter({
       });
       return chatroom;
     }),
+
+
 });
 
 export default chatroomRouter;
