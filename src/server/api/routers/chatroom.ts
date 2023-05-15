@@ -31,14 +31,12 @@ const chatroomRouter = createTRPCRouter({
             orderBy: {
               createdAt: "asc",
             },
-            include: {user: true}
+            include: { user: true },
           },
         },
       });
       return chatroom;
     }),
-
-
 });
 
 export default chatroomRouter;
