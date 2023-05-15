@@ -9,6 +9,7 @@ import CloseSidebar from "./CloseSidebar";
 import ChatroomList from "./ChatroomList";
 import Image from "next/image";
 import { api } from "@/utils/api";
+import Icon from "../Icon";
 type Props = {
   children: React.ReactNode;
 };
@@ -53,13 +54,14 @@ const Sidebar = ({ children }: Props) => {
         }  h-full bg-lightBg transition-transform   md:translate-x-0 `}
         aria-label="Sidebar"
       >
-        <div className="my-4 px-2">
+        <div className="my-4 px-2 relative">
+          <Icon iconName="search" className="absolute left-4 top-2 z-10" />
           <Input
             placeholder="Search or start new chat"
             value={searchTerm}
             onChange={handleSearchChange}
             inputSearch
-            className="pl-12 "
+            className="pl-12 bg-darkBg text-primary rounded-full w-full"
           />
         </div>
 

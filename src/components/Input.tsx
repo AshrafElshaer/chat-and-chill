@@ -7,7 +7,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   inputSearch?: boolean;
 }
 
-const inputSearchStyles = "w-full rounded-full bg-darkBg";
+
 
 const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
   return (
@@ -15,13 +15,9 @@ const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
       {label && label !== "" ? (
         <label htmlFor={restProps.id}>{label}</label>
       ) : null}
-      {inputSearch ? (
-        <Icon iconName="search" className="absolute left-3 top-2 " />
-      ) : null}
-
       <input
         className={`
-        ${inputSearch ? inputSearchStyles : " bg-lightBg"}
+        bg-lightBg
         h-10  p-4 text-white outline-none ${className ? className : ""}`}
         {...restProps}
       />
