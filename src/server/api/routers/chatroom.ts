@@ -18,20 +18,25 @@ const chatroomRouter = createTRPCRouter({
     });
     return chatroom;
   }),
-  
-  getChatroomById: protectedProcedure.input(z.object({ id: z.number() })).query(
-    async ({ input, ctx }) => {
-        const { id } = input;
-        const chatroom = await ctx.prisma.chatroom.findUnique({
-            where: { id },
-            include: {
-            users: true,
-            messages: true,
+
+  getChatroomById: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input, ctx }) => {
+      const { id } = input;
+      const chatroom = await ctx.prisma.chatroom.findUnique({
+        where: { id },
+        include: {
+          users: true,
+          messages: {
+            orderBy: {
+              createdAt: "desc",
             },
-        });
-        return chatroom;
-        }
-    ),
+            include: {user: true}
+          },
+        },
+      });
+      return chatroom;
+    }),
 });
 
 export default chatroomRouter;
