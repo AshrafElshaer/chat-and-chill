@@ -8,9 +8,9 @@ type Props = {
 };
 
 const Conversation = ({ messages, userId }: Props) => {
-  console.log(messages);
+  // console.log(messages);
   return (
-    <div className="scrollbar-hide h-full overflow-y-scroll">
+    <div className="scrollbar-hide h-full overflow-y-scroll max-h-[82vh]">
       {!messages.length ? (
         <div className="flex h-full items-center justify-center">
           <span className="text-2xl text-primary">No messages yet!</span>
