@@ -5,22 +5,45 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { LoadingSpinner, Conversation, Input, Icon } from "@/components";
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState, useEffect } from "react";
+import { pusherClientSide } from "@/utils/pusherClientSide";
+import type { Message, User } from "@prisma/client";
 
 const Chatroom = () => {
-  const { data: session } = useSession();
   const router = useRouter();
+
+  const { data: session } = useSession();
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
 
-  const { data: chatroomData, refetch } = api.chatroom.getChatroomById.useQuery(
-    {
-      id: Number(roomId),
-    }
-  );
+  const { data: chatroomData } = api.chatroom.getChatroomById.useQuery({
+    id: Number(roomId),
+  });
+  const [messages, setMessages] = useState(chatroomData?.messages || []);
 
   const { mutateAsync: sendNewMessage } =
     api.messages.sendNewMessage.useMutation();
+
+  useEffect(() => {
+    chatroomData && setMessages(chatroomData.messages);
+  }, [chatroomData]);
+
+  useEffect(() => {
+    pusherClientSide.subscribe(`chatroom-${roomId as string}`);
+    pusherClientSide.bind(`new-message`, handlePusherEvent);
+
+    return () => {
+      pusherClientSide.unsubscribe(`chatroom-${roomId as string}`);
+      pusherClientSide.unbind(`new-message`);
+    };
+  }, [roomId]);
+
+  function handlePusherEvent(data: { message: Message & { user: User } }) {
+    const isMessageExist = messages.find((m) => m.id === data.message.id);
+    if (isMessageExist) return;
+
+    setMessages((prev) => [...prev, data.message]);
+  }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setNewMessage(e.target.value);
@@ -28,18 +51,13 @@ const Chatroom = () => {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const response = await sendNewMessage({
+    await sendNewMessage({
       text: newMessage,
       chatroomId: Number(roomId),
     });
-
-    if (response.id) {
-      // TODO: remove refetch and use real time update
-      await refetch();
-    }
-
     setNewMessage("");
   }
+
   if (!chatroomData) return <LoadingSpinner />;
   if (!session) return <LoadingSpinner />;
   const user = session?.user;
@@ -60,10 +78,7 @@ const Chatroom = () => {
         <span className="text-base text-primary">{guest.name}</span>
       </div>
       <div className="flex-grow p-4">
-        <Conversation
-          messages={chatroomData.messages}
-          userId={session.user.id}
-        />
+        <Conversation messages={messages} userId={session.user.id} />
       </div>
       <div>
         <form

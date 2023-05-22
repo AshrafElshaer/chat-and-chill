@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
+import { pusherServerSide } from "@/server/pusher";
+
 const messagesRouter = createTRPCRouter({
   sendNewMessage: protectedProcedure
     .input(z.object({ chatroomId: z.number(), text: z.string() }))
@@ -22,6 +24,13 @@ const messagesRouter = createTRPCRouter({
             },
           },
         },
+        include: {
+          user: true,
+        },
+      });
+      if (!message) throw new Error("Message not created");
+      await pusherServerSide.trigger(`chatroom-${chatroomId}`, "new-message", {
+        message,
       });
       return message;
     }),

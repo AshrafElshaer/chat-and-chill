@@ -4,7 +4,6 @@ import { getSession, signOut } from "next-auth/react";
 import { type Session } from "next-auth";
 
 import { Button } from "@/components";
-import { wss } from "../server/wssServer";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -32,6 +31,9 @@ type Props = {
 };
 
 const Home = ({ userSession }: Props) => {
+
+  
+
 
 
   return (

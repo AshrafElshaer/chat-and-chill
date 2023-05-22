@@ -48,6 +48,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_PUSHER_KEY: z.string().min(1),
   },
 
   /**
@@ -79,5 +80,6 @@ export const env = createEnv({
     PUSHER_KEY: process.env.PUSHER_KEY,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
     PUSHER_CLUSTER: process.env.PUSHER_CLUSTER,
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
   },
 });
