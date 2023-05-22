@@ -6,6 +6,7 @@ import "@/styles/globals.css";
 
 import { Layout } from "@/components";
 import { useRouter } from "next/router";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -23,6 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       ) : (
         <Component {...pageProps} />
       )}
+      <ReactQueryDevtools />
     </SessionProvider>
   );
 };

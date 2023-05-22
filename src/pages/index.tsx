@@ -1,10 +1,10 @@
-import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import type { GetServerSidePropsContext } from "next";
 import { getSession, signOut } from "next-auth/react";
-
+import { type Session } from "next-auth";
 
 import { Button } from "@/components";
-import { type Session } from "next-auth";
+import { wss } from "../server/wssServer";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -31,8 +31,9 @@ type Props = {
   userSession: Session;
 };
 
-const Home =  ({ userSession }: Props) => {
- 
+const Home = ({ userSession }: Props) => {
+
+
   return (
     <>
       <Head>
@@ -40,7 +41,7 @@ const Home =  ({ userSession }: Props) => {
         <meta name="description" content="Chat , Video & Voice call" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="flex h-screen pt-[3.75rem] flex-col  items-center justify-center text-white md:min-h-screen  ">
+      <section className="flex h-screen flex-col items-center  justify-center pt-[3.75rem] text-white md:min-h-screen  ">
         <h1>Home Page</h1>
         <div>
           {JSON.stringify(userSession.user.username, null, 2)}

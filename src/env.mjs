@@ -33,6 +33,11 @@ export const env = createEnv({
     EMAIL_SERVER_HOST: z.string().min(1),
     EMAIL_SERVER_PORT: z.string().min(1),
     EMAIL_FROM: z.string().min(1),
+
+    PUSHER_APP_ID: z.string().min(1),
+    PUSHER_KEY: z.string().min(1),
+    PUSHER_SECRET: z.string().min(1),
+    PUSHER_CLUSTER: z.string().min(1),
   },
 
   /**
@@ -69,5 +74,10 @@ export const env = createEnv({
     EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,
     EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT,
     EMAIL_FROM: process.env.EMAIL_FROM,
+
+    PUSHER_APP_ID: process.env.PUSHER_APP_ID,
+    PUSHER_KEY: process.env.PUSHER_KEY,
+    PUSHER_SECRET: process.env.PUSHER_SECRET,
+    PUSHER_CLUSTER: process.env.PUSHER_CLUSTER,
   },
 });

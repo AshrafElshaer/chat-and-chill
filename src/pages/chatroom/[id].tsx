@@ -37,7 +37,7 @@ const Chatroom = () => {
       // TODO: remove refetch and use real time update
       await refetch();
     }
-    // api.message.createMessage.mutate({ text: newMessage, roomId: Number(roomId) });
+
     setNewMessage("");
   }
   if (!chatroomData) return <LoadingSpinner />;
