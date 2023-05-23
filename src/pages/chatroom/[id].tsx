@@ -77,28 +77,27 @@ const Chatroom = () => {
         />
         <span className="text-base text-primary">{guest.name}</span>
       </div>
-      <div className="flex-grow p-4">
+      <div className=" p-4">
         <Conversation messages={messages} userId={session.user.id} />
       </div>
-      <div>
-        <form
-          className=" relative flex items-center justify-between gap-4 p-4"
-          onSubmit={(e) => void handleSubmit(e)}
-        >
-          <button className="absolute  left-6 z-20" type="button">
-            <Icon iconName="emoji" />
-          </button>
-          <Input
-            placeholder="Type a message"
-            className="w-full rounded-full pl-12 "
-            value={newMessage}
-            onChange={handleInputChange}
-          />
-          <button className="absolute right-6 z-20 fill-current" type="button">
-            <Icon iconName="attachment" />
-          </button>
-        </form>
-      </div>
+
+      <form
+        className=" relative flex items-center justify-between gap-4 p-4"
+        onSubmit={(e) => void handleSubmit(e)}
+      >
+        <button className="absolute  left-6 z-20" type="button">
+          <Icon iconName="emoji" />
+        </button>
+        <Input
+          placeholder="Type a message"
+          className="w-full rounded-full pl-12 "
+          value={newMessage}
+          onChange={handleInputChange}
+        />
+        <button className="absolute right-6 z-20 fill-current" type="button">
+          <Icon iconName="attachment" />
+        </button>
+      </form>
     </div>
   );
 };

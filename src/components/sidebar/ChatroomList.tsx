@@ -12,7 +12,7 @@ const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
   return (
     <ul
       className="scrollbar-hide  
-      h-auto max-h-[63vh] 
+      h-[80vh] max-h-[63vh] 
       overflow-y-scroll font-medium  md:max-h-[80vh]"
     >
       {chatrooms.map((chatroom) => (
