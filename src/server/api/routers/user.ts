@@ -5,9 +5,9 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
+import { pusherServerSide } from "@/server/pusher";
 
 export const userRouter = createTRPCRouter({
- 
   updateUserInfo: protectedProcedure
     .input(
       z.object({
@@ -39,7 +39,21 @@ export const userRouter = createTRPCRouter({
 
       return isUsernameExist ? { isAvailable: false } : { isAvailable: true };
     }),
-
+  pusherAuth: protectedProcedure
+    .input(
+      z.object({
+        socketId: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      const { email } = ctx.session.user;
+      const { socketId } = input;
+      
+      const auth = pusherServerSide.authenticateUser(socketId, {
+        id: email,
+      });
+      return auth;
+    }),
   // createNewChat: protectedProcedure.query(async ({ ctx }) => {
   //   const { id } = ctx.session.user;
   //   const newChat = await ctx.prisma.chatroom.create({

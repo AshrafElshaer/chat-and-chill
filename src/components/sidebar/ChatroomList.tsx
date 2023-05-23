@@ -2,6 +2,8 @@ import Link from "next/link";
 import ChatroomPreview from "./ChatroomPreview";
 import type { Chatroom, Message, User } from "@prisma/client";
 import { type SetState } from "./Sidebar";
+import { useSession } from "next-auth/react";
+
 
 type Props = {
   chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
@@ -9,6 +11,10 @@ type Props = {
 };
 
 const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
+  const { data: session } = useSession();
+
+  if (!session) return null;
+
   return (
     <ul
       className="scrollbar-hide  
@@ -21,7 +27,7 @@ const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
           key={chatroom.id}
           onClick={() => setIsSidebarOpen(false)}
         >
-          <ChatroomPreview room={chatroom} />
+          <ChatroomPreview room={chatroom} session={session} />
         </Link>
       ))}
     </ul>

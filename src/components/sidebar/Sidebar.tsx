@@ -1,6 +1,6 @@
 // type Props = {}
 
-import { type ChangeEvent, useState, useEffect, useCallback } from "react";
+import { type ChangeEvent, useState, useEffect } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import { signOut, useSession } from "next-auth/react";
@@ -11,6 +11,7 @@ import Image from "next/image";
 import { api } from "@/utils/api";
 import Icon from "../Icon";
 import { pusherClientSide } from "@/utils/pusherClientSide";
+import type { PresenceChannel ,Members} from "pusher-js";
 type Props = {
   children: React.ReactNode;
 };
@@ -18,6 +19,18 @@ type Props = {
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
+  const channel = pusherClientSide.subscribe(
+    "presence-users-channel"
+  ) as PresenceChannel;
+
+
+
+  useEffect(() => {
+    return () => {
+      pusherClientSide.unsubscribe("presence-user-channel");
+    };
+  }, [channel]);
+
   const { data: session } = useSession();
   const {
     data: chatroomsResponse,
@@ -26,6 +39,9 @@ const Sidebar = ({ children }: Props) => {
   } = api.chatroom.getUserChatrooms.useQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+ 
+
 
   const handleRefetch = async () => {
     await refetch();

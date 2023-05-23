@@ -1,24 +1,33 @@
-import type { Chatroom, User, Message } from "@prisma/client";
-import { useSession } from "next-auth/react";
+import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
 
 import { getDaysAgo } from "@/components/Message";
+import { pusherClientSide } from "@/utils/pusherClientSide";
+
+import type { Chatroom, User, Message } from "@prisma/client";
+import type { Session } from "next-auth";
+import type { PresenceChannel } from "pusher-js";
 
 type Props = {
   room: Chatroom & { messages: Message[]; users: User[] };
+  session: Session;
 };
 
-const ChatroomPreview = ({ room }: Props) => {
-  const { data: session } = useSession();
+const ChatroomPreview = ({ room, session }: Props) => {
   const router = useRouter();
   const { id: paramId } = router.query;
 
   if (!room) return null;
-  if (!session) return null;
+  const usersChannel = pusherClientSide.channels.find(
+    "presence-users-channel"
+  ) as PresenceChannel;
+
   const geust = room.users.find((user) => user.id !== session.user.id);
   if (!geust) return null;
+  const isGeustOnline = usersChannel.members.get(geust.id.toString())
+    ? true
+    : false;
 
   const lastMessage = room.messages.at(-1);
   // if (!lastMessage) return null;
@@ -29,13 +38,19 @@ const ChatroomPreview = ({ room }: Props) => {
         room.id === Number(paramId) ? "bg-black" : ""
       }`}
     >
-      <Image
-        src={geust.image}
-        alt="user"
-        width={40}
-        height={40}
-        className="rounded-full "
-      />
+      <div className="relative inline-block">
+        <Image
+          src={geust.image}
+          alt="user profile picture"
+          width={40}
+          height={40}
+          className="inline-block rounded-full ring-2 ring-white dark:ring-gray-800"
+        />
+        {isGeustOnline && (
+          <span className="absolute right-0 top-0 block h-3 w-3 rounded-full bg-green-400 ring-2 ring-white"></span>
+        )}
+      </div>
+
       <div className="flex w-full flex-col gap-2 pl-4">
         <div className="flex justify-between">
           <h3 className="font-semibold text-white">{geust.name}</h3>

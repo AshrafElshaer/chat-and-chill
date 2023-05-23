@@ -12,6 +12,7 @@ import { prisma } from "@/server/db";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import EmailProvider from "next-auth/providers/email";
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -26,7 +27,7 @@ declare module "next-auth" {
       username?: string;
       image: string;
       bio?: string;
-      chatrooms?: Chatroom[];
+
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -38,7 +39,7 @@ declare module "next-auth" {
     username?: string;
     image: string;
     bio?: string;
-    chatrooms?: Chatroom[];
+
 
     // ...other properties
     // role: UserRole;
@@ -91,7 +92,7 @@ export const authOptions: NextAuthOptions = {
         username: user.username,
         image: user.image,
         bio: user.bio,
-        chatrooms: user.chatrooms,
+
       },
     }),
     redirect: () => {
