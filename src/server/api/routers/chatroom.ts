@@ -18,6 +18,24 @@ const chatroomRouter = createTRPCRouter({
     });
     return chatroom;
   }),
+  getUserChatrooms: protectedProcedure.query(async ({ ctx }) => {
+    const { id } = ctx.session.user;
+    const user = await ctx.prisma.user.findUnique({
+      where: { id },
+      select: {
+        chatrooms: {
+          orderBy: {
+            lastMessageAt: "desc",
+          },
+          include: {
+            users: true,
+            messages: true,
+          },
+        },
+      },
+    });
+    return user;
+  }),
 
   getChatroomById: protectedProcedure
     .input(z.object({ id: z.number() }))

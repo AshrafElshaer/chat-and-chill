@@ -3,6 +3,8 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { pusherServerSide } from "@/server/pusher";
+import { Chatroom } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 const messagesRouter = createTRPCRouter({
   sendNewMessage: protectedProcedure
@@ -28,10 +30,22 @@ const messagesRouter = createTRPCRouter({
           user: true,
         },
       });
-      if (!message) throw new Error("Message not created");
+
+      // if (!message) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      await ctx.prisma.chatroom.update({
+        where: { id: chatroomId },
+        data: {
+          lastMessageAt: message.createdAt,
+        },
+      });
       await pusherServerSide.trigger(`chatroom-${chatroomId}`, "new-message", {
         message,
       });
+      await pusherServerSide.trigger("chatrooms", "latest-message", {
+        undefined,
+      });
+
       return message;
     }),
 });

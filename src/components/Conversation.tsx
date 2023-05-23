@@ -12,7 +12,6 @@ const Conversation = ({ messages, userId }: Props) => {
 
   useEffect(() => {
     conversationRef.current?.scrollTo(0, conversationRef.current?.scrollHeight);
-    console.log("scroll");
   }, [messages]);
 
   return (

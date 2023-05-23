@@ -1,6 +1,6 @@
 // type Props = {}
 
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState, useEffect, useCallback } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import { signOut, useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ import ChatroomList from "./ChatroomList";
 import Image from "next/image";
 import { api } from "@/utils/api";
 import Icon from "../Icon";
+import { pusherClientSide } from "@/utils/pusherClientSide";
 type Props = {
   children: React.ReactNode;
 };
@@ -18,11 +19,32 @@ export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
   const { data: session } = useSession();
-  const { data: chatroomsResponse, error: chatroomsError } =
-    api.user.getUserChatrooms.useQuery();
+  const {
+    data: chatroomsResponse,
+    error: chatroomsError,
+    refetch,
+  } = api.chatroom.getUserChatrooms.useQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const handleRefetch = async () => {
+    await refetch();
+  };
+
+  // console.log(pusherClientSide.channel("chatrooms"));
+  useEffect(() => {
+    pusherClientSide.subscribe("chatrooms");
+    pusherClientSide.bind("latest-message", handleRefetch);
+
+    return () => {
+      pusherClientSide.unsubscribe("chatrooms");
+      pusherClientSide.unbind("latest-message", handleRefetch);
+    };
+  }, []);
+
+  // async function handleRefetch() {
+  //   await refetch();
+  // }
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
@@ -30,7 +52,7 @@ const Sidebar = ({ children }: Props) => {
   if (!chatroomsResponse) return <div>Loading...</div>;
   return (
     <>
-      <div className="fixed top-0 left-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
+      <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
         {isSidebarOpen ? (
           <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
         ) : (
@@ -54,14 +76,14 @@ const Sidebar = ({ children }: Props) => {
         }  h-full bg-lightBg transition-transform   md:translate-x-0 `}
         aria-label="Sidebar"
       >
-        <div className="my-4 px-2 relative">
+        <div className="relative my-4 px-2">
           <Icon iconName="search" className="absolute left-4 top-2 z-10" />
           <Input
             placeholder="Search or start new chat"
             value={searchTerm}
             onChange={handleSearchChange}
             inputSearch
-            className="pl-12 bg-darkBg text-primary rounded-full w-full"
+            className="w-full rounded-full bg-darkBg pl-12 text-primary"
           />
         </div>
 

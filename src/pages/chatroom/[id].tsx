@@ -34,7 +34,7 @@ const Chatroom = () => {
 
     return () => {
       pusherClientSide.unsubscribe(`chatroom-${roomId as string}`);
-      pusherClientSide.unbind(`new-message`);
+      pusherClientSide.unbind(`new-message`, handlePusherEvent);
     };
   }, [roomId]);
 
