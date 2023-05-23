@@ -11,7 +11,7 @@ import Image from "next/image";
 import { api } from "@/utils/api";
 import Icon from "../Icon";
 import { pusherClientSide } from "@/utils/pusherClientSide";
-import type { PresenceChannel ,Members} from "pusher-js";
+import type { PresenceChannel } from "pusher-js";
 type Props = {
   children: React.ReactNode;
 };
@@ -22,8 +22,6 @@ const Sidebar = ({ children }: Props) => {
   const channel = pusherClientSide.subscribe(
     "presence-users-channel"
   ) as PresenceChannel;
-
-
 
   useEffect(() => {
     return () => {
@@ -40,14 +38,10 @@ const Sidebar = ({ children }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
- 
-
-
   const handleRefetch = async () => {
     await refetch();
   };
 
-  // console.log(pusherClientSide.channel("chatrooms"));
   useEffect(() => {
     pusherClientSide.subscribe("chatrooms");
     pusherClientSide.bind("latest-message", handleRefetch);
@@ -58,9 +52,7 @@ const Sidebar = ({ children }: Props) => {
     };
   }, []);
 
-  // async function handleRefetch() {
-  //   await refetch();
-  // }
+
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }

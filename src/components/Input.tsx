@@ -7,8 +7,6 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   inputSearch?: boolean;
 }
 
-
-
 const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
   return (
     <div className="relative flex  w-full items-center justify-between gap-2">
@@ -17,8 +15,16 @@ const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
       ) : null}
       <input
         className={`
-        bg-lightBg
-        h-10  p-4 text-white outline-none ${className ? className : ""}`}
+        ${className ? className : ""}
+        ${
+          className
+            ? className.includes("bg-darkBg")
+              ? "bg-darkBg"
+              : "bg-lightBg"
+            : ""
+        }
+        h-10
+         p-4 text-white outline-none `}
         {...restProps}
       />
     </div>
