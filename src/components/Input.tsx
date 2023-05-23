@@ -1,13 +1,11 @@
 import React, { type InputHTMLAttributes } from "react";
-import Icon from "./Icon";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   label?: string;
-  inputSearch?: boolean;
 }
 
-const Input = ({ className, label, inputSearch, ...restProps }: Props) => {
+const Input = ({ className, label, ...restProps }: Props) => {
   return (
     <div className="relative flex  w-full items-center justify-between gap-2">
       {label && label !== "" ? (
