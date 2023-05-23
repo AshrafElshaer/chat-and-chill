@@ -52,7 +52,6 @@ const Sidebar = ({ children }: Props) => {
     };
   }, []);
 
-
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
@@ -90,7 +89,6 @@ const Sidebar = ({ children }: Props) => {
             placeholder="Search or start new chat"
             value={searchTerm}
             onChange={handleSearchChange}
-            inputSearch
             className="w-full rounded-full bg-darkBg pl-12 text-primary"
           />
         </div>
