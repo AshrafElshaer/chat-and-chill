@@ -29,6 +29,12 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
         setFoundUsers(data);
       },
     });
+
+  const { mutate: sendFriendRequest } =
+    api.user.sendFriendRequest.useMutation();
+
+  const { data: friendRequests } = api.user.getFriendRequests.useQuery();
+
   const startSearch = useCallback(() => {
     searchUser({ searchTerm: debouncedSearchTerm });
   }, [debouncedSearchTerm, searchUser]);
@@ -51,7 +57,7 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
       id="hs-slide-down-animation-modal"
       className="hs-overlay fixed left-0 top-0  z-[60]  flex h-full w-full flex-col overflow-y-auto overflow-x-hidden bg-lightBg "
     >
-      <h4 className="text-sm w-full text-center">Add New Friend</h4>
+      <h4 className="w-full text-center text-sm">Add New Friend</h4>
       <SearchBar
         placeholder="Search by username or email"
         searchTerm={searchTerm}
@@ -59,7 +65,7 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
       />
 
       {
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {searchError && <div>{searchError.message}</div>}
 
           {foundUsers.length === 0 && debouncedSearchTerm.length >= 3 && (
@@ -82,11 +88,36 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
                     <p className="text-sm font-semibold">{user.name}</p>
                   </div>
                 </div>
-                <button className="text-blue-500 text-xs ">
+                <button
+                  className="text-blue-500 text-xs"
+                  onClick={() => sendFriendRequest({ receiverId: user.id })}
+                >
                   Send Request
                 </button>
               </div>
             ))}
+
+          <h4 className="w-full text-center text-sm">Friend Requests</h4>
+          {friendRequests?.map((req) => (
+            <div
+              key={req.id}
+              className="flex items-center justify-between px-4 py-2"
+            >
+              <div className="flex items-center">
+                <Avatar
+                  src={req.sender.image}
+                  isOnline={isUserOnline(req.sender.id)}
+                />
+                <div className="ml-2">
+                  <p className="text-sm font-semibold">{req.sender.name}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button className="text-blue-500 text-xs">Accept</button>
+                <button className="text-blue-500 text-xs">Decline</button>
+              </div>
+            </div>
+          ))}
         </div>
       }
 

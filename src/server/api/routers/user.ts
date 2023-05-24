@@ -66,7 +66,59 @@ export const userRouter = createTRPCRouter({
           image: true,
         },
       });
-      return users;
+      return users.filter((user) => user.id !== ctx.session.user.id)
+    }),
+
+  getFriendRequests: protectedProcedure.query(async ({ ctx }) => {
+    const { id } = ctx.session.user;
+    const friendRequests = await ctx.prisma.user.findUnique({
+      where: { id },
+      select: {
+        friendRequestReceived: {
+          include: {
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return friendRequests?.friendRequestReceived;
+  }),
+
+  sendFriendRequest: protectedProcedure
+    .input(z.object({ receiverId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { receiverId } = input;
+      const { id } = ctx.session.user;
+
+      const isFriendRequestExist = await ctx.prisma.friendRequest.findFirst({
+        where: {
+          AND: [{ senderId: id }, { receiverId }],
+        },
+      });
+
+      if (isFriendRequestExist) {
+        return { sucsses: false };
+      }
+
+      const newFriendRequest = await ctx.prisma.friendRequest.create({
+        data: {
+          sender: {
+            connect: { id },
+          },
+          receiver: {
+            connect: { id: receiverId },
+          },
+        },
+      });
+
+      return newFriendRequest ? { sucsses: true } : { sucsses: false };
     }),
 
   // createNewChat: protectedProcedure.query(async ({ ctx }) => {
