@@ -6,15 +6,13 @@ import { useUserPresence } from "@/hooks/useUserPresence";
 
 import { type ChangeEvent, useState, useEffect } from "react";
 
-import Input from "../Input";
-import Button from "../Button";
-
 import { CloseSidebar, OpenSidebar } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { FriendsList } from "./friends";
-import Icon from "../Icon";
+import Button from "../Button";
 import Tabs from "./Tabs";
 import SearchBar from "./SearchBar";
+
 
 type Props = {
   children: React.ReactNode;
@@ -26,7 +24,7 @@ const Sidebar = ({ children }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<"chatrooms" | "friends">(
-    "chatrooms"
+    "friends"
   );
   const connectToPusher = useUserPresence();
 
@@ -84,10 +82,10 @@ const Sidebar = ({ children }: Props) => {
         }  h-full overflow-hidden bg-lightBg   transition-transform  md:translate-x-0`}
         aria-label="Sidebar"
       >
-
         <SearchBar
           searchTerm={searchTerm}
           handleSearchChange={handleSearchChange}
+          placeholder="Search or start new chat"
         />
 
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
@@ -100,7 +98,7 @@ const Sidebar = ({ children }: Props) => {
           />
           <FriendsList selectedTab={selectedTab} />
         </nav>
-        
+
         <div className="px-2">
           <Button
             buttonType="secondary"
