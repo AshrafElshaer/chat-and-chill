@@ -10,8 +10,11 @@ import Input from "../Input";
 import Button from "../Button";
 
 import { CloseSidebar, OpenSidebar } from "./controllers";
-import ChatroomList from "./chatrooms/ChatroomList";
+import { ChatroomList } from "./chatrooms";
+import { FriendsList } from "./friends";
 import Icon from "../Icon";
+import Tabs from "./Tabs";
+import SearchBar from "./SearchBar";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +23,11 @@ type Props = {
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState<"chatrooms" | "friends">(
+    "chatrooms"
+  );
   const connectToPusher = useUserPresence();
 
   const { data: session } = useSession();
@@ -28,8 +36,6 @@ const Sidebar = ({ children }: Props) => {
     error: chatroomsError,
     refetch,
   } = api.chatroom.getUserChatrooms.useQuery();
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const handleRefetch = async () => {
     await refetch();
@@ -75,25 +81,26 @@ const Sidebar = ({ children }: Props) => {
         id="default-sidebar"
         className={`fixed left-0 top-14 z-40 h-screen w-80 md:top-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }  h-full bg-lightBg transition-transform   md:translate-x-0 `}
+        }  h-full overflow-hidden bg-lightBg   transition-transform  md:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="relative my-4 px-2">
-          <Icon iconName="search" className="absolute left-4 top-2 z-10" />
-          <Input
-            placeholder="Search or start new chat"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="w-full rounded-full bg-darkBg pl-12 text-primary"
-          />
-        </div>
 
-        <nav>
-          {/* <ChatroomList
+        <SearchBar
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
+        />
+
+        <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+
+        <nav className="relative">
+          <ChatroomList
             chatrooms={chatroomsResponse.chatrooms}
             setIsSidebarOpen={setIsSidebarOpen}
-          /> */}
+            selectedTab={selectedTab}
+          />
+          <FriendsList selectedTab={selectedTab} />
         </nav>
+        
         <div className="px-2">
           <Button
             buttonType="secondary"

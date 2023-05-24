@@ -9,18 +9,25 @@ import ChatroomPreview from "./ChatroomPreview";
 type Props = {
   chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
   setIsSidebarOpen: SetState<boolean>;
+  selectedTab: "chatrooms" | "friends";
 };
 
-const ChatroomList = ({ chatrooms, setIsSidebarOpen }: Props) => {
+const ChatroomList = ({ chatrooms, setIsSidebarOpen, selectedTab }: Props) => {
   const { data: session } = useSession();
 
   if (!session) return null;
 
   return (
     <ul
-      className="scrollbar-hide  
-      h-[80vh] max-h-[63vh] 
-      overflow-y-scroll font-medium  md:max-h-[80vh]"
+      className={`scrollbar-hide  
+      w-full
+      h-[80vh] max-h-[57vh] 
+      overflow-y-scroll font-medium  md:max-h-[73.5vh]
+      
+      transform transition-transform duration-300
+      ${
+        selectedTab === "friends" ? "-translate-x-full" : ""
+      }`}
     >
       {chatrooms.map((chatroom) => (
         <Link
