@@ -1,34 +1,30 @@
 import React from "react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { getDaysAgo } from "@/components/Message";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-
-import type { Chatroom, User, Message } from "@prisma/client";
+import type { TChatroom } from "prisma/types";
 import type { Session } from "next-auth";
-import type { PresenceChannel } from "pusher-js";
+
+import { getDaysAgo } from "@/components/Message";
 import { useUserPresence } from "@/hooks/useUserPresence";
-import LoadingSpinner from "../LoadingSpinner";
+
 import Avatar from "../Avatar";
 
 type Props = {
-  room: Chatroom & { messages: Message[]; users: User[] };
+  room: TChatroom;
   session: Session;
 };
 
 const ChatroomPreview = ({ room, session }: Props) => {
   const router = useRouter();
   const { id: paramId } = router.query;
-  const { connectedUsers ,isUserOnline} = useUserPresence();
-
-  if (!room) return <LoadingSpinner />;
-
+  const { isUserOnline } = useUserPresence();
   const geust = room.users.find((user) => user.id !== session.user.id);
-  if (!geust) return null;
-  const isGeustOnline = isUserOnline(geust.id);
 
+  if (!geust) return null;
+
+  const isGeustOnline = isUserOnline(geust.id);
   const lastMessage = room.messages.at(-1);
+
   return (
     <div
       className={`flex h-20 items-center px-4 hover:bg-black ${
@@ -48,7 +44,7 @@ const ChatroomPreview = ({ room, session }: Props) => {
                     hour: "2-digit",
                     minute: "2-digit",
                   })
-              : "No messages yet"}
+              : null}
           </span>
         </div>
         <span className="h-6 overflow-hidden text-ellipsis text-gray-500">

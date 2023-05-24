@@ -9,6 +9,7 @@ import { z } from "zod";
 import { Button, Input } from "@/components";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -93,7 +94,6 @@ export default function Signup({ userSession }: Props) {
 
     const inputValidation = userValidationSchema.safeParse(userInfo);
 
-
     if (!inputValidation.success) return console.error(inputValidation.error);
 
     const usernameValidation = await validateUsernameMutation.mutateAsync({
@@ -106,7 +106,7 @@ export default function Signup({ userSession }: Props) {
       username: inputValidation.data.username,
       bio: inputValidation.data.bio || "",
       image: inputValidation.data.image,
-      name:inputValidation.data.name,
+      name: inputValidation.data.name,
     });
 
     if (!updateUserInfo.sucsses) return alert(updateUserInfo);
@@ -115,84 +115,92 @@ export default function Signup({ userSession }: Props) {
   }
 
   return (
-    <section className="container  flex min-h-screen items-center  justify-center text-darkGrey">
-      <div className="w-96 ">
-        <Image
-          src={userInfo.image}
-          alt="Profile Image"
-          width={100}
-          height={100}
-          className="mx-auto mb-8 rounded-full"
-        />
-        <form
-          onSubmit={(e) => void handleSubmit(e)}
-          className="flex flex-col justify-center gap-4"
-        >
-          {isChangeAvatar ? (
+    <>
+      <Head>
+        <title>Chat & Chill | Create Account</title>
+        <meta name="description" content="Chat & Chill" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <section className="container  flex min-h-screen items-center  justify-center text-darkGrey">
+        <div className="w-96 ">
+          <Image
+            src={userInfo.image}
+            alt="Profile Image"
+            width={100}
+            height={100}
+            className="mx-auto mb-8 rounded-full"
+          />
+          <form
+            onSubmit={(e) => void handleSubmit(e)}
+            className="flex flex-col justify-center gap-4"
+          >
+            {isChangeAvatar ? (
+              <Input
+                type="file"
+                name="image"
+                id="file-input"
+                onChange={(e) => void handleFileUpload(e)}
+                accept="image/*"
+                className="block w-full cursor-pointer px-0 py-0 text-sm shadow-sm file:mr-4 file:border-0 file:bg-gray-600 file:bg-transparent file:px-2 file:py-3 file:text-gray-400 focus:z-10"
+              />
+            ) : (
+              <Button onClick={() => setIsChangeAvatar(true)}>
+                Upload Profile Image !
+              </Button>
+            )}
+
             <Input
-              type="file"
-              name="image"
-              id="file-input"
-              onChange={(e) => void handleFileUpload(e)}
-              accept="image/*"
-              className="block w-full cursor-pointer px-0 py-0 text-sm shadow-sm file:mr-4 file:border-0 file:bg-gray-600 file:bg-transparent file:px-2 file:py-3 file:text-gray-400 focus:z-10"
+              id="name"
+              label="Name"
+              type="text"
+              value={userInfo.name || ""}
+              name="name"
+              onChange={handleInputChange}
+              className="w-72 rounded-lg"
             />
-          ) : (
-            <Button onClick={() => setIsChangeAvatar(true)}>
-              Upload Profile Image !
+
+            <Input
+              id="bio"
+              label="Bio"
+              type="text"
+              value={userInfo.bio || ""}
+              name="bio"
+              onChange={handleInputChange}
+              className="w-72 rounded-lg"
+            />
+
+            <Input
+              id="email"
+              label="Email"
+              type="text"
+              name="email"
+              value={userInfo.email}
+              disabled={true}
+              className="w-72 cursor-not-allowed rounded-lg"
+            />
+
+            <Input
+              id="username"
+              label="Username"
+              type="text"
+              name="username"
+              value={userInfo.username || ""}
+              onChange={handleInputChange}
+              className={`w-72 rounded-lg ${
+                isUsernameAvailable ? "" : "border border-red-500"
+              }`}
+            />
+            {isUsernameAvailable ? null : (
+              <span className="text-red-500">Username is not available.</span>
+            )}
+            <Button type="submit" disabled={!isUsernameAvailable}>
+              Save
             </Button>
-          )}
-
-          <Input
-            id="name"
-            label="Name"
-            type="text"
-            value={userInfo.name || ""}
-            name="name"
-            onChange={handleInputChange}
-            className="w-72 rounded-lg"
-          />
-
-          <Input
-            id="bio"
-            label="Bio"
-            type="text"
-            value={userInfo.bio || ""}
-            name="bio"
-            onChange={handleInputChange}
-            className="w-72 rounded-lg"
-          />
-
-          <Input
-            id="email"
-            label="Email"
-            type="text"
-            name="email"
-            value={userInfo.email}
-            disabled={true}
-            className="w-72 rounded-lg cursor-not-allowed"
-          />
-
-          <Input
-            id="username"
-            label="Username"
-            type="text"
-            name="username"
-            value={userInfo.username || ""}
-            onChange={handleInputChange}
-            className={`w-72 rounded-lg ${
-              isUsernameAvailable ? "" : "border border-red-500"
-            }`}
-          />
-          {isUsernameAvailable ? null : (
-            <span className="text-red-500">Username is not available.</span>
-          )}
-          <Button type="submit" disabled={!isUsernameAvailable}>
-            Save
-          </Button>
-        </form>
-      </div>
-    </section>
+          </form>
+        </div>
+      </section>
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import type { NextPage } from "next";
 import { signIn } from "next-auth/react";
@@ -33,6 +34,12 @@ const Login: NextPage = () => {
   };
 
   return (
+    <>
+    <Head>
+      <title>Chat & Chill | Login</title>
+      <meta name="description" content="Login to Chat & Chill" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
     <section className=" container flex min-h-screen flex-col items-center justify-center">
       <div className="w-72 text-center">
         <form
@@ -67,6 +74,7 @@ const Login: NextPage = () => {
         </Button>
       </div>
     </section>
+    </>
   );
 };
 

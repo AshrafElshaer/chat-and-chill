@@ -1,12 +1,15 @@
+import { useSession } from "next-auth/react";
+
+import { type SetState } from "./Sidebar";
+import type { TChatroom } from "prisma/types";
+
 import Link from "next/link";
 import ChatroomPreview from "./ChatroomPreview";
-import type { Chatroom, Message, User } from "@prisma/client";
-import { type SetState } from "./Sidebar";
-import { useSession } from "next-auth/react";
+
 
 
 type Props = {
-  chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
+  chatrooms: TChatroom[];
   setIsSidebarOpen: SetState<boolean>;
 };
 
