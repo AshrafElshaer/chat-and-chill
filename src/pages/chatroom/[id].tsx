@@ -4,14 +4,21 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { LoadingSpinner, Conversation, Input, Icon } from "@/components";
+import {
+  LoadingSpinner,
+  Conversation,
+  Input,
+  Icon,
+  Avatar,
+} from "@/components";
 import { type ChangeEvent, useState, useEffect } from "react";
 import { pusherClientSide } from "@/utils/pusherClientSide";
 import type { Message, User } from "@prisma/client";
+import { useUserPresence } from "@/hooks/useUserPresence";
 
 const Chatroom = () => {
   const router = useRouter();
-
+  const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
@@ -62,19 +69,13 @@ const Chatroom = () => {
   if (!session) return <LoadingSpinner />;
   const user = session?.user;
   const guest = chatroomData?.users.find((u) => u.id !== user?.id);
-
   if (!guest) return <LoadingSpinner />;
+  const isGeustOnline = isUserOnline(guest.id);
 
   return (
     <div className="flex h-screen flex-col justify-start text-primary">
       <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-start gap-4  bg-lightBg px-4 md:mt-0">
-        <Image
-          src={guest.image}
-          width={35}
-          height={35}
-          alt="Profile Image"
-          className="rounded-full"
-        />
+        <Avatar src={guest.image} isOnline={isGeustOnline} />
         <span className="text-base text-primary">{guest.name}</span>
       </div>
       <div className=" p-4">

@@ -8,6 +8,9 @@ import { pusherClientSide } from "@/utils/pusherClientSide";
 import type { Chatroom, User, Message } from "@prisma/client";
 import type { Session } from "next-auth";
 import type { PresenceChannel } from "pusher-js";
+import { useUserPresence } from "@/hooks/useUserPresence";
+import LoadingSpinner from "../LoadingSpinner";
+import Avatar from "../Avatar";
 
 type Props = {
   room: Chatroom & { messages: Message[]; users: User[] };
@@ -17,39 +20,22 @@ type Props = {
 const ChatroomPreview = ({ room, session }: Props) => {
   const router = useRouter();
   const { id: paramId } = router.query;
+  const { connectedUsers ,isUserOnline} = useUserPresence();
 
-  if (!room) return null;
-  const usersChannel = pusherClientSide.channels.find(
-    "presence-users-channel"
-  ) as PresenceChannel;
+  if (!room) return <LoadingSpinner />;
 
   const geust = room.users.find((user) => user.id !== session.user.id);
   if (!geust) return null;
-  const isGeustOnline = usersChannel.members.get(geust.id.toString())
-    ? true
-    : false;
+  const isGeustOnline = isUserOnline(geust.id);
 
   const lastMessage = room.messages.at(-1);
-  // if (!lastMessage) return null;
-  // const lastMessageDate =  new Date(lastMessage.createdAt);
   return (
     <div
       className={`flex h-20 items-center px-4 hover:bg-black ${
         room.id === Number(paramId) ? "bg-black" : ""
       }`}
     >
-      <div className="relative inline-block">
-        <Image
-          src={geust.image}
-          alt="user profile picture"
-          width={40}
-          height={40}
-          className="inline-block rounded-full ring-2 ring-white dark:ring-gray-800"
-        />
-        {isGeustOnline && (
-          <span className="absolute right-0 top-0 block h-3 w-3 rounded-full bg-green-400 ring-2 ring-white"></span>
-        )}
-      </div>
+      <Avatar src={geust.image} isOnline={isGeustOnline} />
 
       <div className="flex w-full flex-col gap-2 pl-4">
         <div className="flex justify-between">

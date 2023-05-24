@@ -18,6 +18,7 @@ export default async function handler(req: AuthRequest, res: NextApiResponse) {
     const presenceData = {
       user_id: session.user.id.toString(),
       user_info: {
+        id: session.user.id,
         username: session.user.username,
         name: session.user.name,
         email: session.user.email,

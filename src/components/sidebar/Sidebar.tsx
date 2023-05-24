@@ -12,6 +12,7 @@ import { api } from "@/utils/api";
 import Icon from "../Icon";
 import { pusherClientSide } from "@/utils/pusherClientSide";
 import type { PresenceChannel } from "pusher-js";
+import { useUserPresence } from "@/hooks/useUserPresence";
 type Props = {
   children: React.ReactNode;
 };
@@ -19,15 +20,7 @@ type Props = {
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
-  const channel = pusherClientSide.subscribe(
-    "presence-users-channel"
-  ) as PresenceChannel;
-
-  useEffect(() => {
-    return () => {
-      pusherClientSide.unsubscribe("presence-user-channel");
-    };
-  }, [channel]);
+  const connectToPusher = useUserPresence();
 
   const { data: session } = useSession();
   const {

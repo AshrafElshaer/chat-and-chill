@@ -1,11 +1,12 @@
 import Head from "next/head";
-import type { GetServerSidePropsContext } from "next";
 import { getSession, signOut } from "next-auth/react";
+
+import type { GetServerSidePropsContext } from "next";
 import { type Session } from "next-auth";
 
 import { Button } from "@/components";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-import type { Channel , PresenceChannel} from "pusher-js";
+
+
 
 
 export const getServerSideProps = async (
@@ -34,11 +35,7 @@ type Props = {
 };
 
 const Home = ({ userSession }: Props) => {
-  // const { data: pusherAuth } = api.user.pusherAuth.useQuery({ socketId });
-  // const auth = pusherServerSide.s
-  //   id: userSession.user.email,
-  // });
-  //  const user =  pusherClientSide.signin();
+
   
   return (
     <>
