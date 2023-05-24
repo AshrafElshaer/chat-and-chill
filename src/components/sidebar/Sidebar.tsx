@@ -1,18 +1,18 @@
-// type Props = {}
+import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+import { api } from "@/utils/api";
+import { pusherClientSide } from "@/utils/pusherClientSide";
+import { useUserPresence } from "@/hooks/useUserPresence";
 
 import { type ChangeEvent, useState, useEffect } from "react";
+
 import Input from "../Input";
 import Button from "../Button";
-import { signOut, useSession } from "next-auth/react";
-import OpenSidebar from "./OpenSidebar";
-import CloseSidebar from "./CloseSidebar";
-import ChatroomList from "./ChatroomList";
-import Image from "next/image";
-import { api } from "@/utils/api";
+
+import { CloseSidebar, OpenSidebar } from "./controllers";
+import ChatroomList from "./chatrooms/ChatroomList";
 import Icon from "../Icon";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-import type { PresenceChannel } from "pusher-js";
-import { useUserPresence } from "@/hooks/useUserPresence";
+
 type Props = {
   children: React.ReactNode;
 };
@@ -28,8 +28,8 @@ const Sidebar = ({ children }: Props) => {
     error: chatroomsError,
     refetch,
   } = api.chatroom.getUserChatrooms.useQuery();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const handleRefetch = async () => {
     await refetch();
@@ -48,8 +48,10 @@ const Sidebar = ({ children }: Props) => {
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
+
   if (chatroomsError) return <div>{chatroomsError.message}</div>;
   if (!chatroomsResponse) return <div>Loading...</div>;
+
   return (
     <>
       <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
@@ -87,10 +89,10 @@ const Sidebar = ({ children }: Props) => {
         </div>
 
         <nav>
-          <ChatroomList
+          {/* <ChatroomList
             chatrooms={chatroomsResponse.chatrooms}
             setIsSidebarOpen={setIsSidebarOpen}
-          />
+          /> */}
         </nav>
         <div className="px-2">
           <Button

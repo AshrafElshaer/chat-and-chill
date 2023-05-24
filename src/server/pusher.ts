@@ -1,4 +1,4 @@
-import Pusher, { UserChannelData } from "pusher";
+import Pusher from "pusher";
 import { env } from "@/env.mjs";
 
 export const pusherServerSide = new Pusher({

@@ -1,5 +1,5 @@
 import React from "react";
-import type { SetState } from "./Sidebar";
+import type { SetState } from "../Sidebar";
 
 type Props = {
   setIsSidebarOpen: SetState<boolean>;

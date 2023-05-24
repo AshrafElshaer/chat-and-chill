@@ -1,16 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-import type { TChatroom } from "prisma/types";
-import type { Session } from "next-auth";
-
 import { getDaysAgo } from "@/components/Message";
 import { useUserPresence } from "@/hooks/useUserPresence";
 
-import Avatar from "../Avatar";
+import type { Session } from "next-auth";
+import type { Chatroom, Message, User } from "@prisma/client";
+
+import { Avatar } from "@/components";
 
 type Props = {
-  room: TChatroom;
+  room: Chatroom & { messages: Message[]; users: User[] };
   session: Session;
 };
 

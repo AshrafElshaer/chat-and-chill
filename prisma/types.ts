@@ -1,7 +1,7 @@
 import type { User } from "next-auth";
 import type { Chatroom } from "@prisma/client";
 
-export type TChatroom = Chatroom & { messages: Message[]; users: User[] };
+
 
 export interface Message {
   id: number;
