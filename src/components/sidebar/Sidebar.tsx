@@ -1,15 +1,12 @@
+import { useState} from "react";
 import Image from "next/image";
-import { signOut, useSession } from "next-auth/react";
-import { api } from "@/utils/api";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-import { useUserPresence } from "@/hooks/useUserPresence";
 
-import { type ChangeEvent, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useUserPresence } from "@/hooks/useUserPresence";
 
 import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { Friends } from "./friends";
-import Button from "../Button";
 
 type Props = {
   children: React.ReactNode;
@@ -18,40 +15,13 @@ type Props = {
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<"chatrooms" | "friends">(
-    "friends"
+    "chatrooms"
   );
   const connectToPusher = useUserPresence();
 
   const { data: session } = useSession();
-  const {
-    data: chatroomsResponse,
-    error: chatroomsError,
-    refetch,
-  } = api.chatroom.getUserChatrooms.useQuery();
-
-  const handleRefetch = async () => {
-    await refetch();
-  };
-
-  useEffect(() => {
-    pusherClientSide.subscribe("chatrooms");
-    pusherClientSide.bind("latest-message", handleRefetch);
-
-    return () => {
-      pusherClientSide.unsubscribe("chatrooms");
-      pusherClientSide.unbind("latest-message", handleRefetch);
-    };
-  }, []);
-
-  function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
-    setSearchTerm(e.target.value);
-  }
-
-  if (chatroomsError) return <div>{chatroomsError.message}</div>;
-  if (!chatroomsResponse) return <div>Loading...</div>;
 
   return (
     <>
@@ -81,31 +51,13 @@ const Sidebar = ({ children }: Props) => {
       >
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-        <nav className="h-[71vh] relative  md:h-[88vh]">
+        <nav className="relative h-[71vh]  md:h-[88vh]">
           <ChatroomList
-            chatrooms={chatroomsResponse.chatrooms}
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
-          <Friends
-            selectedTab={selectedTab}
-            isSidebarOpen={isSidebarOpen}
-          />
+          <Friends selectedTab={selectedTab} isSidebarOpen={isSidebarOpen} />
         </nav>
-
-        {/* <Button
-          buttonType="secondary"
-          icon="signout"
-          className="rounded-none"
-          onClick={() =>
-            void signOut({
-              callbackUrl: "/auth/login",
-              redirect: true,
-            })
-          }
-        >
-          Sign Out
-        </Button> */}
       </aside>
 
       <section className={`min-h-[90vh] md:ml-80 md:min-h-screen`}>
