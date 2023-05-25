@@ -28,6 +28,8 @@ const Chatroom = () => {
   const chatroomQuery =
     api.chatroom.getChatroomById.useQuery({
       id: Number(roomId),
+    },{
+      enabled: Boolean(roomId),
     });
     
   const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);

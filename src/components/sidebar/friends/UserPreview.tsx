@@ -1,19 +1,32 @@
-import Avatar from "@/components/Avatar";
+import { useRouter } from "next/router";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { api } from "@/utils/api";
 import type { User } from "@prisma/client";
 
+import Avatar from "@/components/Avatar";
 type Props = {
   user: User;
   isFriendRequest?: boolean;
+  isFriend?: boolean;
   requestId?: number;
 };
 
-const UserPreview = ({ user, isFriendRequest, requestId }: Props) => {
+const UserPreview = ({ user, isFriend, isFriendRequest, requestId }: Props) => {
+  const router = useRouter();
   const { isUserOnline } = useUserPresence();
   const { mutate: sendFriendRequest } =
     api.user.sendFriendRequest.useMutation();
   const { mutate: acceptRequest } = api.user.acceptFriendRequest.useMutation();
+  const { mutateAsync: startChatroom } =
+    api.chatroom.createChatroom.useMutation();
+
+  async function handleNewChatroom() {
+    const chatroom = await startChatroom({
+      friendId: user.id,
+    });
+
+    return router.push(`/chatroom/${chatroom.id}`);
+  }
   return (
     <li className="hover:bg-darkBgLight flex items-center justify-between p-4">
       <div className="flex items-center">
@@ -23,7 +36,7 @@ const UserPreview = ({ user, isFriendRequest, requestId }: Props) => {
         </div>
       </div>
       <div className="flex gap-2">
-        {!isFriendRequest && !requestId ? (
+        {!isFriendRequest && !isFriend && (
           <button
             className=" text-sm"
             onClick={() =>
@@ -34,15 +47,19 @@ const UserPreview = ({ user, isFriendRequest, requestId }: Props) => {
           >
             Add
           </button>
-        ) : (
-          requestId && (
-            <button
-              className=" text-sm"
-              onClick={() => acceptRequest({ requestId: requestId })}
-            >
-              Accept
-            </button>
-          )
+        )}
+        {requestId && (
+          <button
+            className=" text-sm"
+            onClick={() => acceptRequest({ requestId: requestId })}
+          >
+            Accept
+          </button>
+        )}
+        {isFriend && (
+          <button className=" text-sm" onClick={() => void handleNewChatroom()}>
+            Message
+          </button>
         )}
       </div>
     </li>

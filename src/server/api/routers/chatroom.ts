@@ -55,6 +55,46 @@ const chatroomRouter = createTRPCRouter({
       });
       return chatroom;
     }),
+
+  createChatroom: protectedProcedure
+    .input(
+      z.object({
+        friendId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = ctx.session.user;
+      const { friendId } = input;
+
+      const isChatroomExist = await ctx.prisma.chatroom.findFirst({
+        where: {
+          users: {
+            every: {
+              id: {
+                in: [id, friendId],
+              },
+            },
+          },
+        },
+      });
+
+      if (isChatroomExist) {
+        return isChatroomExist;
+      }
+
+      const chatroom = await ctx.prisma.chatroom.create({
+        data: {
+          users: {
+            connect: [{ id }, { id: friendId }],
+          },
+        },
+        include: {
+          users: true,
+          messages: true,
+        },
+      });
+      return chatroom;
+    }),
 });
 
 export default chatroomRouter;

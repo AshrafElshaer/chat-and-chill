@@ -7,32 +7,34 @@ import type { Chatroom, Message, User } from "@prisma/client";
 import Link from "next/link";
 import ChatroomPreview from "./ChatroomPreview";
 import SearchBar from "../SearchBar";
-import { api } from "@/utils/api";
-import { pusherClientSide } from "@/utils/pusherClientSide";
 
 type Props = {
   setIsSidebarOpen: SetState<boolean>;
   selectedTab: "chatrooms" | "friends";
+  chatroomsResponse: {
+    chatrooms: (Chatroom & { messages: Message[]; users: User[] })[];
+  };
+  isSuccess: boolean;
+  chatroomsError?: string;
 };
 
-const ChatroomList = ({ setIsSidebarOpen, selectedTab }: Props) => {
+const ChatroomList = ({
+  setIsSidebarOpen,
+  selectedTab,
+  chatroomsResponse,
+  isSuccess,
+  chatroomsError,
+}: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: session } = useSession();
-
-  const {
-    data: chatroomsResponse,
-    error: chatroomsError,
-    isSuccess,
-    refetch,
-  } = api.chatroom.getUserChatrooms.useQuery();
 
   const [chatrooms, setChatrooms] = useState<
     (Chatroom & { messages: Message[]; users: User[] })[]
   >(chatroomsResponse?.chatrooms ?? []);
-
-  const handleRefetch = async () => {
-    await refetch();
-  };
+  
+  useEffect(() => {
+    setChatrooms(chatroomsResponse?.chatrooms ?? []);
+  }, [chatroomsResponse]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -40,17 +42,7 @@ const ChatroomList = ({ setIsSidebarOpen, selectedTab }: Props) => {
     }
   }, [isSuccess]);
 
-  useEffect(() => {
-    pusherClientSide.subscribe("chatrooms");
-    pusherClientSide.bind("latest-message", handleRefetch);
-
-    return () => {
-      pusherClientSide.unsubscribe("chatrooms");
-      pusherClientSide.unbind("latest-message", handleRefetch);
-    };
-  }, []);
-
-  if (chatroomsError) return <div>{chatroomsError.message}</div>;
+  if (chatroomsError) return <div>{chatroomsError}</div>;
   if (!chatroomsResponse) return <div>Loading...</div>;
   if (!session) return <div>Not Authenticated</div>;
 

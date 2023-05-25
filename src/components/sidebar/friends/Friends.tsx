@@ -62,7 +62,7 @@ const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
             {friends &&
               friends.length > 0 &&
               friends.map((friend) => (
-                <UserPreview key={friend.id} user={friend} />
+                <UserPreview key={friend.id} user={friend} isFriend />
               ))}
             <Button
               buttonType="secondary"

@@ -16,7 +16,7 @@ const Conversation = ({ messages, userId }: Props) => {
 
   return (
     <div
-      className="scrollbar-hide max-h-[60vh] overflow-y-scroll scroll-smooth md:max-h-[77vh]"
+      className="scrollbar-hide h-[60vh] overflow-y-scroll scroll-smooth md:h-[77vh]"
       ref={conversationRef}
     >
       {!messages.length ? (
