@@ -6,13 +6,10 @@ import { useUserPresence } from "@/hooks/useUserPresence";
 
 import { type ChangeEvent, useState, useEffect } from "react";
 
-import { CloseSidebar, OpenSidebar } from "./controllers";
+import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { FriendsList } from "./friends";
 import Button from "../Button";
-import Tabs from "./Tabs";
-import SearchBar from "./SearchBar";
-
 
 type Props = {
   children: React.ReactNode;
@@ -82,12 +79,6 @@ const Sidebar = ({ children }: Props) => {
         }  h-full overflow-hidden bg-lightBg   transition-transform  md:translate-x-0`}
         aria-label="Sidebar"
       >
-        <SearchBar
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-          placeholder="Search or start new chat"
-        />
-
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
         <nav className="relative">
@@ -96,7 +87,10 @@ const Sidebar = ({ children }: Props) => {
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
-          <FriendsList selectedTab={selectedTab} />
+          <FriendsList
+            selectedTab={selectedTab}
+            isSidebarOpen={isSidebarOpen}
+          />
         </nav>
 
         <div className="px-2">

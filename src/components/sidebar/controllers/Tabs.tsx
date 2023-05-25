@@ -10,7 +10,7 @@ const Tabs = ({ selectedTab, setSelectedTab }: Props) => {
   return (
     <div className="flex">
       <Button
-        className={`my-2 text-sm rounded-none h-6 ${
+        className={`my-0  rounded-none text-sm ${
           selectedTab === "chatrooms" ? "bg-lightGray/30" : ""
         }`}
         onClick={() => setSelectedTab("chatrooms")}
@@ -18,7 +18,7 @@ const Tabs = ({ selectedTab, setSelectedTab }: Props) => {
         Chats
       </Button>
       <Button
-        className={`my-2 text-sm rounded-none h-6 ${
+        className={`my-0  rounded-none text-sm ${
           selectedTab === "friends" ? "bg-lightGray/30" : ""
         }`}
         onClick={() => setSelectedTab("friends")}

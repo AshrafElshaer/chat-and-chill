@@ -4,11 +4,13 @@ import { api } from "@/utils/api";
 import AddNewFriend from "./AddNewFriend";
 import { Avatar, Button } from "@/components";
 import { useUserPresence } from "@/hooks/useUserPresence";
+import UserPreview from "./UserPreview";
 
 type Props = {
   selectedTab: "chatrooms" | "friends";
+  isSidebarOpen: boolean;
 };
-const FriendsList = ({ selectedTab }: Props) => {
+const FriendsList = ({ selectedTab, isSidebarOpen }: Props) => {
   const [isAddFriendOpen, setIsAddFriendOpen] = React.useState<boolean>(false);
   const { data: friends } = api.user.getAllFriends.useQuery();
 
@@ -23,26 +25,14 @@ const FriendsList = ({ selectedTab }: Props) => {
     absolute left-0 
     top-0  h-[57vh] w-full
     transform overflow-y-scroll font-medium text-white transition-transform duration-300 md:h-[73vh]
-    ${selectedTab === "chatrooms" ? "translate-x-full" : ""}`}
+    ${selectedTab === "chatrooms" ? "translate-x-full" : ""}
+    ${isSidebarOpen ? "" : "hidden md:block"}
+    `}
       >
         {friends &&
           friends.length > 0 &&
           friends.map((friend) => (
-            <li
-              key={friend.id}
-              className="hover:bg-darkBgLight flex cursor-pointer items-center justify-between p-2"
-            >
-              <div className="flex items-center">
-                <Avatar src={friend.image} isOnline={isUserOnline(friend.id)} />
-                <div className="ml-2">
-                  <p className="text-sm">{friend.name}</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <button className="text-blue-500 text-xs">Message</button>
-                <button className="text-blue-500 text-xs">Remove</button>
-              </div>
-            </li>
+           <UserPreview key={friend.id} user={friend} />
           ))}
         {isAddFriendOpen ? (
           <AddNewFriend setIsAddFriendOpen={setIsAddFriendOpen} />

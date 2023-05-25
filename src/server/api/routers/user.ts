@@ -61,11 +61,6 @@ export const userRouter = createTRPCRouter({
             },
           ],
         },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-        },
       });
       return users.filter((user) => user.id !== ctx.session.user.id);
     }),
@@ -104,13 +99,7 @@ export const userRouter = createTRPCRouter({
       select: {
         friendRequestReceived: {
           include: {
-            sender: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
-              },
-            },
+            sender: true,
           },
         },
       },
