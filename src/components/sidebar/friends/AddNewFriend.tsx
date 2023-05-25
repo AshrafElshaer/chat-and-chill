@@ -22,6 +22,7 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
   const [foundUsers, setFoundUsers] = React.useState<searchResult[]>([]);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const { isUserOnline } = useUserPresence();
+  const { data: friendRequests } = api.user.getFriendRequests.useQuery();
 
   const { error: searchError, mutate: searchUser } =
     api.user.searchUser.useMutation({
@@ -33,7 +34,8 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
   const { mutate: sendFriendRequest } =
     api.user.sendFriendRequest.useMutation();
 
-  const { data: friendRequests } = api.user.getFriendRequests.useQuery();
+
+  const { mutate: acceptRequest } = api.user.acceptFriendRequest.useMutation();
 
   const startSearch = useCallback(() => {
     searchUser({ searchTerm: debouncedSearchTerm });
@@ -99,6 +101,7 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
 
           <h4 className="w-full text-center text-sm">Friend Requests</h4>
           {friendRequests?.map((req) => (
+
             <div
               key={req.id}
               className="flex items-center justify-between px-4 py-2"
@@ -113,8 +116,12 @@ function AddNewFriend({ setIsAddFriendOpen }: Props) {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="text-blue-500 text-xs">Accept</button>
-                <button className="text-blue-500 text-xs">Decline</button>
+                <button
+                  className="text-blue-500 text-xs"
+                  onClick={() => acceptRequest({ requestId: req.id })}
+                >
+                  Accept
+                </button>
               </div>
             </div>
           ))}

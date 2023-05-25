@@ -5,6 +5,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
   updateUserInfo: protectedProcedure
@@ -66,8 +67,35 @@ export const userRouter = createTRPCRouter({
           image: true,
         },
       });
-      return users.filter((user) => user.id !== ctx.session.user.id)
+      return users.filter((user) => user.id !== ctx.session.user.id);
     }),
+  getAllFriends: protectedProcedure.query(async ({ ctx }) => {
+    const { id } = ctx.session.user;
+    const friends = await ctx.prisma.user.findUnique({
+      where: { id },
+      select: {
+        friends: {
+          include: {
+            friend: true,
+          },
+        },
+        friendsOf: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    if (!friends) return [];
+
+    const allFriends = [
+      friends?.friends.map((friend) => friend.friend),
+      friends?.friendsOf.map((friend) => friend.user),
+    ].flat();
+
+    return [...new Set(allFriends)];
+  }),
 
   getFriendRequests: protectedProcedure.query(async ({ ctx }) => {
     const { id } = ctx.session.user;
@@ -88,7 +116,9 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    return friendRequests?.friendRequestReceived;
+    return friendRequests?.friendRequestReceived.filter(
+      (request) => !request.isAccepted
+    );
   }),
 
   sendFriendRequest: protectedProcedure
@@ -104,7 +134,30 @@ export const userRouter = createTRPCRouter({
       });
 
       if (isFriendRequestExist) {
-        return { sucsses: false };
+        return new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Friend request already sent",
+        });
+      }
+
+      const isFriendshipExist = await ctx.prisma.friendship.findFirst({
+        where: {
+          OR: [
+            {
+              AND: [{ userId: id }, { friendId: receiverId }],
+            },
+            {
+              AND: [{ userId: receiverId }, { friendId: id }],
+            },
+          ],
+        },
+      });
+
+      if (isFriendshipExist) {
+        return new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User is already your friend",
+        });
       }
 
       const newFriendRequest = await ctx.prisma.friendRequest.create({
@@ -119,6 +172,44 @@ export const userRouter = createTRPCRouter({
       });
 
       return newFriendRequest ? { sucsses: true } : { sucsses: false };
+    }),
+
+  acceptFriendRequest: protectedProcedure
+    .input(z.object({ requestId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { requestId } = input;
+
+      const friendRequest = await ctx.prisma.friendRequest.findUnique({
+        where: { id: requestId },
+        select: {
+          senderId: true,
+          receiverId: true,
+        },
+      });
+
+      if (!friendRequest) {
+        return new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      await ctx.prisma.friendRequest.update({
+        where: { id: requestId },
+        data: { isAccepted: true },
+      });
+
+      const newFriendship = await ctx.prisma.friendship.create({
+        data: {
+          user: {
+            connect: { id: friendRequest.senderId },
+          },
+          friend: {
+            connect: { id: friendRequest.receiverId },
+          },
+        },
+      });
+
+      return newFriendship ? { sucsses: true } : { sucsses: false };
     }),
 
   // createNewChat: protectedProcedure.query(async ({ ctx }) => {
