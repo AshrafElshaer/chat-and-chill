@@ -39,25 +39,31 @@ const SearchList = () => {
   }, [debouncedSearchTerm, startSearch]);
 
   return (
-    <>
+    <div className="h-1/2">
+      <h4 className="my-2 w-full text-center text-sm">Add New Friend</h4>
+
       <SearchBar
         placeholder="Search by username or email"
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
       />
-      <ul className="max-h-1/2 scrollbar-hide flex flex-col gap-3 overflow-y-scroll">
-        {searchError && <li>{searchError.message}</li>}
+      <ul className="scrollbar-hide flex flex-col gap-3 overflow-y-scroll">
+        {searchError && (
+          <li className="py-2 text-center text-red-500">
+            Ops! {searchError.message}
+          </li>
+        )}
         {debouncedSearchTerm.length < 3 && (
-          <li className="flex items-center justify-center px-4 py-2">
-            <p className="text-xs font-semibold">
+          <li className="py-2 text-center">
+            <p className="text-xs font-semibold text-lightGray">
               Username must be at least 3 characters
             </p>
           </li>
         )}
 
         {foundUsers.length === 0 && debouncedSearchTerm.length >= 3 && (
-          <li className="flex items-center justify-center px-4 py-2">
-            <p className="text-sm font-semibold">
+          <li className="py-2 text-center">
+            <p className="text-sm font-semibold text-lightGray">
               No users found with that username or email
             </p>
           </li>
@@ -66,7 +72,7 @@ const SearchList = () => {
         {foundUsers.length !== 0 &&
           foundUsers.map((user) => <UserPreview key={user.id} user={user} />)}
       </ul>
-    </>
+    </div>
   );
 };
 

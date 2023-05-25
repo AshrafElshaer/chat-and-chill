@@ -9,7 +9,7 @@ type Props = {
 
 const SearchBar = ({handleSearchChange,searchTerm , placeholder}: Props) => {
   return (
-    <div className="relative my-4 px-2">
+    <div className="relative mb-2 px-2">
     <Icon iconName="search" className="absolute left-4 top-2 z-10" />
     <Input
       placeholder={placeholder}

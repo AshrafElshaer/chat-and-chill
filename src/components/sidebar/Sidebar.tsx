@@ -8,7 +8,7 @@ import { type ChangeEvent, useState, useEffect } from "react";
 
 import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
-import { FriendsList } from "./friends";
+import { Friends } from "./friends";
 import Button from "../Button";
 
 type Props = {
@@ -74,39 +74,38 @@ const Sidebar = ({ children }: Props) => {
 
       <aside
         id="default-sidebar"
-        className={`fixed left-0 top-14 z-40 h-screen w-80 md:top-0 ${
+        className={`fixed left-0 top-14 z-40 h-screen w-80  md:top-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }  h-full overflow-hidden bg-lightBg   transition-transform  md:translate-x-0`}
         aria-label="Sidebar"
       >
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-        <nav className="relative">
+        <nav className="h-[71vh] relative  md:h-[88vh]">
           <ChatroomList
             chatrooms={chatroomsResponse.chatrooms}
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
-          <FriendsList
+          <Friends
             selectedTab={selectedTab}
             isSidebarOpen={isSidebarOpen}
           />
         </nav>
 
-        <div className="px-2">
-          <Button
-            buttonType="secondary"
-            icon="signout"
-            onClick={() =>
-              void signOut({
-                callbackUrl: "/auth/login",
-                redirect: true,
-              })
-            }
-          >
-            Sign Out
-          </Button>
-        </div>
+        {/* <Button
+          buttonType="secondary"
+          icon="signout"
+          className="rounded-none"
+          onClick={() =>
+            void signOut({
+              callbackUrl: "/auth/login",
+              redirect: true,
+            })
+          }
+        >
+          Sign Out
+        </Button> */}
       </aside>
 
       <section className={`min-h-[90vh] md:ml-80 md:min-h-screen`}>

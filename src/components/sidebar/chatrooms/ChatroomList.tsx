@@ -20,12 +20,11 @@ const ChatroomList = ({ chatrooms, setIsSidebarOpen, selectedTab }: Props) => {
   return (
     <ul
       className={`scrollbar-hide  
-      
-     h-[57vh]
+     h-full
        w-full 
       transform overflow-y-scroll  font-medium
       
-      transition-transform duration-300 md:h-[73vh]
+      transition-transform duration-300 md:h-[80vh]
       ${selectedTab === "friends" ? "-translate-x-full" : ""}`}
     >
       {chatrooms.map((chatroom) => (
