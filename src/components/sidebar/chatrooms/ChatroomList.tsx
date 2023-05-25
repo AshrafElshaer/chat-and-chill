@@ -31,16 +31,10 @@ const ChatroomList = ({
   const [chatrooms, setChatrooms] = useState<
     (Chatroom & { messages: Message[]; users: User[] })[]
   >(chatroomsResponse?.chatrooms ?? []);
-  
-  useEffect(() => {
-    setChatrooms(chatroomsResponse?.chatrooms ?? []);
-  }, [chatroomsResponse]);
 
   useEffect(() => {
-    if (isSuccess) {
-      setChatrooms(chatroomsResponse?.chatrooms ?? []);
-    }
-  }, [isSuccess]);
+    setChatrooms(chatroomsResponse?.chatrooms ?? []);
+  }, [isSuccess, chatroomsResponse]);
 
   if (chatroomsError) return <div>{chatroomsError}</div>;
   if (!chatroomsResponse) return <div>Loading...</div>;

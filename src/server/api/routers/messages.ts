@@ -3,8 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { pusherServerSide } from "@/server/pusher";
-import { Chatroom } from "@prisma/client";
-import { TRPCError } from "@trpc/server";
+
 
 const messagesRouter = createTRPCRouter({
   sendNewMessage: protectedProcedure
