@@ -10,20 +10,12 @@ type Props = {
 };
 
 function AddNewFriend({ setIsAddFriendOpen }: Props) {
-  const { mutate: sendFriendRequest } =
-    api.user.sendFriendRequest.useMutation();
-
-  const { mutate: acceptRequest } = api.user.acceptFriendRequest.useMutation();
-
   return (
     <div
       id="hs-slide-down-animation-modal"
       className="hs-overlay fixed left-0 top-0 flex  h-full w-full   flex-col overflow-y-auto overflow-x-hidden  "
     >
-      
       <SearchList />
-
-     
 
       <FriendRequests />
 

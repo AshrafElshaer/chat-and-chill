@@ -11,11 +11,18 @@ function FriendRequests() {
       </li>
       {!friendRequests?.length ? (
         <li className=" text-center">
-          <p className="text-sm font-semibold text-lightGray">No friend requests yet !</p>
+          <p className="text-sm font-semibold text-lightGray">
+            No friend requests yet !
+          </p>
         </li>
       ) : (
         friendRequests?.map((req) => (
-          <UserPreview key={req.id} user={req.sender} />
+          <UserPreview
+            key={req.id}
+            user={req.sender}
+            requestId={req.id}
+            isFriendRequest
+          />
         ))
       )}
     </ul>

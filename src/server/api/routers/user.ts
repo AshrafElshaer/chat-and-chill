@@ -111,14 +111,14 @@ export const userRouter = createTRPCRouter({
   }),
 
   sendFriendRequest: protectedProcedure
-    .input(z.object({ receiverId: z.number() }))
+    .input(z.object({ senderId: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const { receiverId } = input;
+      const { senderId } = input;
       const { id } = ctx.session.user;
 
       const isFriendRequestExist = await ctx.prisma.friendRequest.findFirst({
         where: {
-          AND: [{ senderId: id }, { receiverId }],
+          AND: [{ senderId }, { receiverId: id }],
         },
       });
 
@@ -133,10 +133,10 @@ export const userRouter = createTRPCRouter({
         where: {
           OR: [
             {
-              AND: [{ userId: id }, { friendId: receiverId }],
+              AND: [{ userId: id }, { friendId: senderId }],
             },
             {
-              AND: [{ userId: receiverId }, { friendId: id }],
+              AND: [{ userId: senderId }, { friendId: id }],
             },
           ],
         },
@@ -155,7 +155,7 @@ export const userRouter = createTRPCRouter({
             connect: { id },
           },
           receiver: {
-            connect: { id: receiverId },
+            connect: { id: senderId },
           },
         },
       });

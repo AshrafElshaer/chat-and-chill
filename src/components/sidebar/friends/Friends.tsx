@@ -3,7 +3,6 @@ import { api } from "@/utils/api";
 
 import AddNewFriend from "./AddNewFriend";
 import { Button, LoadingSpinner } from "@/components";
-import { useUserPresence } from "@/hooks/useUserPresence";
 import UserPreview from "./UserPreview";
 
 type Props = {
