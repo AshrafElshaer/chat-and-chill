@@ -26,7 +26,7 @@ const Chatroom = () => {
   const { data: session } = useSession();
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
-  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(true);
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
