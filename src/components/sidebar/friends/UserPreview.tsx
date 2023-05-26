@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useUserPresence } from "@/hooks/useUserPresence";
+import { toast } from "react-toastify";
 import { api } from "@/utils/api";
+
 import type { User } from "@prisma/client";
 
 import Avatar from "@/components/Avatar";
@@ -14,9 +16,10 @@ type Props = {
 const UserPreview = ({ user, isFriend, isFriendRequest, requestId }: Props) => {
   const router = useRouter();
   const { isUserOnline } = useUserPresence();
-  const { mutate: sendFriendRequest } =
-    api.user.sendFriendRequest.useMutation();
-  const { mutate: acceptRequest } = api.user.acceptFriendRequest.useMutation();
+
+  const sendRequestMutation = api.user.sendFriendRequest.useMutation();
+  const acceptRequestMutation = api.user.acceptFriendRequest.useMutation();
+
   const { mutateAsync: startChatroom } =
     api.chatroom.createChatroom.useMutation();
 
@@ -27,6 +30,31 @@ const UserPreview = ({ user, isFriend, isFriendRequest, requestId }: Props) => {
 
     return router.push(`/chatroom/${chatroom.id}`);
   }
+
+  async function handleSendRequest() {
+    const res = await sendRequestMutation.mutateAsync({
+      senderId: user.id,
+    });
+
+    if (res instanceof Error) return toast.error(res.message);
+
+    return toast.success("Friend Request Sent");
+  }
+
+  async function handleAcceptRequest(requestId: number) {
+    const res = await acceptRequestMutation.mutateAsync({
+      requestId,
+    });
+
+    if (res instanceof Error) return toast.error(res.message);
+
+    return toast.success(
+      res.user?.name
+        ? `${res.user.name}  is now your friend`
+        : `Friend Request Accepted`
+    );
+  }
+
   return (
     <li className="hover:bg-darkBgLight flex items-center justify-between p-4">
       <div className="flex items-center">
@@ -37,21 +65,14 @@ const UserPreview = ({ user, isFriend, isFriendRequest, requestId }: Props) => {
       </div>
       <div className="flex gap-2">
         {!isFriendRequest && !isFriend && (
-          <button
-            className=" text-sm"
-            onClick={() =>
-              sendFriendRequest({
-                senderId: user.id,
-              })
-            }
-          >
+          <button className=" text-sm" onClick={() => void handleSendRequest()}>
             Add
           </button>
         )}
         {requestId && (
           <button
             className=" text-sm"
-            onClick={() => acceptRequest({ requestId: requestId })}
+            onClick={() => void handleAcceptRequest(requestId)}
           >
             Accept
           </button>

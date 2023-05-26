@@ -116,19 +116,6 @@ export const userRouter = createTRPCRouter({
       const { senderId } = input;
       const { id } = ctx.session.user;
 
-      const isFriendRequestExist = await ctx.prisma.friendRequest.findFirst({
-        where: {
-          AND: [{ senderId }, { receiverId: id }],
-        },
-      });
-
-      if (isFriendRequestExist) {
-        return new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Friend request already sent",
-        });
-      }
-
       const isFriendshipExist = await ctx.prisma.friendship.findFirst({
         where: {
           OR: [
@@ -145,7 +132,21 @@ export const userRouter = createTRPCRouter({
       if (isFriendshipExist) {
         return new TRPCError({
           code: "BAD_REQUEST",
-          message: "User is already your friend",
+          message: "User is already a friend",
+          cause: isFriendshipExist,
+        });
+      }
+
+      const isFriendRequestExist = await ctx.prisma.friendRequest.findFirst({
+        where: {
+          AND: [{ senderId }, { receiverId: id }, { isAccepted: false }],
+        },
+      });
+
+      if (isFriendRequestExist) {
+        return new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Friend request already sent",
         });
       }
 
@@ -160,7 +161,7 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      return newFriendRequest ? { sucsses: true } : { sucsses: false };
+      return newFriendRequest;
     }),
 
   acceptFriendRequest: protectedProcedure
@@ -196,9 +197,16 @@ export const userRouter = createTRPCRouter({
             connect: { id: friendRequest.receiverId },
           },
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
 
-      return newFriendship ? { sucsses: true } : { sucsses: false };
+      return newFriendship;
     }),
 
   // createNewChat: protectedProcedure.query(async ({ ctx }) => {

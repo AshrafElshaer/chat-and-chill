@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer } from "react-toastify";
@@ -27,8 +28,19 @@ const MyApp: AppType<{ session: Session | null }> = ({
       ) : (
         <Component {...pageProps} />
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <ReactQueryDevtools />
-      <ToastContainer />
     </SessionProvider>
   );
 };
