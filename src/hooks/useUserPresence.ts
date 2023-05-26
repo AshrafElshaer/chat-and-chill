@@ -10,7 +10,7 @@ type Member = {
   email: string;
 }
 
-export const useUserPresence = () => {
+ const useUserPresence = () => {
   const channel = pusherClientSide.subscribe(
     "presence-users-channel"
   ) as PresenceChannel;
@@ -32,3 +32,5 @@ export const useUserPresence = () => {
 
   return { connectedUsers, isUserOnline };
 };
+
+export default useUserPresence;

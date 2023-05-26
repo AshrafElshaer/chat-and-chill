@@ -7,7 +7,7 @@ import type { Chatroom, Message, User } from "@prisma/client";
 
 import { api } from "@/utils/api";
 import { pusherClientSide } from "@/utils/pusherClientSide";
-import { useUserPresence } from "@/hooks/useUserPresence";
+import { useUserPresence } from "@/hooks";
 
 import ChatroomPreview from "./ChatroomPreview";
 import SearchBar from "../SearchBar";

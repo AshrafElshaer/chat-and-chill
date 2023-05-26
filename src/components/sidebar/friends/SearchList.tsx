@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { api } from "@/utils/api";
-import useDebounce from "@/hooks/useDebounce";
+import { useDebounce } from "@/hooks";
 
 import type { User } from "@prisma/client";
 

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pusherClientSide } from "@/utils/pusherClientSide";
-import { useUserPresence } from "@/hooks/useUserPresence";
+import { useUserPresence } from "@/hooks";
 
 import type { Message, User } from "@prisma/client";
 

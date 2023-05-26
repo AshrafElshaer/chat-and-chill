@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useUserPresence } from "@/hooks/useUserPresence";
+import { useUserPresence } from "@/hooks";
 import { toast } from "react-toastify";
 import { api } from "@/utils/api";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import { getDaysAgo } from "@/components/Message";
-import { useUserPresence } from "@/hooks/useUserPresence";
+import { useUserPresence } from "@/hooks";
 
 import type { Session } from "next-auth";
 import type { Chatroom, Message, User } from "@prisma/client";
