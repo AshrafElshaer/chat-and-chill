@@ -41,7 +41,10 @@ const UserPreview = ({
       friendId: user.id,
     });
 
-    setIsSidebarOpen(false);
+    if (chatroom instanceof Error) return toast.error(chatroom.message);
+    if (setIsSidebarOpen !== undefined) {
+      setIsSidebarOpen(false);
+    }
     return router.push(`/chatroom/${chatroom.id}`);
   }
 
