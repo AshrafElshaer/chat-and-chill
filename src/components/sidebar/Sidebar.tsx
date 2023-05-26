@@ -1,13 +1,12 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 import { useSession } from "next-auth/react";
 
-
 import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { Friends } from "./friends";
-
+import Avatar from "../Avatar";
 
 type Props = {
   children: React.ReactNode;
@@ -21,26 +20,20 @@ const Sidebar = ({ children }: Props) => {
     "chatrooms"
   );
 
-
-
   const { data: session } = useSession();
 
   return (
     <>
-      <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4 md:hidden  md:justify-start">
+      <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4  md:justify-end">
         {isSidebarOpen ? (
           <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
         ) : (
           <OpenSidebar setIsSidebarOpen={setIsSidebarOpen} />
         )}
         {session ? (
-          <Image
-            src={session.user.image}
-            width={35}
-            height={35}
-            alt="Profile Image"
-            className="rounded-full"
-          />
+          <button>
+            <Avatar src={session.user.image} isOnline={false} />
+          </button>
         ) : null}
       </div>
 
@@ -62,9 +55,7 @@ const Sidebar = ({ children }: Props) => {
         </nav>
       </aside>
 
-      <section className={`min-h-[90vh] md:ml-80 md:min-h-screen`}>
-        {children}
-      </section>
+      <section className={` md:ml-80 md:min-h-screen`}>{children}</section>
     </>
   );
 };

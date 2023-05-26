@@ -96,8 +96,8 @@ const Chatroom = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="flex h-screen flex-col justify-start text-primary">
-        <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-start gap-4  bg-lightBg px-4 md:mt-0">
+      <section className="flex h-5/6 flex-col justify-start text-primary">
+        <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-start gap-4  bg-lightBg px-4 ">
           <Avatar src={guest.image} isOnline={isGeustOnline} />
           <span className="text-base text-primary">{guest.name}</span>
         </div>
