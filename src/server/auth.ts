@@ -1,4 +1,4 @@
-import type { Chatroom } from "@prisma/client";
+
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,

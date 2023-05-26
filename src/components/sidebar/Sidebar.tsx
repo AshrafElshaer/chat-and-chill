@@ -46,7 +46,7 @@ const Sidebar = ({ children }: Props) => {
       >
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-        <nav className="relative h-[78vh]  md:h-[90vh]">
+        <nav className="relative h-[76vh]  md:h-[90vh]">
           <ChatroomList
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
