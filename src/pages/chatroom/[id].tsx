@@ -6,6 +6,8 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pusherClientSide } from "@/utils/pusherClientSide";
 import { useUserPresence } from "@/hooks";
+import EmojiPicker from "emoji-picker-react";
+import { Theme, type EmojiClickData, EmojiStyle } from "emoji-picker-react";
 
 import type { Message, User } from "@prisma/client";
 
@@ -24,6 +26,7 @@ const Chatroom = () => {
   const { data: session } = useSession();
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(true);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -65,9 +68,14 @@ const Chatroom = () => {
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setNewMessage(e.target.value);
   }
+  function handleEmojiClick(emojiObject: EmojiClickData, e: MouseEvent) {
+    setNewMessage((curr) => curr + emojiObject.emoji);
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!newMessage) return;
+    setIsEmojiPickerOpen(false);
     await sendNewMessage({
       text: newMessage,
       chatroomId: Number(roomId),
@@ -100,12 +108,25 @@ const Chatroom = () => {
         <div className=" p-4">
           <Conversation messages={messages} userId={session.user.id} />
         </div>
+        {isEmojiPickerOpen && (
+          <div className="absolute bottom-32 left-6 md:bottom-16 md:left-[22rem] ">
+            <EmojiPicker
+              theme={Theme.DARK}
+              onEmojiClick={handleEmojiClick}
+              emojiStyle={EmojiStyle.APPLE}
+            />
+          </div>
+        )}
 
         <form
           className=" relative flex items-center justify-between gap-4 p-4"
           onSubmit={(e) => void handleSubmit(e)}
         >
-          <button className="absolute  left-6 z-20" type="button">
+          <button
+            className="absolute  left-6 z-20"
+            type="button"
+            onClick={() => setIsEmojiPickerOpen((prev) => !prev)}
+          >
             <Icon iconName="emoji" />
           </button>
           <Input
