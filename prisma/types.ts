@@ -1,5 +1,5 @@
 import type { User } from "next-auth";
-import type { Chatroom } from "@prisma/client";
+import type { Chatroom  } from "@prisma/client";
 
 
 

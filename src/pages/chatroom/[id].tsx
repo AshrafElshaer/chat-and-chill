@@ -25,14 +25,20 @@ const Chatroom = () => {
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
 
-  const chatroomQuery =
-    api.chatroom.getChatroomById.useQuery({
+  const chatroomQuery = api.chatroom.getChatroomById.useQuery(
+    {
       id: Number(roomId),
-    },{
-      enabled: Boolean(roomId),
-    });
-    
+    },
+    {
+      enabled: Boolean(roomId) && Boolean(session),
+    }
+  );
+
   const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);
+
+  const isReadMessages = messages.filter(
+    (message) => message.userId !== session?.user.id && !message.isRead
+  );
 
   const { mutateAsync: sendNewMessage } =
     api.messages.sendNewMessage.useMutation();
@@ -74,10 +80,8 @@ const Chatroom = () => {
   }
 
   if (!chatroomQuery.data && !chatroomQuery.error) return <LoadingSpinner />;
-
-  if(chatroomQuery.error) return <div>{chatroomQuery.error.message}</div>
-
   if (!session) return <LoadingSpinner />;
+  if (chatroomQuery.error) return <div>{chatroomQuery.error.message}</div>;
 
   const user = session?.user;
   const guest = chatroomQuery.data?.users.find((u) => u.id !== user?.id);

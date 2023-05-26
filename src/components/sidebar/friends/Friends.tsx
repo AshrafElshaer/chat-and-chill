@@ -6,7 +6,7 @@ import { Button, LoadingSpinner } from "@/components";
 import UserPreview from "./UserPreview";
 import SearchBar from "../SearchBar";
 import type { User } from "@prisma/client";
-import type { RefetchOptions } from "@tanstack/react-query";
+
 
 type Props = {
   selectedTab: "chatrooms" | "friends";

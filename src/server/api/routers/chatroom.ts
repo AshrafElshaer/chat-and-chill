@@ -1,10 +1,7 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  // publicProcedure,
-  protectedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 const chatroomRouter = createTRPCRouter({
   getAllChatroom: protectedProcedure.query(async ({ ctx }) => {
@@ -53,6 +50,25 @@ const chatroomRouter = createTRPCRouter({
           },
         },
       });
+      if (!chatroom) throw new TRPCError({ code: "NOT_FOUND" });
+
+      const updateIsReadMessages = await ctx.prisma.message.updateMany({
+        where: {
+          id: {
+            in: chatroom.messages.map((message) => message.id),
+          },
+          user: {
+            id: {
+              not: ctx.session.user.id,
+            },
+          },
+          isRead: false,
+        },
+        data: {
+          isRead: true,
+        },
+      });
+
       return chatroom;
     }),
 

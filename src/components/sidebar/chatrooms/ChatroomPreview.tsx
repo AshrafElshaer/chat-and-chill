@@ -24,6 +24,9 @@ const ChatroomPreview = ({ room, session }: Props) => {
 
   const isGeustOnline = isUserOnline(geust.id);
   const lastMessage = room.messages.at(-1);
+  const isReadMessagesCount = room.messages.filter(
+    (message) => message.userId !== session.user.id && !message.isRead
+  ).length;
 
   return (
     <div
@@ -34,8 +37,9 @@ const ChatroomPreview = ({ room, session }: Props) => {
       <Avatar src={geust.image} isOnline={isGeustOnline} />
 
       <div className="flex w-full flex-col gap-2 pl-4">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <h3 className="font-semibold text-white">{geust.name}</h3>
+
           <span className="text-sm text-gray-400">
             {lastMessage
               ? getDaysAgo(new Date(lastMessage.createdAt)) > 1
@@ -47,13 +51,20 @@ const ChatroomPreview = ({ room, session }: Props) => {
               : null}
           </span>
         </div>
-        <span className="h-6 overflow-hidden text-ellipsis text-gray-500">
-          {lastMessage
-            ? lastMessage.userId === session.user.id
-              ? `You: ${lastMessage.text} `
-              : lastMessage.text
-            : "Start a conversation"}
-        </span>
+        <div className="flex justify-between items-center">
+          <span className="h-6 overflow-hidden text-ellipsis text-gray-500">
+            {lastMessage
+              ? lastMessage.userId === session.user.id
+                ? `You: ${lastMessage.text} `
+                : lastMessage.text
+              : "Start a conversation"}
+          </span>
+          {isReadMessagesCount > 0 && (
+            <span className="rounded-full bg-blue px-2  text-sm text-white">
+              {isReadMessagesCount}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

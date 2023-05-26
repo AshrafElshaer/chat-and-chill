@@ -79,6 +79,7 @@ model Chatroom {
 model Message {
     id         Int      @id @default(autoincrement())
     text    String
+    isRead   Boolean @default(false)
     user       User     @relation(fields: [userId], references: [id])
     userId     Int
     chatroom  Chatroom @relation(fields: [chatroomId], references: [id])
