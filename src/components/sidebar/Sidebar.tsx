@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Image from "next/image";
 
 import { useSession } from "next-auth/react";
-import { useUserPresence } from "@/hooks/useUserPresence";
+
 
 import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { Friends } from "./friends";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-import { api } from "@/utils/api";
-import LoadingSpinner from "../LoadingSpinner";
+
 
 type Props = {
   children: React.ReactNode;
@@ -23,7 +21,7 @@ const Sidebar = ({ children }: Props) => {
     "chatrooms"
   );
 
-  const connectToPusher = useUserPresence();
+
 
   const { data: session } = useSession();
 

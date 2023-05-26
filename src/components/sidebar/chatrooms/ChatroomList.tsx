@@ -1,14 +1,16 @@
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { type ChangeEvent, useEffect, useState } from "react";
 
 import { type SetState } from "../Sidebar";
 import type { Chatroom, Message, User } from "@prisma/client";
 
-import Link from "next/link";
-import ChatroomPreview from "./ChatroomPreview";
-import SearchBar from "../SearchBar";
 import { api } from "@/utils/api";
 import { pusherClientSide } from "@/utils/pusherClientSide";
+import { useUserPresence } from "@/hooks/useUserPresence";
+
+import ChatroomPreview from "./ChatroomPreview";
+import SearchBar from "../SearchBar";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 type Props = {
@@ -19,6 +21,7 @@ type Props = {
 const ChatroomList = ({ setIsSidebarOpen, selectedTab }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: session } = useSession();
+  const connectToPusher = useUserPresence();
 
   const {
     data: chatroomsResponse,
