@@ -6,6 +6,7 @@ import { Button, LoadingSpinner } from "@/components";
 import UserPreview from "./UserPreview";
 import SearchBar from "../SearchBar";
 import type { User } from "@prisma/client";
+import type { RefetchOptions } from "@tanstack/react-query";
 
 type Props = {
   selectedTab: "chatrooms" | "friends";
@@ -14,8 +15,11 @@ type Props = {
 const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
   const [isAddFriendOpen, setIsAddFriendOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const { data: friendsResponse, isLoading } =
-    api.user.getAllFriends.useQuery();
+  const {
+    data: friendsResponse,
+    isLoading,
+    refetch,
+  } = api.user.getAllFriends.useQuery();
 
   const [friends, setFriends] = useState<User[]>(friendsResponse ?? []);
 
@@ -62,7 +66,12 @@ const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
             {friends &&
               friends.length > 0 &&
               friends.map((friend) => (
-                <UserPreview key={friend.id} user={friend} isFriend />
+                <UserPreview
+                  key={friend.id}
+                  user={friend}
+                  isFriend
+                  refetchFriends={refetch}
+                />
               ))}
             <Button
               buttonType="secondary"

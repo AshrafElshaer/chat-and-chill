@@ -25,6 +25,7 @@ export const userRouter = createTRPCRouter({
         where: { id },
         data: { username, bio, image, name },
       });
+
       return updatedUser ? { sucsses: true } : { sucsses: false };
     }),
 
@@ -32,6 +33,7 @@ export const userRouter = createTRPCRouter({
     .input(z.object({ username: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const { username } = input;
+
       const isUsernameExist = await ctx.prisma.user.findUnique({
         where: { username },
         select: { username: true },
@@ -209,38 +211,98 @@ export const userRouter = createTRPCRouter({
       return newFriendship;
     }),
 
-  // createNewChat: protectedProcedure.query(async ({ ctx }) => {
-  //   const { id } = ctx.session.user;
-  //   const newChat = await ctx.prisma.chatroom.create({
-  //     data: {
-  //       users: {
-  //         connect: [{ id }, { id: 1 }],
-  //       },
-  //       messages: {
-  //         create: [
-  //           {
-  //             text: "Hello",
-  //             user: {
-  //               connect: { id },
-  //             },
-  //           },
-  //           {
-  //             text: "Hi",
-  //             user: {
-  //               connect: { id: 1 },
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     },
-  //     include: {
-  //       messages: {
-  //         include: {
-  //           user: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  //   return newChat;
-  // }),
+  rejectFriendRequest: protectedProcedure
+    .input(z.object({ requestId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { requestId } = input;
+
+      const friendRequest = await ctx.prisma.friendRequest.findUnique({
+        where: { id: requestId },
+        select: {
+          senderId: true,
+          receiverId: true,
+        },
+      });
+
+      if (!friendRequest) {
+        return new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      await ctx.prisma.friendRequest.delete({
+        where: { id: requestId },
+      });
+
+      return true;
+    }),
+
+  removeFriend: protectedProcedure
+    .input(z.object({ friendId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { friendId } = input;
+      const { id } = ctx.session.user;
+
+      const friendship = await ctx.prisma.friendship.findFirst({
+        where: {
+          OR: [
+            {
+              AND: [{ userId: id }, { friendId }],
+            },
+            {
+              AND: [{ userId: friendId }, { friendId: id }],
+            },
+          ],
+        },
+      });
+
+      if (!friendship) {
+        return new TRPCError({
+          code: "NOT_FOUND",
+          message: "User is not a friend",
+        });
+      }
+
+      const deleteChatrooms = await ctx.prisma.chatroom.deleteMany({
+        where: {
+          OR: [
+            {
+              AND: [
+                { users: { some: { id } } },
+                { users: { some: { id: friendId } } },
+              ],
+            },
+            {
+              AND: [
+                { users: { some: { id: friendId } } },
+                { users: { some: { id } } },
+              ],
+            },
+          ],
+        },
+      });
+
+      const deleteMessages = await ctx.prisma.message.deleteMany({
+        where: {
+          OR: [
+            {
+              userId: id,
+            },
+            {
+              userId: friendId,
+            },
+          ],
+        },
+      });
+
+      const deleteFriend = await ctx.prisma.friendship.delete({
+        where: { id: friendship.id },
+      });
+      return deleteChatrooms && deleteMessages && deleteFriend
+        ? true
+        : new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ops! Something went wrong",
+          });
+    }),
 });
