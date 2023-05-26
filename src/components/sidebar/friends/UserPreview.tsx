@@ -13,6 +13,7 @@ type Props = {
   isFriend?: boolean;
   requestId?: number;
   refetchFriends?: () => Promise<QueryObserverResult<User[], unknown>>;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const UserPreview = ({
@@ -21,6 +22,7 @@ const UserPreview = ({
   isFriendRequest,
   requestId,
   refetchFriends,
+  setIsSidebarOpen,
 }: Props) => {
   const router = useRouter();
   const { isUserOnline } = useUserPresence();
@@ -38,6 +40,7 @@ const UserPreview = ({
       friendId: user.id,
     });
 
+    setIsSidebarOpen(false);
     return router.push(`/chatroom/${chatroom.id}`);
   }
 

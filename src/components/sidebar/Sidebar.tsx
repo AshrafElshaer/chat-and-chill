@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Image from "next/image";
+
 
 import { useSession } from "next-auth/react";
 
@@ -51,7 +51,7 @@ const Sidebar = ({ children }: Props) => {
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
-          <Friends selectedTab={selectedTab} isSidebarOpen={isSidebarOpen} />
+          <Friends selectedTab={selectedTab} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
         </nav>
       </aside>
 

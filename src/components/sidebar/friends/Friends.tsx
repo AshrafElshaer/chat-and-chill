@@ -11,8 +11,9 @@ import type { User } from "@prisma/client";
 type Props = {
   selectedTab: "chatrooms" | "friends";
   isSidebarOpen: boolean;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
+const Friends = ({ selectedTab, isSidebarOpen ,setIsSidebarOpen}: Props) => {
   const [isAddFriendOpen, setIsAddFriendOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const {
@@ -57,7 +58,7 @@ const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
         {isAddFriendOpen ? (
           <AddNewFriend setIsAddFriendOpen={setIsAddFriendOpen} />
         ) : (
-          <div className="flex h-full flex-col">
+          <div className="flex h-full flex-col pt-2">
             <SearchBar
               placeholder="Search Your Friends"
               handleSearchChange={handleSearch}
@@ -70,6 +71,7 @@ const Friends = ({ selectedTab, isSidebarOpen }: Props) => {
                   key={friend.id}
                   user={friend}
                   isFriend
+                  setIsSidebarOpen={setIsSidebarOpen}
                   refetchFriends={refetch}
                 />
               ))}
