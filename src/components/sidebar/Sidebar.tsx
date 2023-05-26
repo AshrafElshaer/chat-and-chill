@@ -22,32 +22,10 @@ const Sidebar = ({ children }: Props) => {
   const [selectedTab, setSelectedTab] = useState<"chatrooms" | "friends">(
     "chatrooms"
   );
-  const {
-    data: chatroomsResponse,
-    error: chatroomsError,
-    isSuccess,
-    refetch,
-    isFetching,
-  } = api.chatroom.getUserChatrooms.useQuery();
+
   const connectToPusher = useUserPresence();
 
   const { data: session } = useSession();
-
-  const handleRefetch = async () => {
-    await refetch();
-  };
-
-  useEffect(() => {
-    const channel = pusherClientSide.subscribe("chatrooms");
-    channel.bind("latest-message", handleRefetch);
-
-    return () => {
-      channel.unsubscribe();
-      channel.unbind("latest-message", handleRefetch);
-    };
-  }, []);
-
-  if (!chatroomsResponse) return <LoadingSpinner />;
 
   return (
     <>
@@ -79,9 +57,6 @@ const Sidebar = ({ children }: Props) => {
 
         <nav className="relative h-[71vh]  md:h-[88vh]">
           <ChatroomList
-            isSuccess={isSuccess}
-            chatroomsError={chatroomsError?.message}
-            chatroomsResponse={chatroomsResponse}
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
