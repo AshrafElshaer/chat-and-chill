@@ -5,6 +5,7 @@ import { api } from "@/utils/api";
 
 import type { User } from "@prisma/client";
 import type { QueryObserverResult } from "@tanstack/react-query";
+import type { SetState } from "../Sidebar";
 
 import Avatar from "@/components/Avatar";
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
   isFriend?: boolean;
   requestId?: number;
   refetchFriends?: () => Promise<QueryObserverResult<User[], unknown>>;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSidebarOpen?: SetState<boolean>;
 };
 
 const UserPreview = ({
