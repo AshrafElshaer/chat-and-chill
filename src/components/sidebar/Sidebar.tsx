@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-
 import { useSession } from "next-auth/react";
 
 import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
 import { ChatroomList } from "./chatrooms";
 import { Friends } from "./friends";
 import Avatar from "../Avatar";
+import Topbar from "./Topbar";
 
 type Props = {
   children: React.ReactNode;
@@ -20,22 +20,14 @@ const Sidebar = ({ children }: Props) => {
     "chatrooms"
   );
 
-  const { data: session } = useSession();
+
 
   return (
     <>
-      <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4  md:justify-end">
-        {isSidebarOpen ? (
-          <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
-        ) : (
-          <OpenSidebar setIsSidebarOpen={setIsSidebarOpen} />
-        )}
-        {session ? (
-          <button>
-            <Avatar src={session.user.image} isOnline={false} />
-          </button>
-        ) : null}
-      </div>
+      <Topbar
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarOpen={isSidebarOpen}
+      />
 
       <aside
         id="default-sidebar"
@@ -51,7 +43,11 @@ const Sidebar = ({ children }: Props) => {
             setIsSidebarOpen={setIsSidebarOpen}
             selectedTab={selectedTab}
           />
-          <Friends selectedTab={selectedTab} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+          <Friends
+            selectedTab={selectedTab}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
         </nav>
       </aside>
 

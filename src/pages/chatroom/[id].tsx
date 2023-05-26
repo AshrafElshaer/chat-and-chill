@@ -36,10 +36,6 @@ const Chatroom = () => {
 
   const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);
 
-  const isReadMessages = messages.filter(
-    (message) => message.userId !== session?.user.id && !message.isRead
-  );
-
   const { mutateAsync: sendNewMessage } =
     api.messages.sendNewMessage.useMutation();
 
