@@ -19,6 +19,11 @@ import {
   Avatar,
 } from "@/components";
 import Head from "next/head";
+import Uploader from "@/components/Uploader";
+
+export interface FileState extends File {
+  preview: string;
+}
 
 const Chatroom = () => {
   const router = useRouter();
@@ -27,6 +32,8 @@ const Chatroom = () => {
   const { id: roomId } = router.query;
   const [newMessage, setNewMessage] = useState("");
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [isUploaderOpen, setIsUploaderOpen] = useState(true);
+  const [uploadedFiles, setUploadedFiles] = useState<FileState[]>([]);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -101,13 +108,17 @@ const Chatroom = () => {
       </Head>
 
       <section className="flex h-5/6 flex-col justify-start text-primary">
+        {/* Header */}
         <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-start gap-4  bg-lightBg px-4 ">
           <Avatar src={guest.image} isOnline={isGeustOnline} />
           <span className="text-base text-primary">{guest.name}</span>
         </div>
+
+        {/* Conversation */}
         <div className=" p-4">
           <Conversation messages={messages} userId={session.user.id} />
         </div>
+        {/* Emoji Picker */}
         {isEmojiPickerOpen && (
           <div className="absolute bottom-32 left-6 md:bottom-16 md:left-[22rem] ">
             <EmojiPicker
@@ -118,27 +129,46 @@ const Chatroom = () => {
           </div>
         )}
 
-        <form
-          className=" relative flex items-center justify-between gap-4 p-4"
-          onSubmit={(e) => void handleSubmit(e)}
-        >
-          <button
-            className="absolute  left-6 z-20"
-            type="button"
-            onClick={() => setIsEmojiPickerOpen((prev) => !prev)}
+        {/* Text Input */}
+        <div className="relative">
+          {isUploaderOpen && (
+            <div className={`absolute bottom-20 left-1/2  ${uploadedFiles.length ? "h-auto" : "h-56"}  w-4/5  -translate-x-1/2 `}>
+              <Uploader
+                uploadedFiles={uploadedFiles}
+                setUploadedFiles={setUploadedFiles}
+              />
+            </div>
+          )}
+
+          <form
+            className=" relative flex items-center justify-between gap-4 p-4"
+            onSubmit={(e) => void handleSubmit(e)}
           >
-            <Icon iconName="emoji" />
-          </button>
-          <Input
-            placeholder="Type a message"
-            className="w-full rounded-full pl-12 "
-            value={newMessage}
-            onChange={handleInputChange}
-          />
-          <button className="absolute right-6 z-20 fill-current" type="button">
-            <Icon iconName="attachment" />
-          </button>
-        </form>
+            <button
+              className="absolute  left-6 z-20"
+              type="button"
+              onClick={() => setIsEmojiPickerOpen((prev) => !prev)}
+            >
+              <Icon iconName="emoji" />
+            </button>
+            <Input
+              placeholder="Type a message"
+              className="w-full rounded-full pl-12 "
+              value={newMessage}
+              onChange={handleInputChange}
+            />
+            <button
+              className={`absolute right-6 z-20 ${uploadedFiles.length > 0 ? "text-green-500" : "text-darkGrey"}`}
+              type="button"
+              onClick={() => setIsUploaderOpen((prev) => !prev)}
+            >
+              {uploadedFiles.length > 0 ? (
+                <span className="text-sm absolute grid place-content-center -top-8  w-6 h-6 bg-green-950 text-white  rounded-full">{uploadedFiles.length}</span>
+              ) : ""}
+              <Icon iconName="attachment"  />
+            </button>
+          </form>
+        </div>
       </section>
     </>
   );

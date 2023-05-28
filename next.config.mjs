@@ -20,7 +20,11 @@ const config = {
   },
 
   images: {
-    domains: ["nrsstdptogyfvsluloir.supabase.co", "lh3.googleusercontent.com"],
+    domains: [
+      "nrsstdptogyfvsluloir.supabase.co",
+      "lh3.googleusercontent.com",
+      "png.pngtree.com",
+    ],
   },
 };
 export default config;

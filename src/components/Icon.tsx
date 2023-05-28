@@ -1,6 +1,6 @@
 import { AiOutlineGoogle, AiFillGithub, AiOutlineSearch } from "react-icons/ai";
 import { VscSignOut } from "react-icons/vsc";
-import { BsEmojiSmile } from "react-icons/bs";
+import { BsEmojiSmile, BsFiletypePdf } from "react-icons/bs";
 import { ImAttachment } from "react-icons/im";
 
 export type IconName =
@@ -9,14 +9,16 @@ export type IconName =
   | "search"
   | "signout"
   | "emoji"
-  | "attachment";
+  | "attachment"
+  | "pdf";
 
 type Props = {
   iconName: IconName;
   className?: string;
+  size?: string;
 };
 
-export default function Icon({ iconName, className = "" }: Props) {
+export default function Icon({ iconName, className = "" ,size}: Props) {
   switch (iconName) {
     case "google":
       return <AiOutlineGoogle size="1.5rem" />;
@@ -34,8 +36,14 @@ export default function Icon({ iconName, className = "" }: Props) {
       );
     case "attachment":
       return (
-        <ImAttachment size="1.5rem" color="#7C7878" className={className} />
+        <ImAttachment
+          size="1.5rem"
+          color="currentColor"
+          className={className}
+        />
       );
+    case "pdf":
+      return <BsFiletypePdf color="currentColor" className={className} size={size} />;
     default:
       return null;
   }
