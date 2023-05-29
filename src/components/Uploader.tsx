@@ -2,8 +2,9 @@ import { useDropzone } from "react-dropzone";
 
 import type { FileState } from "@/pages/chatroom/[id]";
 import type { SetState } from "./sidebar/Sidebar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import FilePreview from "./FilePreview";
+import { uploadFileToStorage } from "@/utils/supabase";
 
 type Props = {
   setUploadedFiles: SetState<FileState[]>;
@@ -30,7 +31,6 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
       // "video/*": [],
       // "audio/*": [],
       "application/pdf": [],
-    
     },
     noKeyboard: true,
   });
@@ -38,11 +38,9 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
   function removeFile(file: FileState) {
     setUploadedFiles((curr) => curr.filter((f) => f.name !== file.name));
   }
-  useEffect(() => {
-    return () => {
-      uploadedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
-    };
-  }, []);
+ 
+
+
 
   return (
     <section className="h-full rounded-lg bg-lightBg">
@@ -65,11 +63,12 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
 
       {uploadedFiles.length > 0 && (
         <div className="  flex h-3/4 flex-grow flex-wrap items-start justify-start gap-x-2 gap-y-8  overflow-hidden p-4">
-          {uploadedFiles.map((file , idx) => (
+          {uploadedFiles.map((file, idx) => (
             <FilePreview key={idx} file={file} onRemove={removeFile} />
           ))}
         </div>
       )}
+      
     </section>
   );
 };

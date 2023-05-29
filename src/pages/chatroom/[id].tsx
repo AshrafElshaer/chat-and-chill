@@ -1,5 +1,11 @@
 "use client";
-import { type ChangeEvent, useState, useEffect, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
@@ -20,9 +26,17 @@ import {
 } from "@/components";
 import Head from "next/head";
 import Uploader from "@/components/Uploader";
+import { uploadFileToStorage } from "@/utils/supabase";
 
 export interface FileState extends File {
   preview: string;
+}
+
+interface UploadedFile {
+  name: string;
+  type: string;
+  url: string;
+  path: string;
 }
 
 const Chatroom = () => {
@@ -30,6 +44,7 @@ const Chatroom = () => {
   const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
+
   const [newMessage, setNewMessage] = useState("");
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [isUploaderOpen, setIsUploaderOpen] = useState(true);
@@ -79,14 +94,28 @@ const Chatroom = () => {
     setNewMessage((curr) => curr + emojiObject.emoji);
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!newMessage) return;
+    if (!uploadedFiles.length) {
+      if (!newMessage) return;
+    }
+
     setIsEmojiPickerOpen(false);
+    setIsUploaderOpen(false);
+
+    const uploadedfilesToStorage: UploadedFile[] = [];
+    for (const file of uploadedFiles) {
+      const uploadedFile = await uploadFileToStorage(file);
+      uploadedfilesToStorage.push(uploadedFile);
+    }
+
     await sendNewMessage({
       text: newMessage,
       chatroomId: Number(roomId),
+      files: uploadedfilesToStorage,
     });
+
+    setUploadedFiles([]);
     setNewMessage("");
   }
 
@@ -132,7 +161,11 @@ const Chatroom = () => {
         {/* Text Input */}
         <div className="relative">
           {isUploaderOpen && (
-            <div className={`absolute bottom-20 left-1/2  ${uploadedFiles.length ? "h-auto" : "h-56"}  w-4/5  -translate-x-1/2 `}>
+            <div
+              className={`absolute bottom-20 left-1/2  ${
+                uploadedFiles.length ? "h-auto" : "h-56"
+              }  w-4/5  -translate-x-1/2 `}
+            >
               <Uploader
                 uploadedFiles={uploadedFiles}
                 setUploadedFiles={setUploadedFiles}
@@ -158,14 +191,20 @@ const Chatroom = () => {
               onChange={handleInputChange}
             />
             <button
-              className={`absolute right-6 z-20 ${uploadedFiles.length > 0 ? "text-green-500" : "text-darkGrey"}`}
+              className={`absolute right-6 z-20 ${
+                uploadedFiles.length > 0 ? "text-green-500" : "text-darkGrey"
+              }`}
               type="button"
               onClick={() => setIsUploaderOpen((prev) => !prev)}
             >
               {uploadedFiles.length > 0 ? (
-                <span className="text-sm absolute grid place-content-center -top-8  w-6 h-6 bg-green-950 text-white  rounded-full">{uploadedFiles.length}</span>
-              ) : ""}
-              <Icon iconName="attachment"  />
+                <span className="absolute -top-8 grid h-6 w-6  place-content-center rounded-full bg-green-950 text-sm  text-white">
+                  {uploadedFiles.length}
+                </span>
+              ) : (
+                ""
+              )}
+              <Icon iconName="attachment" />
             </button>
           </form>
         </div>
