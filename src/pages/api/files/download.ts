@@ -15,31 +15,27 @@ export default async function handler(
   if (req.method === "POST") {
     const path = req.query.path as string;
     const file = await downloadFileFromStorage(path);
-    // console.log(file);
-    if (file instanceof Error) {
 
+    if (file instanceof Error) {
       return res.status(500).json({ message: "Internal Server Error" });
     }
     const isSaved = await saveFile(file);
-    if (!isSaved) {
-
+    if (isSaved instanceof Error || !isSaved) {
       return res.status(500).json({ message: "Internal Server Error" });
     }
-    return res.status(200).json({ message: "OK" });
+    return res.status(200).json({ message: "File downloaded" });
   }
 }
-async function saveFile(file: Blob) {
-  const blob = file;
+async function saveFile(file: { data: Blob; fileName: string }) {
+  const blob = file.data;
   const buffer = Buffer.from(await blob.arrayBuffer());
-  console.log(buffer);
-  try {
-    const isSaved = await fsPromises.writeFile(
-      path.join(homeDir, `/Downloads/${file.name}`),
+  const fileExt = file.data.type.split("/")[1] as string;
+
+  return await fsPromises
+    .writeFile(
+      path.join(homeDir, `/Downloads/${file.fileName}.${fileExt ?? "txt"}`),
       buffer
-    );
-    // console.log(isSaved);
-    return true;
-  } catch (e) {
-    return false;
-  }
+    )
+    .then(() => true)
+    .catch((err: Error) => err);
 }

@@ -54,23 +54,20 @@ export const getDaysAgo = (date: Date) => {
 
 function FilePreview({ file }: { file: File }) {
   async function downloadFile(path: string) {
-    try {
-      const res = await fetch(`/api/files/download?path=${path}`, {
-        method: "POST",
-      });
-      const isSuccessful = res.status === 200;
-      if (isSuccessful) {
-        toast.success("File downloaded successfully");
-      }
-    } catch (err) {
-      toast.error("File download failed");
+    const res = await fetch(`/api/files/download?path=${path}`, {
+      method: "POST",
+    });
+    const isSuccessful = res.status === 200;
+    if (isSuccessful) {
+      return toast.success("File downloaded successfully");
     }
+    return toast.error("File download failed");
   }
   return (
-    <div className="  p-2">
+    <div className="p-2">
       {file.type.includes("image") && (
         <Image
-          className="aspect-square h-16 rounded-md"
+          className="aspect-square h-16 cursor-pointer rounded-md"
           src={file.url}
           alt={file.name}
           width={64}
@@ -80,7 +77,7 @@ function FilePreview({ file }: { file: File }) {
       )}
       {file.type.includes("pdf") && (
         <div
-          className=" relative aspect-square h-16 items-center overflow-hidden  rounded-md "
+          className=" relative aspect-square h-16 items-center overflow-hidden  rounded-md cursor-pointer "
           onClick={() => window.open(file.url, "_blank")}
         >
           <Icon
