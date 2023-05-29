@@ -1,8 +1,8 @@
-import type { File, Message, User } from "@prisma/client";
 import React from "react";
+import { toast } from "react-toastify";
+import type { File, Message, User } from "@prisma/client";
 import Icon from "./Icon";
 import Image from "next/image";
-import { toast } from "react-toastify";
 
 type Props = {
   message: Message & { user: User; files: File[] };

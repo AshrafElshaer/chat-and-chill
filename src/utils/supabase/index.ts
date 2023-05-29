@@ -57,14 +57,4 @@ export async function uploadFileToStorage(file: File) {
   };
 }
 
-export async function downloadFileFromStorage(path: string) {
-  const { data, error } = await supabase.storage.from("files").download(path);
 
-  const fileName = path.split("/")[1] as string;
-
-  if (error) {
-    return new Error();
-  }
-
-  return { data, fileName };
-}
