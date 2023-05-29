@@ -27,6 +27,7 @@ import {
 import Head from "next/head";
 import Uploader from "@/components/Uploader";
 import { uploadFileToStorage } from "@/utils/supabase";
+import { toast } from "react-toastify";
 
 export interface FileState extends File {
   preview: string;
@@ -106,6 +107,12 @@ const Chatroom = () => {
     const uploadedfilesToStorage: UploadedFile[] = [];
     for (const file of uploadedFiles) {
       const uploadedFile = await uploadFileToStorage(file);
+
+      if (uploadedFile instanceof Error) {
+        toast.error(uploadedFile.message);
+        return;
+      }
+      
       uploadedfilesToStorage.push(uploadedFile);
     }
 

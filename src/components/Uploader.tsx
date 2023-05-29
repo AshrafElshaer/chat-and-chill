@@ -1,10 +1,10 @@
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-toastify";
 
 import type { FileState } from "@/pages/chatroom/[id]";
 import type { SetState } from "./sidebar/Sidebar";
-import { useEffect } from "react";
+
 import FilePreview from "./FilePreview";
-import { uploadFileToStorage } from "@/utils/supabase";
 
 type Props = {
   setUploadedFiles: SetState<FileState[]>;
@@ -13,17 +13,6 @@ type Props = {
 
 const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: (acceptedFiles) => {
-      setUploadedFiles((curr) => [
-        ...curr,
-        ...acceptedFiles.map((file) => {
-          console.log(file);
-          return Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          });
-        }),
-      ]);
-    },
     maxFiles: 8,
     maxSize: 20000000, // 20MB
     accept: {
@@ -33,14 +22,28 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
       "application/pdf": [],
     },
     noKeyboard: true,
+    multiple: true,
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      if(acceptedFiles.length !== 0) {
+      setUploadedFiles((curr) => [
+        ...curr,
+        ...acceptedFiles.map((file) => {
+          console.log(file);
+          return Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          });
+        }),
+      ]);
+      toast.success(`${acceptedFiles.length} File/s uploaded successfully`);
+    }
+
+      
+    },
   });
 
   function removeFile(file: FileState) {
     setUploadedFiles((curr) => curr.filter((f) => f.name !== file.name));
   }
- 
-
-
 
   return (
     <section className="h-full rounded-lg bg-lightBg">
@@ -68,7 +71,6 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
           ))}
         </div>
       )}
-      
     </section>
   );
 };

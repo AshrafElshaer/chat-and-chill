@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { env } from "@/env.mjs";
-import { v4 as uuid } from "uuid";
+import { uid } from "uid";
 
 export const supabase = createClient(
   env.NEXT_PUBLIC_SUPABASE_URL,
@@ -29,16 +29,10 @@ export async function uploadImage(file: File, userId: number) {
   return publicUrl;
 }
 
-export async function uploadFileToStorage(file: File): Promise<{
-  name: string;
-  type: string;
-  url: string;
-  path: string;
-}> {
+export async function uploadFileToStorage(file: File) {
   console.log(file);
   const fileType = file.type.split("/")[0] as string;
-  const fileId = uuid() as string;
-  console.log(fileType);
+  const fileId = uid(16);
 
   const { data, error } = await supabase.storage
     .from("files")
@@ -46,9 +40,9 @@ export async function uploadFileToStorage(file: File): Promise<{
       upsert: false,
       contentType: file.type,
     });
-  console.log(data, error);
+
   if (error) {
-    throw error;
+    return new Error();
   }
 
   const {

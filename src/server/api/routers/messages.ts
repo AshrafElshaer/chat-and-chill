@@ -1,9 +1,9 @@
-import { z, infer } from "zod";
+import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { pusherServerSide } from "@/server/pusher";
-
+import { Message } from "@prisma/client";
 
 const uploadedfilesSchema = z.object({
   name: z.string(),
@@ -25,10 +25,8 @@ const messagesRouter = createTRPCRouter({
       const { chatroomId, text, files } = input;
       const { id: userId } = ctx.session.user;
 
-      let createdMessage;
-
       // no files to upload
-      if (files === undefined) {
+      if (!files?.length) {
         const message = await ctx.prisma.message.create({
           data: {
             text,
@@ -48,12 +46,12 @@ const messagesRouter = createTRPCRouter({
           },
         });
 
-        createdMessage = message;
+        await pingPusher(message, chatroomId);
+
+        return message;
       }
 
       if (files !== undefined && files.length > 0) {
-
-
         const message = await ctx.prisma.message.create({
           data: {
             text,
@@ -84,18 +82,20 @@ const messagesRouter = createTRPCRouter({
           },
         });
 
-        createdMessage = message;
+        await pingPusher(message, chatroomId);
+
+        return message;
       }
-
-      await pusherServerSide.trigger(`chatroom-${chatroomId}`, "new-message", {
-        createdMessage,
-      });
-      await pusherServerSide.trigger("chatrooms", "latest-message", {
-        undefined,
-      });
-
-      return files;
     }),
 });
 
 export default messagesRouter;
+
+async function pingPusher(message: Message, chatroomId: number) {
+  await pusherServerSide.trigger(`chatroom-${chatroomId}`, "new-message", {
+    message,
+  });
+  await pusherServerSide.trigger("chatrooms", "latest-message", {
+    undefined,
+  });
+}
