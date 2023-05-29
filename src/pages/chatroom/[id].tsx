@@ -15,7 +15,7 @@ import { useUserPresence } from "@/hooks";
 import EmojiPicker from "emoji-picker-react";
 import { Theme, type EmojiClickData, EmojiStyle } from "emoji-picker-react";
 
-import type { Message, User } from "@prisma/client";
+import type { File as FileSchema, Message, User } from "@prisma/client";
 
 import {
   LoadingSpinner,
@@ -66,7 +66,7 @@ const Chatroom = () => {
     api.messages.sendNewMessage.useMutation();
 
   const handlePusherEvent = useCallback(
-    (data: { message: Message & { user: User } }) => {
+    (data: { message: Message & { user: User; files: FileSchema[] } }) => {
       const isMessageExist = messages.find((m) => m.id === data.message.id);
       if (isMessageExist) return;
       setMessages((prev) => [...prev, data.message]);
@@ -112,7 +112,7 @@ const Chatroom = () => {
         toast.error(uploadedFile.message);
         return;
       }
-      
+
       uploadedfilesToStorage.push(uploadedFile);
     }
 

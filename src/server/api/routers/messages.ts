@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { pusherServerSide } from "@/server/pusher";
-import { Message } from "@prisma/client";
+import type { Message } from "@prisma/client";
 
 const uploadedfilesSchema = z.object({
   name: z.string(),

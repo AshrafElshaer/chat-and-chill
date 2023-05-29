@@ -23,7 +23,7 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
     },
     noKeyboard: true,
     multiple: true,
-    onDrop: (acceptedFiles, rejectedFiles) => {
+    onDrop: (acceptedFiles) => {
       if(acceptedFiles.length !== 0) {
       setUploadedFiles((curr) => [
         ...curr,

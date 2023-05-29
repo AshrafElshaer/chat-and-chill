@@ -46,13 +46,15 @@ const chatroomRouter = createTRPCRouter({
             orderBy: {
               createdAt: "asc",
             },
-            include: { user: true },
+            include: { user: true, files: true },
           },
         },
       });
       if (!chatroom) throw new TRPCError({ code: "NOT_FOUND" });
 
-      const updateIsReadMessages = await ctx.prisma.message.updateMany({
+
+      // update unread messages
+      await ctx.prisma.message.updateMany({
         where: {
           id: {
             in: chatroom.messages.map((message) => message.id),
