@@ -48,7 +48,7 @@ const Chatroom = () => {
 
   const [newMessage, setNewMessage] = useState("");
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-  const [isUploaderOpen, setIsUploaderOpen] = useState(true);
+  const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<FileState[]>([]);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(

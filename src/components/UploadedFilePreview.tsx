@@ -4,12 +4,13 @@ import type { FileState } from "@/pages/chatroom/[id]";
 import Icon from "./Icon";
 
 type Props = {
-  file: FileState;
+  file: FileState ;
   onRemove: (file: FileState) => void;
 };
-const FilePreview = ({ file, onRemove }: Props) => {
+const UploadedFilePreview = ({ file, onRemove }: Props) => {
   return (
     <div className="relative">
+      
       <button
         className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
         onClick={() => onRemove(file)}
@@ -40,4 +41,4 @@ const FilePreview = ({ file, onRemove }: Props) => {
   );
 };
 
-export default FilePreview;
+export default UploadedFilePreview;

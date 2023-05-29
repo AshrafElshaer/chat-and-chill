@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import type { FileState } from "@/pages/chatroom/[id]";
 import type { SetState } from "./sidebar/Sidebar";
 
-import FilePreview from "./FilePreview";
+import UploadedFilePreview from "./UploadedFilePreview";
 
 type Props = {
   setUploadedFiles: SetState<FileState[]>;
@@ -24,20 +24,18 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
     noKeyboard: true,
     multiple: true,
     onDrop: (acceptedFiles) => {
-      if(acceptedFiles.length !== 0) {
-      setUploadedFiles((curr) => [
-        ...curr,
-        ...acceptedFiles.map((file) => {
-          console.log(file);
-          return Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          });
-        }),
-      ]);
-      toast.success(`${acceptedFiles.length} File/s uploaded successfully`);
-    }
-
-      
+      if (acceptedFiles.length !== 0) {
+        setUploadedFiles((curr) => [
+          ...curr,
+          ...acceptedFiles.map((file) => {
+            console.log(file);
+            return Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            });
+          }),
+        ]);
+        toast.success(`${acceptedFiles.length} File/s uploaded successfully`);
+      }
     },
   });
 
@@ -67,7 +65,7 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
       {uploadedFiles.length > 0 && (
         <div className="  flex h-3/4 flex-grow flex-wrap items-start justify-start gap-x-2 gap-y-8  overflow-hidden p-4">
           {uploadedFiles.map((file, idx) => (
-            <FilePreview key={idx} file={file} onRemove={removeFile} />
+            <UploadedFilePreview key={idx} file={file} onRemove={removeFile} />
           ))}
         </div>
       )}
