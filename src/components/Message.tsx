@@ -53,15 +53,10 @@ export const getDaysAgo = (date: Date) => {
 };
 
 function FilePreview({ file }: { file: File }) {
-  async function downloadFile(path: string) {
-    const res = await fetch(`/api/files/download?path=${path}`, {
-      method: "POST",
-    });
-    const isSuccessful = res.status === 200;
-    if (isSuccessful) {
-      return toast.success("File downloaded successfully");
-    }
-    return toast.error("File download failed");
+  async function downloadFile() {
+    const res = await downloadPromise(file.url, file.name);
+    if (res instanceof Error) return toast.error("Downloading file failed");
+    toast.success("File downloaded successfully");
   }
   return (
     <div className="p-2">
@@ -72,12 +67,13 @@ function FilePreview({ file }: { file: File }) {
           alt={file.name}
           width={64}
           height={64}
-          onClick={() => void downloadFile(file.path)}
+          onClick={() => void downloadFile()}
+          // onClick={() => void downloadFile(file.path)}
         />
       )}
       {file.type.includes("pdf") && (
         <div
-          className=" relative aspect-square h-16 items-center overflow-hidden  rounded-md cursor-pointer "
+          className=" relative aspect-square h-16 cursor-pointer items-center  overflow-hidden rounded-md "
           onClick={() => window.open(file.url, "_blank")}
         >
           <Icon
@@ -92,4 +88,25 @@ function FilePreview({ file }: { file: File }) {
       )}
     </div>
   );
+}
+
+function downloadPromise(url: string, name: string) {
+  if (!url) {
+    throw new Error("Resource URL not provided! You need to provide one");
+  }
+
+  return fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobURL = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobURL;
+      a.style.display = " none";
+
+      if (name && name.length) a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      return true;
+    })
+    .catch((err: Error) => err);
 }
