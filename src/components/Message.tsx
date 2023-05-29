@@ -2,6 +2,7 @@ import type { File, Message, User } from "@prisma/client";
 import React from "react";
 import Icon from "./Icon";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 type Props = {
   message: Message & { user: User; files: File[] };
@@ -52,6 +53,19 @@ export const getDaysAgo = (date: Date) => {
 };
 
 function FilePreview({ file }: { file: File }) {
+  async function downloadFile(path: string) {
+    try {
+      const res = await fetch(`/api/files/download?path=${path}`, {
+        method: "POST",
+      });
+      const isSuccessful = res.status === 200;
+      if (isSuccessful) {
+        toast.success("File downloaded successfully");
+      }
+    } catch (err) {
+      toast.error("File download failed");
+    }
+  }
   return (
     <div className="  p-2">
       {file.type.includes("image") && (
@@ -61,7 +75,7 @@ function FilePreview({ file }: { file: File }) {
           alt={file.name}
           width={64}
           height={64}
-          onClick={() => window.open(file.url, "_blank")}
+          onClick={() => void downloadFile(file.path)}
         />
       )}
       {file.type.includes("pdf") && (

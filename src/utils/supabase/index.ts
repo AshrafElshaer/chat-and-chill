@@ -56,3 +56,13 @@ export async function uploadFileToStorage(file: File) {
     path: data.path,
   };
 }
+
+export async function downloadFileFromStorage(path: string) {
+  const { data, error } = await supabase.storage.from("files").download(path);
+
+  if (error) {
+    return new Error();
+  }
+
+  return data;
+}
