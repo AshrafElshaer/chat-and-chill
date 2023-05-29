@@ -54,6 +54,11 @@ export const getDaysAgo = (date: Date) => {
 
 function FilePreview({ file }: { file: File }) {
   async function downloadFile() {
+    // checking if used browser is mobile browser
+    if (window.navigator.userAgent.match(/Mobile/)) {
+      return window.open(file.url, "_blank");
+    }
+
     const res = await downloadPromise(file.url, file.name);
     if (res instanceof Error) return toast.error("Downloading file failed");
     toast.success("File downloaded successfully");
@@ -106,6 +111,7 @@ function downloadPromise(url: string, name: string) {
       if (name && name.length) a.download = name;
       document.body.appendChild(a);
       a.click();
+      a.remove();
       return true;
     })
     .catch((err: Error) => err);
