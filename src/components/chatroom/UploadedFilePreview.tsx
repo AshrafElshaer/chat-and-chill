@@ -1,16 +1,15 @@
 import Image from "next/image";
 
 import type { FileState } from "./ChatroomInputsContainer";
-import Icon from "./Icon";
+import { Icon } from "@/components";
 
 type Props = {
-  file: FileState ;
+  file: FileState;
   onRemove: (file: FileState) => void;
 };
 const UploadedFilePreview = ({ file, onRemove }: Props) => {
   return (
     <div className="relative">
-      
       <button
         className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white"
         onClick={() => onRemove(file)}
@@ -34,7 +33,9 @@ const UploadedFilePreview = ({ file, onRemove }: Props) => {
             className=" rounded-lg bg-black p-2"
             size="4rem"
           />
-          <span className="absolute text-xs w-full overflow-hidden  text-darkGray">{file.name}</span>
+          <span className="text-darkGray absolute w-full overflow-hidden  text-xs">
+            {file.name}
+          </span>
         </div>
       )}
     </div>

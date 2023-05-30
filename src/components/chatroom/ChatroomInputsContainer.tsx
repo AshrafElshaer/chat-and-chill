@@ -1,15 +1,14 @@
-import  {  useState } from "react";
+import { useState } from "react";
 import { api } from "@/utils/api";
 import { uploadFileToStorage } from "@/utils/supabase";
 import { toast } from "react-toastify";
 
-import type {ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import type { EmojiClickData } from "emoji-picker-react";
 
-import EmojiPicker , { EmojiStyle, Theme }from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
 import Uploader from "./Uploader";
-import Icon from "./Icon";
-import Input from "./Input";
+import { Input, Icon } from "@/components";
 
 type Props = {
   roomId: number;

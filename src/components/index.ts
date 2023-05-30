@@ -11,3 +11,4 @@ export { default as Conversation } from "./chatroom/Conversation";
 export { default as MessageComponent } from "./chatroom/Message";
 export { default as ChatroomInputsContainer } from "./chatroom/ChatroomInputsContainer";
 export { default as ChatroomHeader } from "./chatroom/ChatroomHeader";
+export { default as InfoSidebar } from "./chatroom/InfoSidebar";

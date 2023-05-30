@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-import { getDaysAgo } from "@/components/Message";
+import { getDaysAgo } from "@/components/chatroom/Message";
 import { useUserPresence } from "@/hooks";
 
 import type { Session } from "next-auth";

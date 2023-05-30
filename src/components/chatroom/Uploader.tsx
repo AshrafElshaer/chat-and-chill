@@ -2,8 +2,7 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
 
-import type { SetState } from "./sidebar/Sidebar";
-
+import type { SetState } from "../sidebar/Sidebar";
 import type { FileState } from "./ChatroomInputsContainer";
 import UploadedFilePreview from "./UploadedFilePreview";
 
