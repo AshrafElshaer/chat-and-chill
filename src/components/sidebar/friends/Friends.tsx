@@ -47,7 +47,7 @@ const Friends = ({ selectedTab, isSidebarOpen, setIsSidebarOpen }: Props) => {
     <>
       <div
         className={`scrollbar-hide  
-    absolute left-0 top-0 h-full w-full transform overflow-y-scroll pt-4 font-medium text-white transition-transform duration-300
+    absolute left-0 top-0 h-full w-full transform overflow-y-scroll pt-3 font-medium text-white transition-transform duration-300
     ${selectedTab === "chatrooms" ? "translate-x-full" : ""}
     ${isSidebarOpen ? "" : "hidden md:block  "}
     `}

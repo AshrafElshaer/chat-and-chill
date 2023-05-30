@@ -10,3 +10,4 @@ export { default as Icon } from "./Icon";
 export { default as Avatar } from "./Avatar";
 export { default as UserMenu } from "./UserMenu";
 export { default as ChatroomInputsContainer } from "./ChatroomInputsContainer";
+export { default as ChatroomHeader } from "./ChatroomHeader";
