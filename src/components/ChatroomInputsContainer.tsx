@@ -1,13 +1,13 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import Uploader from "./Uploader";
+import  {  useState } from "react";
 import { api } from "@/utils/api";
-import EmojiPicker, {
-  EmojiClickData,
-  EmojiStyle,
-  Theme,
-} from "emoji-picker-react";
 import { uploadFileToStorage } from "@/utils/supabase";
 import { toast } from "react-toastify";
+
+import type {ChangeEvent, FormEvent } from "react";
+import type { EmojiClickData } from "emoji-picker-react";
+
+import EmojiPicker , { EmojiStyle, Theme }from "emoji-picker-react";
+import Uploader from "./Uploader";
 import Icon from "./Icon";
 import Input from "./Input";
 
@@ -34,7 +34,16 @@ const ChatroomInputsContainer = ({ roomId }: Props) => {
     api.messages.sendNewMessage.useMutation();
 
   function handleEmojiClick(emojiObject: EmojiClickData, e: MouseEvent) {
+    setIsUploaderOpen(false);
     setNewMessage((curr) => curr + emojiObject.emoji);
+  }
+  function toggleEmojiPicker() {
+    setIsUploaderOpen(false);
+    setIsEmojiPickerOpen((curr) => !curr);
+  }
+  function toggleUploader() {
+    setIsEmojiPickerOpen(false);
+    setIsUploaderOpen((curr) => !curr);
   }
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setNewMessage(e.target.value);
@@ -74,7 +83,7 @@ const ChatroomInputsContainer = ({ roomId }: Props) => {
   return (
     <div className="relative">
       {isEmojiPickerOpen && (
-        <div className="absolute bottom-32 left-6 md:bottom-16 md:left-[22rem] ">
+        <div className="absolute bottom-16 left-6  md:left-4 ">
           <EmojiPicker
             theme={Theme.DARK}
             onEmojiClick={handleEmojiClick}
@@ -102,7 +111,7 @@ const ChatroomInputsContainer = ({ roomId }: Props) => {
         <button
           className="absolute  left-6 z-20"
           type="button"
-          onClick={() => setIsEmojiPickerOpen((prev) => !prev)}
+          onClick={toggleEmojiPicker}
         >
           <Icon iconName="emoji" />
         </button>
@@ -117,7 +126,7 @@ const ChatroomInputsContainer = ({ roomId }: Props) => {
             uploadedFiles.length > 0 ? "text-green-500" : "text-darkGrey"
           }`}
           type="button"
-          onClick={() => setIsUploaderOpen((prev) => !prev)}
+          onClick={toggleUploader}
         >
           {uploadedFiles.length > 0 ? (
             <span className="absolute -top-8 grid h-6 w-6  place-content-center rounded-full bg-green-950 text-sm  text-white">
