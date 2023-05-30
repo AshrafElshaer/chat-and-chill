@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React from "react";
-import type { FileState } from "@/pages/chatroom/[id]";
+
+import type { FileState } from "./ChatroomInputsContainer";
 import Icon from "./Icon";
 
 type Props = {

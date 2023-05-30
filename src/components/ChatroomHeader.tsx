@@ -11,7 +11,7 @@ type Props = {
 
 const ChatroomHeader = ({ guest, isGeustOnline }: Props) => {
   return (
-    <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-between gap-4  bg-lightBg px-4">
+    <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-between gap-4 bg-lightBg px-4">
       <div className="flex items-center gap-4">
         <Avatar src={guest.image} isOnline={isGeustOnline} />
         <span className="text-base text-primary">{guest.name}</span>
