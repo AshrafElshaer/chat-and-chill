@@ -1,8 +1,6 @@
-
 import type { User } from "@prisma/client";
 
-import Avatar from "./Avatar";
-import Icon from "./Icon";
+import { Avatar, Icon } from "@/components";
 
 type Props = {
   guest: User;

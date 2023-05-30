@@ -73,7 +73,7 @@ const Chatroom = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="flex h-5/6 flex-col justify-start text-primary">
+      <section className="flex h-5/6 flex-col justify-start text-primary ">
         <ChatroomHeader guest={guest} isGeustOnline={isUserOnline(guest.id)} />
         <Conversation messages={messages} userId={session.user.id} />
         <ChatroomInputsContainer roomId={Number(roomId)} />

@@ -1,7 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 import type { File, Message, User } from "@prisma/client";
-import Icon from "./Icon";
+import { Icon } from "@/components";
 import Image from "next/image";
 
 type Props = {

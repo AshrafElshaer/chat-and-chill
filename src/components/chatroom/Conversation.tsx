@@ -1,6 +1,6 @@
 import type { File, Message, User } from "@prisma/client";
 import React, { useEffect } from "react";
-import MessageComponent from "./Message";
+import {MessageComponent} from "@/components";
 
 type Props = {
   messages: (Message & { user: User; files: File[] })[];
