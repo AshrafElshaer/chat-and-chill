@@ -15,6 +15,7 @@ import {
   Conversation,
   ChatroomHeader,
   ChatroomInputsContainer,
+  InfoSidebar,
 } from "@/components";
 
 const Chatroom = () => {
@@ -22,6 +23,7 @@ const Chatroom = () => {
   const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
+  const [isInfoSidebarOpen, setIsInfoSidebarOpen] = useState(false);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -73,10 +75,17 @@ const Chatroom = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="flex h-5/6 flex-col justify-start text-primary ">
-        <ChatroomHeader guest={guest} isGeustOnline={isUserOnline(guest.id)} />
-        <Conversation messages={messages} userId={session.user.id} />
-        <ChatroomInputsContainer roomId={Number(roomId)} />
+      <section className="flex h-5/6  justify-start overflow-hidden text-primary relative">
+        <div className="flex flex-grow flex-col justify-start">
+          <ChatroomHeader
+            guest={guest}
+            isGeustOnline={isUserOnline(guest.id)}
+            setIsInfoSidebarOpen={setIsInfoSidebarOpen}
+          />
+          <Conversation messages={messages} userId={session.user.id} />
+          <ChatroomInputsContainer roomId={Number(roomId)} />
+        </div>
+        <InfoSidebar isInfoSidebarOpen={isInfoSidebarOpen} setIsInfoSidebarOpen={setIsInfoSidebarOpen} />
       </section>
     </>
   );

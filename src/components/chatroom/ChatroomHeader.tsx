@@ -1,13 +1,15 @@
 import type { User } from "@prisma/client";
+import type { SetState } from "../sidebar/Sidebar";
 
 import { Avatar, Icon } from "@/components";
 
 type Props = {
   guest: User;
   isGeustOnline: boolean;
+  setIsInfoSidebarOpen: SetState<boolean>;
 };
 
-const ChatroomHeader = ({ guest, isGeustOnline }: Props) => {
+const ChatroomHeader = ({ guest, isGeustOnline ,setIsInfoSidebarOpen}: Props) => {
   return (
     <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-between gap-4 bg-lightBg px-4">
       <div className="flex items-center gap-4">
@@ -21,7 +23,9 @@ const ChatroomHeader = ({ guest, isGeustOnline }: Props) => {
         <button className="rounded-full bg-black p-2">
           <Icon iconName="phone" size="1.2rem" />
         </button>
-        <button className="rounded-full bg-black p-2">
+        <button className="rounded-full bg-black p-2"
+        onClick={() => setIsInfoSidebarOpen((prev) => !prev)}
+        >
           <Icon iconName="dots" size="1.2rem" />
         </button>
       </div>
