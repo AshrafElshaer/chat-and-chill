@@ -16,13 +16,16 @@ const MessageComponent = ({ message, userId }: Props) => {
         message.userId === userId ? "ml-auto" : ""
       }`}
     >
-      <div
-        className={`mb-1  mt-4 rounded-md px-4 py-2 leading-relaxed ${
-          message.userId === userId ? "bg-blue" : "bg-lightBg"
-        }`}
-      >
-        <span>{message.text}</span>
-      </div>
+      {message.text !== "" ? (
+        <div
+          className={`mb-1  mt-4 rounded-md px-4 py-2 leading-relaxed ${
+            message.userId === userId ? "bg-blue" : "bg-lightBg"
+          }`}
+        >
+          <span>{message.text}</span>
+        </div>
+      ) : null}
+
       {message.files && message.files.length > 0 && (
         <div className="flex w-full gap-x-2 gap-y-6 rounded-md bg-lightBg">
           {message.files.map((file) => (
@@ -73,7 +76,6 @@ function FilePreview({ file }: { file: File }) {
           width={64}
           height={64}
           onClick={() => void downloadFile()}
-          // onClick={() => void downloadFile(file.path)}
         />
       )}
       {file.type.includes("pdf") && (
@@ -95,12 +97,12 @@ function FilePreview({ file }: { file: File }) {
   );
 }
 
-function downloadPromise(url: string, name: string) {
+async function downloadPromise(url: string, name: string) {
   if (!url) {
     throw new Error("Resource URL not provided! You need to provide one");
   }
 
-  return fetch(url)
+  return await fetch(url)
     .then((response) => response.blob())
     .then((blob) => {
       const blobURL = URL.createObjectURL(blob);

@@ -26,7 +26,9 @@ const chatroomRouter = createTRPCRouter({
           },
           include: {
             users: true,
-            messages: true,
+            messages: {
+              include: { user: true, files: true },
+            },
           },
         },
       },
@@ -51,7 +53,6 @@ const chatroomRouter = createTRPCRouter({
         },
       });
       if (!chatroom) throw new TRPCError({ code: "NOT_FOUND" });
-
 
       // update unread messages
       await ctx.prisma.message.updateMany({

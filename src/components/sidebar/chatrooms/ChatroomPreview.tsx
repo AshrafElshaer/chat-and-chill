@@ -51,11 +51,17 @@ const ChatroomPreview = ({ room, session }: Props) => {
               : null}
           </span>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <span className="h-6 overflow-hidden text-ellipsis text-gray-500">
             {lastMessage
               ? lastMessage.userId === session.user.id
-                ? `You: ${lastMessage.text} `
+                ? `You: ${
+                    lastMessage.text === ""
+                      ? "Files Attached"
+                      : lastMessage.text
+                  } `
+                : lastMessage.text === ""
+                ? "Files Attached"
                 : lastMessage.text
               : "Start a conversation"}
           </span>
