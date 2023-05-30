@@ -9,3 +9,4 @@ export { default as MessageComponent } from "./Message";
 export { default as Icon } from "./Icon";
 export { default as Avatar } from "./Avatar";
 export { default as UserMenu } from "./UserMenu";
+export { default as ChatroomInputsContainer } from "./ChatroomInputsContainer";

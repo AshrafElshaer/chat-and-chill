@@ -1,6 +1,12 @@
 import { AiOutlineGoogle, AiFillGithub, AiOutlineSearch } from "react-icons/ai";
 import { VscSignOut } from "react-icons/vsc";
-import { BsEmojiSmile, BsFiletypePdf } from "react-icons/bs";
+import {
+  BsEmojiSmile,
+  BsFiletypePdf,
+  BsFillCameraVideoFill,
+  BsFillTelephoneFill,
+  BsThreeDots,
+} from "react-icons/bs";
 import { ImAttachment } from "react-icons/im";
 
 export type IconName =
@@ -10,7 +16,10 @@ export type IconName =
   | "signout"
   | "emoji"
   | "attachment"
-  | "pdf";
+  | "pdf"
+  | "video"
+  | "phone"
+  | "dots";
 
 type Props = {
   iconName: IconName;
@@ -18,7 +27,7 @@ type Props = {
   size?: string;
 };
 
-export default function Icon({ iconName, className = "" ,size}: Props) {
+export default function Icon({ iconName, className = "", size }: Props) {
   switch (iconName) {
     case "google":
       return <AiOutlineGoogle size="1.5rem" />;
@@ -43,7 +52,29 @@ export default function Icon({ iconName, className = "" ,size}: Props) {
         />
       );
     case "pdf":
-      return <BsFiletypePdf color="currentColor" className={className} size={size} />;
+      return (
+        <BsFiletypePdf color="currentColor" className={className} size={size} />
+      );
+    case "video":
+      return (
+        <BsFillCameraVideoFill
+          color="currentColor"
+          className={className}
+          size={size}
+        />
+      );
+    case "phone":
+      return (
+        <BsFillTelephoneFill
+          color="currentColor"
+          className={className}
+          size={size}
+        />
+      );
+    case "dots":
+      return (
+        <BsThreeDots color="currentColor" className={className} size={size} />
+      );
     default:
       return null;
   }

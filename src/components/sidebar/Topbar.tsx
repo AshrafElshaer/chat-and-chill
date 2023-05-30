@@ -14,7 +14,7 @@ const Topbar = ({ setIsSidebarOpen, isSidebarOpen }: Props) => {
   const { data: session } = useSession();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
   return (
-    <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4  md:justify-end">
+    <div className="fixed left-0 top-0 flex h-[3.75rem] w-full items-center justify-between bg-lightBg px-4  md:justify-end border-b-[1px] border-b-lightGray">
       {isSidebarOpen ? (
         <CloseSidebar setIsSidebarOpen={setIsSidebarOpen} />
       ) : (

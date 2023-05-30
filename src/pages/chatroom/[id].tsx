@@ -23,33 +23,18 @@ import {
   Input,
   Icon,
   Avatar,
+  ChatroomInputsContainer,
 } from "@/components";
 import Head from "next/head";
 import Uploader from "@/components/Uploader";
 import { uploadFileToStorage } from "@/utils/supabase";
 import { toast } from "react-toastify";
 
-export interface FileState extends File {
-  preview: string;
-}
-
-interface UploadedFile {
-  name: string;
-  type: string;
-  url: string;
-  path: string;
-}
-
 const Chatroom = () => {
   const router = useRouter();
   const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
-
-  const [newMessage, setNewMessage] = useState("");
-  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-  const [isUploaderOpen, setIsUploaderOpen] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<FileState[]>([]);
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -61,9 +46,6 @@ const Chatroom = () => {
   );
 
   const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);
-
-  const { mutateAsync: sendNewMessage } =
-    api.messages.sendNewMessage.useMutation();
 
   const handlePusherEvent = useCallback(
     (data: { message: Message & { user: User; files: FileSchema[] } }) => {
@@ -88,44 +70,6 @@ const Chatroom = () => {
     };
   }, [roomId, handlePusherEvent]);
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setNewMessage(e.target.value);
-  }
-  function handleEmojiClick(emojiObject: EmojiClickData, e: MouseEvent) {
-    setNewMessage((curr) => curr + emojiObject.emoji);
-  }
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!uploadedFiles.length) {
-      if (!newMessage) return;
-    }
-
-    setIsEmojiPickerOpen(false);
-    setIsUploaderOpen(false);
-
-    const uploadedfilesToStorage: UploadedFile[] = [];
-    for (const file of uploadedFiles) {
-      const uploadedFile = await uploadFileToStorage(file);
-
-      if (uploadedFile instanceof Error) {
-        toast.error(uploadedFile.message);
-        return;
-      }
-
-      uploadedfilesToStorage.push(uploadedFile);
-    }
-
-    await sendNewMessage({
-      text: newMessage,
-      chatroomId: Number(roomId),
-      files: uploadedfilesToStorage,
-    });
-
-    setUploadedFiles([]);
-    setNewMessage("");
-  }
-
   if (!chatroomQuery.data && !chatroomQuery.error) return <LoadingSpinner />;
   if (!session) return <LoadingSpinner />;
   if (chatroomQuery.error) return <div>{chatroomQuery.error.message}</div>;
@@ -145,76 +89,28 @@ const Chatroom = () => {
 
       <section className="flex h-5/6 flex-col justify-start text-primary">
         {/* Header */}
-        <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-start gap-4  bg-lightBg px-4 ">
-          <Avatar src={guest.image} isOnline={isGeustOnline} />
-          <span className="text-base text-primary">{guest.name}</span>
-        </div>
-
-        {/* Conversation */}
-        <div className=" p-4">
-          <Conversation messages={messages} userId={session.user.id} />
-        </div>
-        {/* Emoji Picker */}
-        {isEmojiPickerOpen && (
-          <div className="absolute bottom-32 left-6 md:bottom-16 md:left-[22rem] ">
-            <EmojiPicker
-              theme={Theme.DARK}
-              onEmojiClick={handleEmojiClick}
-              emojiStyle={EmojiStyle.APPLE}
-            />
+        <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-between gap-4  bg-lightBg px-4">
+          <div className="flex items-center gap-4">
+            <Avatar src={guest.image} isOnline={isGeustOnline} />
+            <span className="text-base text-primary">{guest.name}</span>
           </div>
-        )}
-
-        {/* Text Input */}
-        <div className="relative">
-          {isUploaderOpen && (
-            <div
-              className={`absolute bottom-20 left-1/2  ${
-                uploadedFiles.length ? "h-auto" : "h-56"
-              }  w-4/5  -translate-x-1/2 `}
-            >
-              <Uploader
-                uploadedFiles={uploadedFiles}
-                setUploadedFiles={setUploadedFiles}
-              />
-            </div>
-          )}
-
-          <form
-            className=" relative flex items-center justify-between gap-4 p-4"
-            onSubmit={(e) => void handleSubmit(e)}
-          >
-            <button
-              className="absolute  left-6 z-20"
-              type="button"
-              onClick={() => setIsEmojiPickerOpen((prev) => !prev)}
-            >
-              <Icon iconName="emoji" />
+          <div className="flex items-center gap-4">
+            <button className="rounded-full bg-black p-2">
+              <Icon iconName="video" size="1.2rem" />
             </button>
-            <Input
-              placeholder="Type a message"
-              className="w-full rounded-full pl-12 "
-              value={newMessage}
-              onChange={handleInputChange}
-            />
-            <button
-              className={`absolute right-6 z-20 ${
-                uploadedFiles.length > 0 ? "text-green-500" : "text-darkGrey"
-              }`}
-              type="button"
-              onClick={() => setIsUploaderOpen((prev) => !prev)}
-            >
-              {uploadedFiles.length > 0 ? (
-                <span className="absolute -top-8 grid h-6 w-6  place-content-center rounded-full bg-green-950 text-sm  text-white">
-                  {uploadedFiles.length}
-                </span>
-              ) : (
-                ""
-              )}
-              <Icon iconName="attachment" />
+            <button className="rounded-full bg-black p-2">
+              <Icon iconName="phone" size="1.2rem" />
             </button>
-          </form>
+            <button className="rounded-full bg-black p-2">
+              <Icon iconName="dots" size="1.2rem" />
+            </button>
+          </div>
         </div>
+
+
+
+        <Conversation messages={messages} userId={session.user.id} />
+        <ChatroomInputsContainer roomId={Number(roomId)} />
       </section>
     </>
   );

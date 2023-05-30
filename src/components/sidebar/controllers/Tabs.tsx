@@ -8,9 +8,9 @@ type Props = {
 
 const Tabs = ({ selectedTab, setSelectedTab }: Props) => {
   return (
-    <div className="flex">
+    <div className="flex border-b-[1px] border-b-lightGray">
       <Button
-        className={`my-0 rounded-none py-0   text-sm md:py-[1.86rem] ${
+        className={`my-0 rounded-none py-0   text-sm md:py-[1.83rem] ${
           selectedTab === "chatrooms" ? "bg-lightGray/30" : ""
         }`}
         onClick={() => setSelectedTab("chatrooms")}
@@ -18,7 +18,7 @@ const Tabs = ({ selectedTab, setSelectedTab }: Props) => {
         Chats
       </Button>
       <Button
-        className={`my-0 rounded-none  py-0 text-sm md:py-[1.86rem] ${
+        className={`my-0 rounded-none  py-0 text-sm md:py-[1.85rem] ${
           selectedTab === "friends" ? "bg-lightGray/30" : ""
         }`}
         onClick={() => setSelectedTab("friends")}

@@ -15,8 +15,8 @@ const Conversation = ({ messages, userId }: Props) => {
   }, [messages]);
 
   return (
-    <div
-      className="scrollbar-hide h-[60vh] overflow-y-scroll scroll-smooth md:h-[69vh]"
+    <section
+      className="scrollbar-hide h-[60vh] overflow-y-scroll scroll-smooth p-4  md:h-[69vh]"
       ref={conversationRef}
     >
       {!messages.length ? (
@@ -34,7 +34,7 @@ const Conversation = ({ messages, userId }: Props) => {
           );
         })
       )}
-    </div>
+    </section>
   );
 };
 
