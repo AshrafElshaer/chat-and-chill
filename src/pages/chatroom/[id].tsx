@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pusherClientSide } from "@/utils/pusherClientSide";
-import { useUserPresence } from "@/hooks";
+import { useSidebars, useUserPresence } from "@/hooks";
 
 import type { File as FileSchema, Message, User } from "@prisma/client";
 
@@ -23,7 +23,8 @@ const Chatroom = () => {
   const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
-  const [isInfoSidebarOpen, setIsInfoSidebarOpen] = useState(false);
+
+  const {isInfoSidebarOpen , toggleInfoSidebar} = useSidebars()
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -80,12 +81,12 @@ const Chatroom = () => {
           <ChatroomHeader
             guest={guest}
             isGeustOnline={isUserOnline(guest.id)}
-            setIsInfoSidebarOpen={setIsInfoSidebarOpen}
+            toggleInfoSidebar={toggleInfoSidebar}
           />
           <Conversation messages={messages} userId={session.user.id} />
           <ChatroomInputsContainer roomId={Number(roomId)} />
         </div>
-        <InfoSidebar isInfoSidebarOpen={isInfoSidebarOpen} setIsInfoSidebarOpen={setIsInfoSidebarOpen} />
+        <InfoSidebar isInfoSidebarOpen={isInfoSidebarOpen} toggleInfoSidebar={toggleInfoSidebar} />
       </section>
     </>
   );

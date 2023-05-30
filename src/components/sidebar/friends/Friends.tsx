@@ -10,9 +10,9 @@ import type { User } from "@prisma/client";
 type Props = {
   selectedTab: "chatrooms" | "friends";
   isSidebarOpen: boolean;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSidebar: ()=> void;
 };
-const Friends = ({ selectedTab, isSidebarOpen, setIsSidebarOpen }: Props) => {
+const Friends = ({ selectedTab, isSidebarOpen, toggleSidebar }: Props) => {
   const [isAddFriendOpen, setIsAddFriendOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const {
@@ -68,7 +68,7 @@ const Friends = ({ selectedTab, isSidebarOpen, setIsSidebarOpen }: Props) => {
                   key={friend.id}
                   user={friend}
                   isFriend
-                  setIsSidebarOpen={setIsSidebarOpen}
+                  toggleSidebar={toggleSidebar}
                   refetchFriends={refetch}
                 />
               ))}

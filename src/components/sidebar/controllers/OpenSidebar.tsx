@@ -2,17 +2,17 @@ import React from "react";
 import type { SetState } from "../Sidebar";
 
 type Props = {
-  setIsSidebarOpen: SetState<boolean>;
+  toggleSidebar: ()=> void;
 };
 
-const OpenSidebar = ({ setIsSidebarOpen }: Props) => {
+const OpenSidebar = ({ toggleSidebar }: Props) => {
   return (
     <button
       data-drawer-target="default-sidebar"
       data-drawer-toggle="default-sidebar"
       aria-controls="default-sidebar"
       type="button"
-      onClick={() => setIsSidebarOpen(true)}
+      onClick={() => toggleSidebar()}
       className=" mt-1 inline-flex h-10  items-center justify-center rounded-lg text-sm text-gray-500 focus:outline-none dark:text-gray-400 md:hidden"
     >
       <span className="sr-only">Open sidebar</span>

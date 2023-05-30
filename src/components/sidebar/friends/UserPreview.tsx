@@ -14,7 +14,7 @@ type Props = {
   isFriend?: boolean;
   requestId?: number;
   refetchFriends?: () => Promise<QueryObserverResult<User[], unknown>>;
-  setIsSidebarOpen?: SetState<boolean>;
+  toggleSidebar?: () => void;
 };
 
 const UserPreview = ({
@@ -23,7 +23,7 @@ const UserPreview = ({
   isFriendRequest,
   requestId,
   refetchFriends,
-  setIsSidebarOpen,
+  toggleSidebar,
 }: Props) => {
   const router = useRouter();
   const { isUserOnline } = useUserPresence();
@@ -42,8 +42,8 @@ const UserPreview = ({
     });
 
     if (chatroom instanceof Error) return toast.error(chatroom.message);
-    if (setIsSidebarOpen !== undefined) {
-      setIsSidebarOpen(false);
+    if (toggleSidebar !== undefined) {
+      toggleSidebar();
     }
     return router.push(`/chatroom/${chatroom.id}`);
   }

@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-import { useSession } from "next-auth/react";
 
-import { CloseSidebar, OpenSidebar, Tabs } from "./controllers";
+
 import { ChatroomList } from "./chatrooms";
 import { Friends } from "./friends";
-import Avatar from "../Avatar";
+
 import Topbar from "./Topbar";
+import { Tabs } from "./controllers";
+import { useSidebars } from "@/hooks";
 
 type Props = {
   children: React.ReactNode;
@@ -15,7 +16,8 @@ type Props = {
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 const Sidebar = ({ children }: Props) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
+  const {isSidebarOpen , toggleSidebar} = useSidebars()
   const [selectedTab, setSelectedTab] = useState<"chatrooms" | "friends">(
     "chatrooms"
   );
@@ -25,7 +27,7 @@ const Sidebar = ({ children }: Props) => {
   return (
     <>
       <Topbar
-        setIsSidebarOpen={setIsSidebarOpen}
+        toggleSidebar={toggleSidebar}
         isSidebarOpen={isSidebarOpen}
       />
 
@@ -40,13 +42,13 @@ const Sidebar = ({ children }: Props) => {
 
         <nav className="relative h-[76vh]  md:h-[90vh]">
           <ChatroomList
-            setIsSidebarOpen={setIsSidebarOpen}
+            toggleSidebar={toggleSidebar}
             selectedTab={selectedTab}
           />
           <Friends
             selectedTab={selectedTab}
             isSidebarOpen={isSidebarOpen}
-            setIsSidebarOpen={setIsSidebarOpen}
+            toggleSidebar={toggleSidebar}
           />
         </nav>
       </aside>

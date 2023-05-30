@@ -14,11 +14,11 @@ import SearchBar from "../SearchBar";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 type Props = {
-  setIsSidebarOpen: SetState<boolean>;
+  toggleSidebar:()=> void;
   selectedTab: "chatrooms" | "friends";
 };
 
-const ChatroomList = ({ setIsSidebarOpen, selectedTab }: Props) => {
+const ChatroomList = ({ toggleSidebar, selectedTab }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: session } = useSession();
   const connectToPusher = useUserPresence();
@@ -97,7 +97,7 @@ const ChatroomList = ({ setIsSidebarOpen, selectedTab }: Props) => {
         <li key={chatroom.id}>
           <Link
             href={`/chatroom/${chatroom.id}`}
-            onClick={() => setIsSidebarOpen(false)}
+            onClick={() => toggleSidebar()}
           >
             <ChatroomPreview room={chatroom} session={session} />
           </Link>
