@@ -44,6 +44,7 @@ const chatroomRouter = createTRPCRouter({
         where: { id },
         include: {
           users: true,
+          files: true,
           messages: {
             orderBy: {
               createdAt: "asc",

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 
-import { ChatroomList } from "./chatrooms";
+import { ChatroomList } from "./chatroomsList";
 import { Friends } from "./friends";
 
 import Topbar from "./Topbar";

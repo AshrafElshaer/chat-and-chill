@@ -55,7 +55,17 @@ export const getDaysAgo = (date: Date) => {
   return diffDays;
 };
 
-function FilePreview({ file }: { file: File }) {
+export function FilePreview({
+  file,
+  width = 64,
+  height = 64,
+  iconSize = "4rem",
+}: {
+  file: File;
+  width?: number;
+  height?: number;
+  iconSize?: string;
+}) {
   async function downloadFile() {
     // checking if used browser is mobile browser
     if (window.navigator.userAgent.match(/Mobile/)) {
@@ -70,27 +80,25 @@ function FilePreview({ file }: { file: File }) {
     <div className="p-2">
       {file.type.includes("image") && (
         <Image
-          className="aspect-square h-16 cursor-pointer rounded-md"
+          className="aspect-square cursor-pointer rounded-md"
           src={file.url}
           alt={file.name}
-          width={64}
-          height={64}
+          width={width}
+          height={height}
           onClick={() => void downloadFile()}
         />
       )}
       {file.type.includes("pdf") && (
         <div
-          className=" relative aspect-square h-16 cursor-pointer items-center  overflow-hidden rounded-md "
+          className=" relative aspect-square h-auto cursor-pointer grid place-content-center  overflow-hidden rounded-md "
           onClick={() => window.open(file.url, "_blank")}
         >
           <Icon
             iconName="pdf"
             className=" rounded-lg bg-black p-2"
-            size="4rem"
+            size={iconSize}
           />
-          <span className="text-darkGray absolute w-full overflow-hidden  text-xs">
-            {file.name}
-          </span>
+         
         </div>
       )}
     </div>

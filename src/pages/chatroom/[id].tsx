@@ -86,7 +86,7 @@ const Chatroom = () => {
           <Conversation messages={messages} userId={session.user.id} />
           <ChatroomInputsContainer roomId={Number(roomId)} />
         </div>
-        <InfoSidebar isInfoSidebarOpen={isInfoSidebarOpen} toggleInfoSidebar={toggleInfoSidebar} />
+        <InfoSidebar guest={guest} files={chatroomQuery.data.files} isInfoSidebarOpen={isInfoSidebarOpen} toggleInfoSidebar={toggleInfoSidebar} />
       </section>
     </>
   );

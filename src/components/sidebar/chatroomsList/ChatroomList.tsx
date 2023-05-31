@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { type ChangeEvent, useEffect, useState } from "react";
 
-import { type SetState } from "../Sidebar";
 import type { Chatroom, Message, User } from "@prisma/client";
 
 import { api } from "@/utils/api";

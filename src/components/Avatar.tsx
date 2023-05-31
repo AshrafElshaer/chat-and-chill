@@ -4,16 +4,18 @@ import React from "react";
 type Props = {
   src: string;
   isOnline: boolean;
+  width?: number;
+  height?: number;
 };
 
-const Avatar = ({ isOnline, src }: Props) => {
+const Avatar = ({ isOnline, src, width = 40, height = 40 }: Props) => {
   return (
     <div className="relative ">
       <Image
         src={src}
         alt="user profile picture"
-        width={40}
-        height={40}
+        width={width}
+        height={height}
         className=" rounded-full ring-2 ring-gray-800"
       />
       {isOnline && (
