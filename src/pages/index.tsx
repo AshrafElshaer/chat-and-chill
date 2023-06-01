@@ -119,7 +119,7 @@ const Home = ({ userSession }: Props) => {
             value={userInfo.name || ""}
             className="w-60 rounded-md"
             label="Name"
-            onCanPlay={handleInputChange}
+            onChange={handleInputChange}
           />
           <Input
             name="bio"
@@ -127,7 +127,7 @@ const Home = ({ userSession }: Props) => {
             value={userInfo.bio}
             className="w-60 rounded-md"
             label="Bio"
-            onCanPlay={handleInputChange}
+            onChange={handleInputChange}
           />
           <Input
             name="email"
