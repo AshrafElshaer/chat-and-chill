@@ -1,6 +1,7 @@
 import React from "react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 type Props = {
   session: Session;
@@ -9,7 +10,7 @@ type Props = {
 const UserMenu = ({ session }: Props) => {
   return (
     <ul
-      className="absolute right-8 top-16 w-48 border border-lightGray/20 rounded-md bg-lightBg
+      className="absolute right-8 top-16 w-48 rounded-md border border-lightGray/20 bg-lightBg
     py-2 text-white shadow-xl"
       aria-labelledby="user-menu-button"
     >
@@ -18,9 +19,9 @@ const UserMenu = ({ session }: Props) => {
         <p className=" break-words ">{session.user.email}</p>
       </li>
       <li className="hover:bg-lightGray/30">
-        <a href="#" className="block px-4 py-2 text-sm  ">
+        <Link href="/" className="block px-4 py-2 text-sm">
           Settings
-        </a>
+        </Link>
       </li>
       <li className="hover:bg-lightGray/30">
         <button

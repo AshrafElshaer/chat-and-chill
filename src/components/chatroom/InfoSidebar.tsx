@@ -1,6 +1,6 @@
 import React from "react";
-import Image from "next/image";
-import { User, File } from "@prisma/client";
+
+import type { User, File } from "@prisma/client";
 import { Avatar, Icon } from "@/components";
 import { useUserPresence } from "@/hooks";
 import { FilePreview } from "./Message";
@@ -67,7 +67,9 @@ const InfoSidebar = ({
             </div>
             <div role="About ">
               <h6 className="mb-3 text-sm">About</h6>
-              <p className="text-xs text-lightGray">{guest.bio} dkflj</p>
+              <p className="text-xs text-lightGray">
+                {guest.bio !== "" ? guest.bio : "No Status yet!"}{" "}
+              </p>
             </div>
 
             <div role="Media & Files">
@@ -84,7 +86,7 @@ const InfoSidebar = ({
                       />
                     </li>
                   ))}
-                  <li>
+                  <li className="mt-2">
                     <button onClick={() => setIsDialogOpen(true)}>
                       See More
                     </button>

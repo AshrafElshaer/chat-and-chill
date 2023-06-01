@@ -10,6 +10,7 @@ import { Button, Input } from "@/components";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { toast } from "react-toastify";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -94,7 +95,7 @@ export default function Signup({ userSession }: Props) {
 
     const inputValidation = userValidationSchema.safeParse(userInfo);
 
-    if (!inputValidation.success) return console.error(inputValidation.error);
+    if (!inputValidation.success) return toast.error(inputValidation.error.message);
 
     const usernameValidation = await validateUsernameMutation.mutateAsync({
       username: inputValidation.data.username,
@@ -109,7 +110,7 @@ export default function Signup({ userSession }: Props) {
       name: inputValidation.data.name,
     });
 
-    if (!updateUserInfo.sucsses) return alert(updateUserInfo);
+    if (!updateUserInfo.sucsses) return toast.error("Ops! Something went wrong");
 
     return router.push("/");
   }
@@ -142,7 +143,7 @@ export default function Signup({ userSession }: Props) {
                 id="file-input"
                 onChange={(e) => void handleFileUpload(e)}
                 accept="image/*"
-                className="block w-full cursor-pointer px-0 py-0 text-sm shadow-sm file:mr-4 file:border-0 file:bg-gray-600 file:bg-transparent file:px-2 file:py-3 file:text-gray-400 focus:z-10"
+                className="block w-full cursor-pointer px-0 py-0 text-sm shadow-sm file:mr-4 file:border-0 file:bg-gray-600 file:bg-transparent file:px-2 file:py-3 file:text-gray-400 focus:z-10 rounded-md"
               />
             ) : (
               <Button onClick={() => setIsChangeAvatar(true)}>
@@ -211,7 +212,7 @@ function suggestUsername(value: string): string {
   return [firstName[0], lastName].join("").toLowerCase();
 }
 
-const userValidationSchema = z.object({
+export const userValidationSchema = z.object({
   bio: z.string().optional().nullable(),
   email: z.string().email(),
   id: z.number(),

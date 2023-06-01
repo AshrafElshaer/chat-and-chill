@@ -23,7 +23,7 @@ export const userRouter = createTRPCRouter({
 
       const updatedUser = await ctx.prisma.user.update({
         where: { id },
-        data: { username, bio, image, name },
+        data: { username , bio, image, name },
       });
 
       return updatedUser ? { sucsses: true } : { sucsses: false };

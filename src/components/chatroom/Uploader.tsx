@@ -28,7 +28,6 @@ const Uploader = ({ setUploadedFiles, uploadedFiles }: Props) => {
         setUploadedFiles((curr) => [
           ...curr,
           ...acceptedFiles.map((file) => {
-            console.log(file);
             return Object.assign(file, {
               preview: URL.createObjectURL(file),
             });
