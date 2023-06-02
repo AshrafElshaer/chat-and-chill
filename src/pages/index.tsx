@@ -1,15 +1,15 @@
 import Head from "next/head";
-import { getSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 
 import type { GetServerSidePropsContext } from "next";
 import { type Session } from "next-auth";
 
-import { Avatar, Button, Input } from "@/components";
-import { ChangeEvent, FormEvent, useState } from "react";
 import { userValidationSchema } from "./auth/signup";
 import { toast } from "react-toastify";
 import { api } from "@/utils/api";
 import { uploadImage } from "@/utils/supabase";
+import { Avatar, Button, Input } from "@/components";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext

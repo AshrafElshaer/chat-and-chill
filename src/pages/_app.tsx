@@ -12,6 +12,7 @@ import { SidebarsProvider } from "@/hooks";
 import { api } from "@/utils/api";
 
 import { Layout } from "@/components";
+import { UserPresenceProvider } from "@/hooks/useUserPresence";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -20,14 +21,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const router = useRouter();
   const { pathname } = router;
   const showSidebar = pathname !== "/auth/login" && pathname !== "/auth/signup";
+
   return (
     <SessionProvider session={session}>
       {showSidebar ? (
-        <SidebarsProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SidebarsProvider>
+        <UserPresenceProvider>
+          <SidebarsProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </SidebarsProvider>
+        </UserPresenceProvider>
       ) : (
         <Component {...pageProps} />
       )}
