@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import { useSidebars, useUserPresence } from "@/hooks";
-import { api } from "@/utils/api";
+
 import { pusherClientSide } from "@/utils/pusherClientSide";
 
 import type { Session } from "next-auth";
-import type { File as FileSchema, Message, User } from "@prisma/client";
+import type { Chatroom, File, Message, User } from "@prisma/client";
 
 import {
   ChatroomInputsContainer,
@@ -19,28 +19,24 @@ type Props = {
   guest: User;
   session: Session;
   roomId: number;
+  chatroom: Chatroom & {
+    messages: (Message & { user: User; files: File[] })[];
+    users: User[];
+  };
 };
 
-const ChatroomContainer = ({ guest, session, roomId }: Props) => {
+const ChatroomContainer = ({ guest, session, roomId, chatroom }: Props) => {
   const { isUserOnline } = useUserPresence();
   const { isInfoSidebarOpen, toggleInfoSidebar } = useSidebars();
-  const chatroomQuery = api.chatroom.getChatroomById.useQuery(
-    {
-      id: Number(roomId),
-    },
-    {
-      enabled: Boolean(roomId) && Boolean(session),
-    }
-  );
 
-  const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);
+  const [messages, setMessages] = useState(chatroom.messages || []);
 
   useEffect(() => {
-    chatroomQuery.data && setMessages(chatroomQuery.data.messages);
-  }, [chatroomQuery.data]);
+    chatroom && setMessages(chatroom.messages);
+  }, [chatroom]);
 
   const handlePusherEvent = useCallback(
-    (data: { message: Message & { user: User; files: FileSchema[] } }) => {
+    (data: { message: Message & { user: User; files: File[] } }) => {
       const isMessageExist = messages.find((m) => m.id === data.message.id);
       if (isMessageExist) return;
       setMessages((prev) => [...prev, data.message]);
@@ -58,9 +54,9 @@ const ChatroomContainer = ({ guest, session, roomId }: Props) => {
     };
   }, [roomId, handlePusherEvent]);
 
-  if (!chatroomQuery.data && !chatroomQuery.error) return <LoadingSpinner />;
-  if (!session) return <LoadingSpinner />;
-  if (chatroomQuery.error) return <div>{chatroomQuery.error.message}</div>;
+  const chatroomFiles = chatroom.messages
+    .map((message) => message.files)
+    .flat();
 
   return (
     <>
@@ -75,7 +71,7 @@ const ChatroomContainer = ({ guest, session, roomId }: Props) => {
       </div>
       <InfoSidebar
         guest={guest}
-        files={chatroomQuery.data.files}
+        files={chatroomFiles}
         isInfoSidebarOpen={isInfoSidebarOpen}
         toggleInfoSidebar={toggleInfoSidebar}
       />

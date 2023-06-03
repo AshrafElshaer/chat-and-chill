@@ -1,23 +1,14 @@
 "use client";
 import Head from "next/head";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
-import { pusherClientSide } from "@/utils/pusherClientSide";
-import { useSidebars, useUserPresence } from "@/hooks";
 
-import type { File as FileSchema, Message, User } from "@prisma/client";
+import { useUserPresence } from "@/hooks";
 
-import {
-  LoadingSpinner,
-  Conversation,
-  ChatroomHeader,
-  ChatroomInputsContainer,
-  InfoSidebar,
-  ChatroomContainer,
-} from "@/components";
+import { LoadingSpinner, ChatroomContainer } from "@/components";
 
 const Chatroom = () => {
   const router = useRouter();
@@ -25,7 +16,11 @@ const Chatroom = () => {
   const { data: session } = useSession();
   const { id: roomId } = router.query;
 
-  const chatroomQuery = api.chatroom.getChatroomById.useQuery(
+  const {
+    data: chatroom,
+    error,
+    isLoading,
+  } = api.chatroom.getChatroomById.useQuery(
     {
       id: Number(roomId),
     },
@@ -34,12 +29,13 @@ const Chatroom = () => {
     }
   );
 
-  if (!chatroomQuery.data && !chatroomQuery.error) return <LoadingSpinner />;
-  if (!session) return <LoadingSpinner />;
-  if (chatroomQuery.error) return <div>{chatroomQuery.error.message}</div>;
+  if (!chatroom && !error && isLoading) return <LoadingSpinner />;
+  if (!session) return router.push("/auth/signin");
+
+  if (error) return <div>{error.message}</div>;
 
   const user = session?.user;
-  const guest = chatroomQuery.data?.users.find((u) => u.id !== user?.id);
+  const guest = chatroom?.users.find((u) => u.id !== user?.id);
   if (!guest) return <LoadingSpinner />;
 
   return (
@@ -52,6 +48,7 @@ const Chatroom = () => {
 
       <section className="relative flex  h-5/6 justify-start overflow-hidden text-primary">
         <ChatroomContainer
+          chatroom={chatroom}
           guest={guest}
           session={session}
           roomId={Number(roomId)}
