@@ -31,17 +31,14 @@ export const UserPresenceProvider = ({ children }: { children: ReactNode }) => {
     const userPresenceChannal = supabase
       .channel("presence:users-channel")
       .on("presence", { event: "sync" }, () => {
-        console.log("sync");
         const state = userPresenceChannal.presenceState();
         setOnlineUsers(getOnlineUsers(state));
       })
       .on("presence", { event: "join" }, ({ newPresences }) => {
-        console.log("joined", newPresences);
         const state = userPresenceChannal.presenceState();
         setOnlineUsers(getOnlineUsers(state));
       })
       .on("presence", { event: "leave" }, ({ leftPresences }) => {
-        console.log("left", leftPresences);
         const state = userPresenceChannal.presenceState();
         setOnlineUsers(getOnlineUsers(state));
       })
@@ -68,10 +65,6 @@ export const UserPresenceProvider = ({ children }: { children: ReactNode }) => {
   function isUserOnline(userId: number) {
     return onlineUsers.find((user) => user === userId) ? true : false;
   }
-
-  useEffect(() => {
-    console.log("session", session);
-  }, [session]);
 
   return (
     <UserPresenceContext.Provider value={{ onlineUsers, isUserOnline }}>

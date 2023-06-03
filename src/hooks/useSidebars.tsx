@@ -19,7 +19,7 @@ function useSidebars() {
 
 const SidebarsProvider = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isInfoSidebarOpen, setIsInfoSidebarOpen] = useState(true);
+  const [isInfoSidebarOpen, setIsInfoSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsInfoSidebarOpen(false);
