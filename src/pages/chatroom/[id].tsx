@@ -6,13 +6,21 @@ import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 
-import { useUserPresence } from "@/hooks";
+import { useSidebars, useUserPresence } from "@/hooks";
 
-import { LoadingSpinner, ChatroomContainer } from "@/components";
+import {
+  LoadingSpinner,
+  ChatroomContainer,
+  ChatroomHeader,
+} from "@/components";
+import { VoiceCall } from "@/components/voiceCall";
 
 const Chatroom = () => {
+  const [isVoiceCall, setIsVoiceCall] = useState(false);
   const router = useRouter();
   const { isUserOnline } = useUserPresence();
+  const { isInfoSidebarOpen, toggleInfoSidebar } = useSidebars();
+
   const { data: session } = useSession();
   const { id: roomId } = router.query;
 
@@ -46,13 +54,18 @@ const Chatroom = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="relative flex  h-5/6 justify-start overflow-hidden text-primary">
-        <ChatroomContainer
-          chatroom={chatroom}
-          guest={guest}
-          session={session}
-          roomId={Number(roomId)}
-        />
+      <section className="relative flex h-5/6 flex-col justify-start overflow-hidden text-primary">
+        {isVoiceCall ? (
+          <VoiceCall setIsVoiceCall={setIsVoiceCall} />
+        ) : (
+          <ChatroomContainer
+            setIsVoiceCall={setIsVoiceCall}
+            chatroom={chatroom}
+            guest={guest}
+            session={session}
+            roomId={Number(roomId)}
+          />
+        )}
       </section>
     </>
   );

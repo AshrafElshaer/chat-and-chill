@@ -9,7 +9,6 @@ import type { Chatroom, File, Message, User } from "@prisma/client";
 
 import {
   ChatroomInputsContainer,
-  LoadingSpinner,
   InfoSidebar,
   Conversation,
   ChatroomHeader,
@@ -23,9 +22,10 @@ type Props = {
     messages: (Message & { user: User; files: File[] })[];
     users: User[];
   };
+  setIsVoiceCall: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const ChatroomContainer = ({ guest, session, roomId, chatroom }: Props) => {
+const ChatroomContainer = ({ guest, session, roomId, chatroom ,setIsVoiceCall}: Props) => {
   const { isUserOnline } = useUserPresence();
   const { isInfoSidebarOpen, toggleInfoSidebar } = useSidebars();
 
@@ -59,9 +59,10 @@ const ChatroomContainer = ({ guest, session, roomId, chatroom }: Props) => {
     .flat();
 
   return (
-    <>
+    <div className="retalive flex ">
       <div className="flex flex-grow flex-col justify-start">
         <ChatroomHeader
+        setIsVoiceCall={setIsVoiceCall}
           guest={guest}
           isGeustOnline={isUserOnline(guest.id)}
           toggleInfoSidebar={toggleInfoSidebar}
@@ -75,7 +76,7 @@ const ChatroomContainer = ({ guest, session, roomId, chatroom }: Props) => {
         isInfoSidebarOpen={isInfoSidebarOpen}
         toggleInfoSidebar={toggleInfoSidebar}
       />
-    </>
+    </div>
   );
 };
 
