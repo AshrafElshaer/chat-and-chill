@@ -16,6 +16,7 @@ import {
   ChatroomHeader,
   ChatroomInputsContainer,
   InfoSidebar,
+  ChatroomContainer,
 } from "@/components";
 
 const Chatroom = () => {
@@ -23,8 +24,6 @@ const Chatroom = () => {
   const { isUserOnline } = useUserPresence();
   const { data: session } = useSession();
   const { id: roomId } = router.query;
-
-  const {isInfoSidebarOpen , toggleInfoSidebar} = useSidebars()
 
   const chatroomQuery = api.chatroom.getChatroomById.useQuery(
     {
@@ -34,31 +33,6 @@ const Chatroom = () => {
       enabled: Boolean(roomId) && Boolean(session),
     }
   );
-
-  const [messages, setMessages] = useState(chatroomQuery.data?.messages || []);
-
-  const handlePusherEvent = useCallback(
-    (data: { message: Message & { user: User; files: FileSchema[] } }) => {
-      const isMessageExist = messages.find((m) => m.id === data.message.id);
-      if (isMessageExist) return;
-      setMessages((prev) => [...prev, data.message]);
-    },
-    [messages]
-  );
-
-  useEffect(() => {
-    chatroomQuery.data && setMessages(chatroomQuery.data.messages);
-  }, [chatroomQuery.data]);
-
-  useEffect(() => {
-    const channel = pusherClientSide.subscribe(`chatroom-${roomId as string}`);
-    channel.bind(`new-message`, handlePusherEvent);
-
-    return () => {
-      channel.unsubscribe();
-      channel.unbind(`new-message`, handlePusherEvent);
-    };
-  }, [roomId, handlePusherEvent]);
 
   if (!chatroomQuery.data && !chatroomQuery.error) return <LoadingSpinner />;
   if (!session) return <LoadingSpinner />;
@@ -76,17 +50,12 @@ const Chatroom = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="flex h-5/6  justify-start overflow-hidden text-primary relative">
-        <div className="flex flex-grow flex-col justify-start">
-          <ChatroomHeader
-            guest={guest}
-            isGeustOnline={isUserOnline(guest.id)}
-            toggleInfoSidebar={toggleInfoSidebar}
-          />
-          <Conversation messages={messages} userId={session.user.id} />
-          <ChatroomInputsContainer roomId={Number(roomId)} />
-        </div>
-        <InfoSidebar guest={guest} files={chatroomQuery.data.files} isInfoSidebarOpen={isInfoSidebarOpen} toggleInfoSidebar={toggleInfoSidebar} />
+      <section className="relative flex  h-5/6 justify-start overflow-hidden text-primary">
+        <ChatroomContainer
+          guest={guest}
+          session={session}
+          roomId={Number(roomId)}
+        />
       </section>
     </>
   );
