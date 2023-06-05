@@ -55,15 +55,6 @@ const InfoSidebar = ({
               />
               <h3>{guest.name}</h3>
               <p>{isUserOnline(guest.id) ? "Online" : "Offline"}</p>
-
-              <div className="mt-4 flex items-center gap-4">
-                <button className="flex items-center gap-2 rounded-full bg-black p-3">
-                  <Icon iconName="video" size="1.5rem" />
-                </button>
-                <button className="flex items-center gap-2 rounded-full bg-black p-3">
-                  <Icon iconName="phone" size="1.5rem" />
-                </button>
-              </div>
             </div>
             <div role="About ">
               <h6 className="mb-3 text-sm">About</h6>
