@@ -6,14 +6,13 @@ type Props = {
   guest: User;
   isGeustOnline: boolean;
   toggleInfoSidebar: () => void;
-  setIsVoiceCall: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ChatroomHeader = ({
   guest,
   isGeustOnline,
   toggleInfoSidebar,
-  setIsVoiceCall,
+  
 }: Props) => {
   return (
     <div className="mt-[3.75rem] flex h-[3.75rem] w-full items-center justify-between gap-4 bg-lightBg px-4">
@@ -27,7 +26,6 @@ const ChatroomHeader = ({
         </button>
         <button
           className="rounded-full bg-black p-2"
-          onClick={() => setIsVoiceCall(true)}
         >
           <Icon iconName="phone" size="1.2rem" />
         </button>

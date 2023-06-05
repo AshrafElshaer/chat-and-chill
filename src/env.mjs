@@ -21,7 +21,6 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string().min(1) : z.string().url()
     ),
-
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
@@ -47,16 +46,13 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // SUPABASE ENV
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_API_KEY: z.string().min(1),
-    // PUSHER ENV
     NEXT_PUBLIC_PUSHER_KEY: z.string().min(1),
 
     // AGORA ENV
     NEXT_PUBLIC_AGORA_APP_ID: z.string().min(1),
     NEXT_PUBLIC_AGORA_APP_CERTIFICATE: z.string().min(1),
-    NEXT_PUBLIC_AGORA_TEMP_TOKEN: z.string().min(1),
   },
 
   /**
@@ -75,8 +71,6 @@ export const env = createEnv({
     NEXT_PUBLIC_AGORA_APP_ID: process.env.NEXT_PUBLIC_AGORA_APP_ID,
     NEXT_PUBLIC_AGORA_APP_CERTIFICATE:
       process.env.NEXT_PUBLIC_AGORA_APP_CERTIFICATE,
-
-    NEXT_PUBLIC_AGORA_TEMP_TOKEN: process.env.NEXT_PUBLIC_AGORA_TEMP_TOKEN,
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,

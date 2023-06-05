@@ -22,10 +22,9 @@ type Props = {
     messages: (Message & { user: User; files: File[] })[];
     users: User[];
   };
-  setIsVoiceCall: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const ChatroomContainer = ({ guest, session, roomId, chatroom ,setIsVoiceCall}: Props) => {
+const ChatroomContainer = ({ guest, session, roomId, chatroom }: Props) => {
   const { isUserOnline } = useUserPresence();
   const { isInfoSidebarOpen, toggleInfoSidebar } = useSidebars();
 
@@ -59,10 +58,9 @@ const ChatroomContainer = ({ guest, session, roomId, chatroom ,setIsVoiceCall}: 
     .flat();
 
   return (
-    <div className="retalive flex ">
+    <>
       <div className="flex flex-grow flex-col justify-start">
         <ChatroomHeader
-        setIsVoiceCall={setIsVoiceCall}
           guest={guest}
           isGeustOnline={isUserOnline(guest.id)}
           toggleInfoSidebar={toggleInfoSidebar}
@@ -76,7 +74,7 @@ const ChatroomContainer = ({ guest, session, roomId, chatroom ,setIsVoiceCall}: 
         isInfoSidebarOpen={isInfoSidebarOpen}
         toggleInfoSidebar={toggleInfoSidebar}
       />
-    </div>
+    </>
   );
 };
 
