@@ -56,7 +56,7 @@ const Chatroom = () => {
 
       <section className="relative flex h-5/6 flex-col justify-start overflow-hidden text-primary">
         {isVoiceCall ? (
-          <VoiceCall setIsVoiceCall={setIsVoiceCall} />
+          <VoiceCall setIsVoiceCall={setIsVoiceCall} roomId={Number(roomId)} user={user}/>
         ) : (
           <ChatroomContainer
             setIsVoiceCall={setIsVoiceCall}

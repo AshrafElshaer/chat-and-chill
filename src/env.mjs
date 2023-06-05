@@ -56,6 +56,7 @@ export const env = createEnv({
     // AGORA ENV
     NEXT_PUBLIC_AGORA_APP_ID: z.string().min(1),
     NEXT_PUBLIC_AGORA_APP_CERTIFICATE: z.string().min(1),
+    NEXT_PUBLIC_AGORA_TEMP_TOKEN: z.string().min(1),
   },
 
   /**
@@ -74,6 +75,8 @@ export const env = createEnv({
     NEXT_PUBLIC_AGORA_APP_ID: process.env.NEXT_PUBLIC_AGORA_APP_ID,
     NEXT_PUBLIC_AGORA_APP_CERTIFICATE:
       process.env.NEXT_PUBLIC_AGORA_APP_CERTIFICATE,
+
+    NEXT_PUBLIC_AGORA_TEMP_TOKEN: process.env.NEXT_PUBLIC_AGORA_TEMP_TOKEN,
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,

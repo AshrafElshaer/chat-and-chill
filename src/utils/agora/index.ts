@@ -1,14 +1,5 @@
-import type {
-  ClientConfig,
-  IAgoraRTCRemoteUser,
-  ICameraVideoTrack,
-  IMicrophoneAudioTrack,
-} from "agora-rtc-sdk-ng";
-import {
-  AgoraVideoPlayer,
-  createClient,
-  createMicrophoneAndCameraTracks,
-} from "agora-rtc-react";
+import type { ClientConfig } from "agora-rtc-sdk-ng";
+import { createClient ,createMicrophoneAndCameraTracks } from "agora-rtc-react";
 
 const config: ClientConfig = {
   mode: "rtc",
@@ -17,6 +8,4 @@ const config: ClientConfig = {
 
 export const useAgoraClient = createClient(config);
 
-export const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
-
-
+export const useMicrophoneAndVideoTracks = createMicrophoneAndCameraTracks();
