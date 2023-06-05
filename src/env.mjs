@@ -51,8 +51,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PUSHER_KEY: z.string().min(1),
 
     // AGORA ENV
-    NEXT_PUBLIC_AGORA_APP_ID: z.string().min(1),
-    NEXT_PUBLIC_AGORA_APP_CERTIFICATE: z.string().min(1),
+   
   },
 
   /**
@@ -68,9 +67,6 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 
-    NEXT_PUBLIC_AGORA_APP_ID: process.env.NEXT_PUBLIC_AGORA_APP_ID,
-    NEXT_PUBLIC_AGORA_APP_CERTIFICATE:
-      process.env.NEXT_PUBLIC_AGORA_APP_CERTIFICATE,
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
