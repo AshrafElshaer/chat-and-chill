@@ -1,7 +1,7 @@
 import React from "react";
 
 import type { User, File } from "@prisma/client";
-import { Avatar, Icon } from "@/components";
+import { Avatar } from "@/components";
 import { useUserPresence } from "@/hooks";
 import { FilePreview } from "./Message";
 
